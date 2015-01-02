@@ -165,7 +165,7 @@ Copyright © 2015 Toran Billups http://toranbillups.com
 Licensed under the MIT License
 
 
-[Build Status]: https://secure.travis-ci.org/toranb/ember-cli-simple-store?branch=master
+[Build Status]: https://travis-ci.org/toranb/ember-cli-simple-store.svg?branch=master
 [ember-cli]: http://www.ember-cli.com/
 [ember.js]: http://emberjs.com/
 [PromiseMixin]: https://gist.github.com/toranb/98abc9616f2abecde0d4
