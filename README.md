@@ -16,18 +16,12 @@
 5) npm install ember-cli-simple-store --save-dev
 ```
 
-## The entire api consists of 4 methods: push/remove/find/clear
+## This library provides 4 methods: push/remove/find/clear
 
 ```js
-//create a new person model
+//create or update person model
 
 this.store.push("person", {id: 1, name: "toran"});
-```
-
-```js
-//update an existing person model
-
-this.store.push("person", {id: 1, name: "brandon"});
 ```
 
 ```js
@@ -55,7 +49,7 @@ this.store.find("person", {account_id: 789});
 ```
 
 ```js
-//clear the entire identity map of all person model objects
+//clear the entire identity map of all person models
 
 this.store.clear("person");
 ```
@@ -67,30 +61,30 @@ Below I'll show how you can use the store with a simple ember object to find/add
 The full example below relies on a small xhr mixin [PromiseMixin][]
 
 ```js
-import PromiseMixin from 'js/mixins/promise';
+import PromiseMixin from "js/mixins/promise";
 
 var Person = Ember.Object.extend({
-    firstName: '',
-    lastName: '',
-    phone: ''
-}).reopenClass(PromiseMixin, {
+    firstName: "",
+    lastName: "",
+    phone: ""
+}).reopenClass({
     find: function(store) {
-        return this.xhr('/api/people/', 'GET').then(function(response) {
+        return PromiseMixin.xhr("/api/people/", "GET").then(function(response) {
             response.forEach(function(person) {
-                store.push('person', person);
+                store.push("person", person);
             });
-            return store.find('person');
+            return store.find("person");
         });
     },
     findById: function(store, id) {
-        return store.find('person', id);
+        return store.find("person", id);
     },
     insert: function(store, person) {
         var self = this;
         var hash = {data: JSON.stringify(person)};
         return new Ember.RSVP.Promise(function(resolve,reject) {
-            return self.xhr("/api/people/", "POST", hash).then(function(persisted) {
-                var inserted = store.push('person', Person.create(persisted));
+            return PromiseMixin.xhr("/api/people/", "POST", hash).then(function(persisted) {
+                var inserted = store.push("person", persisted);
                 resolve(inserted);
             }, function(err) {
                 reject(err);
@@ -101,15 +95,15 @@ var Person = Ember.Object.extend({
         var person_id = person.get("id");
         var hash = {data: JSON.stringify(person)};
         var endpoint = "/api/people/%@/".fmt(person_id);
-        return this.xhr(endpoint, "PUT", hash);
+        return PromiseMixin.xhr(endpoint, "PUT", hash);
     },
     remove: function(store, person) {
         var self = this;
         var person_id = person.get("id");
         var endpoint = "/api/people/%@/".fmt(person_id);
         return new Ember.RSVP.Promise(function(resolve,reject) {
-            return self.xhr(endpoint, "DELETE").then(function(arg) {
-                store.remove('person', person_id);
+            return PromiseMixin.xhr(endpoint, "DELETE").then(function(arg) {
+                store.remove("person", person_id);
                 resolve(arg);
             }, function(err) {
                 reject(err);
@@ -143,7 +137,13 @@ var PeoplePersonRoute = Ember.Route.extend({
 });
 ```
 
-This approach is not without it's tradeoffs (ie- additional http calls to fetch related data instead of using embedded json for example). I've personally found this is a great approach for apps that want to avoid the "kitchen-sink" problem.
+This approach is not without it's tradeoffs
+
+1) additional http calls to fetch related data instead of using embedded json. You could make a single http call and parse this out if latency becomes problematic but you might find yourself managing complex object hierarchies all over again.
+2) you will find yourself passing the store instance into model object class methods from the route/controller
+3) you begin to use a different pattern for object materialization/filtering in the route objects because the models themselves are relationship-less.
+
+I've personally found this is a great approach for apps that want to avoid the complexity of bigger projects like ember-data, but still need a single pointer /reference for the models in your ember application.
 
 ## What about the missing MyObject.save() abstraction
 
