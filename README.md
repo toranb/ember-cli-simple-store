@@ -1,13 +1,10 @@
 # ember-cli-simple-store
 
 [![Build Status][]](https://travis-ci.org/toranb/ember-cli-simple-store)
-[![NPM Downlaads](https://img.shields.io/npm/dm/ember-cli-simple-store)](https://www.npmjs.org/package/ember-cli-simple-store)
-
 
 ## Description
 
 [ember-cli][] addon that provides a simple identity map for [ember.js][] web applications
-
 
 ## Installation
 
@@ -19,8 +16,7 @@
 5) npm install ember-cli-simple-store --save-dev
 ```
 
-
-## The entire api => create/find/delete/clear/update
+## The entire api consists of 4 methods: push/remove/find/clear
 
 ```js
 //create a new person model
@@ -63,7 +59,6 @@ this.store.find("person", {account_id: 789});
 
 this.store.clear("person");
 ```
-
 
 ## Using the store by example
 
@@ -126,7 +121,6 @@ var Person = Ember.Object.extend({
 export default Person;
 ```
 
-
 ## What about relationship support?
 
 With this simple reference implementation you can side step the relationship complexity by adding what you need in your route(s)
@@ -151,21 +145,18 @@ var PeoplePersonRoute = Ember.Route.extend({
 
 This approach is not without it's tradeoffs (ie- additional http calls to fetch related data instead of using embedded json for example). I've personally found this is a great approach for apps that want to avoid the "kitchen-sink" problem.
 
-
 ## What about the missing MyObject.save() abstraction
 
 Because this is a simple identity map you won't get a rich model object to inherit from that offers up save/remove/update/find. You can think of this store as the primitive in which to build something like that if and when you need it.
 
-
 ## Running the unit tests
 
+    npm install
     ember test
-
 
 ## Example project
 
 https://github.com/toranb/ember-store-example
-
 
 ## License
 
