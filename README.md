@@ -139,9 +139,9 @@ var PeoplePersonRoute = Ember.Route.extend({
 
 This approach is not without it's tradeoffs
 
-1) additional http calls to fetch related data instead of using embedded json. You could make a single http call and parse this out if latency becomes problematic but you might find yourself managing complex object hierarchies all over again.
-2) you will find yourself passing the store instance into model object class methods from the route/controller
-3) you begin to use a different pattern for object materialization/filtering in the route objects because the models themselves are relationship-less.
+* additional http calls to fetch related data instead of using embedded json. You could make a single http call and parse this out if latency becomes problematic but you might find yourself managing complex object hierarchies all over again.
+* you will find yourself passing the store instance into model object class methods from the route/controller
+* you begin to use a different pattern for object materialization/filtering in the route objects because the models themselves are relationship-less.
 
 I've personally found this is a great approach for apps that want to avoid the complexity of bigger projects like ember-data, but still need a single pointer /reference for the models in your ember application.
 
