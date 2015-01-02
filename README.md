@@ -12,7 +12,11 @@
 ## Installation
 
 ```
-$ npm install ember-cli-simple-store --save-dev
+1) remove ember-data from your package.json file
+2) remove ember-data from your bower.json file
+3) rm -rf node_modules/ember-data
+4) rm -rf bower_components/ember-data
+5) npm install ember-cli-simple-store --save-dev
 ```
 
 
