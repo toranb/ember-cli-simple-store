@@ -342,3 +342,30 @@ test("pushing a model that does not exist should raise clear exception", functio
         equal(e.message, "Assertion Failed: No model was found for type: goat");
     }
 });
+
+test("findOne will return the first record", function() {
+  var first = store.push("person", {
+    id: 1,
+    firstName: "Toran",
+    lastName: "Billups"
+  });
+
+  var last = store.push("person", {
+    id: 2,
+    firstName: "Brandon",
+    lastName: "Williams"
+  });
+
+  equal(store.find("person").length, 2);
+
+  var toranb = store.findOne("person");
+  equal(toranb.get("firstName"), "Toran", "the firstName property is correct");
+  equal(toranb.get("lastName"), "Billups", "the lastName property is correct");
+  equal(toranb.get("id"), "1", "the id property is correct");
+});
+
+test("findOne should return null when no objects exist in the cache for given type", function() {
+    equal(store.find("person").length, 0);
+    var person = store.findOne("person");
+    deepEqual(person, null);
+});

@@ -16,7 +16,7 @@
 5) npm install ember-cli-simple-store --save-dev
 ```
 
-## This library provides 4 methods: push/remove/find/clear
+## You get 5 methods: push/remove/find/findOne/clear
 
 ```js
 //create or update person model
@@ -46,6 +46,12 @@ this.store.find("person", 123);
 //find all person models with account_id=789
 
 this.store.find("person", {account_id: 789});
+```
+
+```js
+//find the first person model
+
+this.store.findOne("person");
 ```
 
 ```js
