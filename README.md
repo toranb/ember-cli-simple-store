@@ -162,7 +162,7 @@ Because this is a simple identity map you won't get a rich model object to inher
 
 ## Example project
 
-https://github.com/toranb/ember-store-example
+https://github.com/toranb/ember-cli-store-example
 
 ## License
 
