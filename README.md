@@ -151,9 +151,32 @@ This approach is not without it's tradeoffs
 
 I've personally found this is a great approach for apps that want to avoid the complexity of bigger projects like ember-data, but still need a single pointer /reference for the models in your ember application.
 
-## What about the missing MyObject.save() abstraction
+## What about dirty tracking?
 
-Because this is a simple identity map you won't get a rich model object to inherit from that offers up save/remove/update/find. You can think of this store as the primitive in which to build something like that if and when you need it.
+If you want the ability to track if your model is dirty use the attr for each field and the Model base class to get save/rollback
+
+```js
+import { attr, Model } from "ember-cli-simple-store/model";
+
+var Person = Model.extend({
+    firstName: attr(),
+    lastName: attr(),
+    fullName: function() {
+        var first = this.get("firstName");
+        var last = this.get("lastName");
+        return first + " " + last;
+    }.property("firstName", "lastName")
+});
+
+//save your object to reset isDirty
+var person = Person.create({id: 1, firstName: 'x', lastName: 'y'});
+person.set('firstName', 'toran');
+person.save();
+
+//rollback your object to reset isDirty and restore it
+person.set('firstName', 'foobar');
+person.rollback();
+```
 
 ## Running the unit tests
 
