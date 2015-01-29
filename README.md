@@ -169,13 +169,21 @@ var Person = Model.extend({
 });
 
 //save your object to reset isDirty
-var person = Person.create({id: 1, firstName: 'x', lastName: 'y'});
-person.set('firstName', 'toran');
+var person = Person.create({id: 1, firstName: "x", lastName: "y"});
+person.set("firstName", "toran");
 person.save();
 
 //rollback your object to reset isDirty and restore it
-person.set('firstName', 'foobar');
+person.set("firstName", "foobar");
 person.rollback();
+```
+
+If you want to know if an individual property isDirty you can ask like so
+
+```js
+person.get("firstName:isDirty"); //undefined
+person.set("firstName", "foobar");
+person.get("firstName:isDirty"); //true
 ```
 
 ## Running the unit tests

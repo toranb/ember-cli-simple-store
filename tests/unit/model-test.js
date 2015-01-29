@@ -142,3 +142,47 @@ test("internal state will be only set the first time a property is set", functio
     equal("nogo", postState["firstName"]);
     equal("nope", postState["lastName"]);
 });
+
+test("isDirty on the individual property will update if attr is changed", function(){
+    brandon = Person.create(data);
+    equal("Brandon", brandon.get("firstName"));
+    equal("Williams", brandon.get("lastName"));
+    equal(undefined, brandon.get("firstName:isDirty"));
+    equal(undefined, brandon.get("lastName:isDirty"));
+    brandon.set("lastName", "wat");
+    equal(undefined, brandon.get("firstName:isDirty"));
+    equal(true, brandon.get("lastName:isDirty"));
+});
+
+test("isDirty on the individual property is reset after save", function(){
+    brandon = Person.create(data);
+    equal("Brandon", brandon.get("firstName"));
+    equal(undefined, brandon.get("firstName:isDirty"));
+    brandon.set("firstName", "baz");
+    equal(true, brandon.get("firstName:isDirty"));
+    brandon.save();
+    equal(undefined, brandon.get("firstName:isDirty"));
+});
+
+test("isDirty on the individual property is reset after rollback", function(){
+    brandon = Person.create(data);
+    equal("Brandon", brandon.get("firstName"));
+    equal(undefined, brandon.get("firstName:isDirty"));
+    brandon.set("firstName", "baz");
+    equal(true, brandon.get("firstName:isDirty"));
+    brandon.rollback();
+    equal(undefined, brandon.get("firstName:isDirty"));
+});
+
+test("rollback after it has been saved will be a no-op at the property level also", function(){
+    brandon = Person.create(data);
+    equal(undefined, brandon.get("firstName:isDirty"));
+    brandon.set("firstName", "baz");
+    equal(true, brandon.get("firstName:isDirty"));
+    brandon.save();
+    equal(undefined, brandon.get("firstName:isDirty"));
+    equal("baz", brandon.get("firstName"));
+    brandon.rollback();
+    equal(undefined, brandon.get("firstName:isDirty"));
+    equal("baz", brandon.get("firstName"));
+});
