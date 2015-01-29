@@ -12,23 +12,24 @@ function clone(obj) {
 }
 
 var attr = function() {
-    var value = "";
     var meta = {isAttribute: true};
-    return Ember.computed(function(key, val) {
+    return function(key, value) {
+        var data = this.get("$data") || {};
         if (arguments.length === 2) {
             if (!this.get("isDirty")) {
                 var oldState = clone(this);
                 this.set("_oldState", oldState);
             }
             this.set("isDirty", true);
-            value = val;
+            data[key] = value;
         }
-        return value;
-    }).meta(meta);
+        return data[key];
+    }.property('$data').meta(meta);
 };
 
 var Model = Ember.Object.extend({
     init: function() {
+        this.set('$data', {});
         this.set("isDirty", false);
     },
     rollback: function() {
