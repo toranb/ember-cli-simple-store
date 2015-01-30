@@ -195,6 +195,10 @@ person.get("firstName:isDirty"); //true
 
 https://github.com/toranb/ember-cli-store-example
 
+## Example project with dirty tracking (save/rollback)
+
+https://github.com/toranb/ember-cli-store-dirty-tracking-example
+
 ## License
 
 Copyright © 2015 Toran Billups http://toranbillups.com
