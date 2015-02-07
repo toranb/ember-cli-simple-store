@@ -1,9 +1,22 @@
 import Ember from "ember";
 
+function factory(obj) {
+    return obj.get("constructor.ClassMixin.ownerConstructor");
+}
+
+function attrs(obj) {
+    var all = [];
+    factory(obj).eachComputedProperty(function (key, meta) {
+        if (meta.isAttribute) {
+            all.push(key);
+        }
+    });
+    return all;
+}
+
 function clone(obj) {
     var copy = {};
-    var factory = obj.get("constructor.ClassMixin.ownerConstructor");
-    factory.eachComputedProperty(function (key, meta) {
+    factory(obj).eachComputedProperty(function (key, meta) {
         if (meta.isAttribute) {
             copy[key] = obj.get(key);
         }
@@ -33,6 +46,7 @@ var Model = Ember.Object.extend({
     init: function() {
         this.set("_data", {});
         this._reset();
+        this._setup();
     },
     rollback: function() {
         var oldState = this.get("_oldState");
@@ -50,12 +64,16 @@ var Model = Ember.Object.extend({
         this.set("isDirty", false);
         this.set("_dirty", {});
     },
-    unknownProperty: function(key) {
-        if (key === "_dirty") { return; }
-        var dirty = this.get("_dirty");
-        if (key.indexOf(":isDirty") > 0) {
-            return dirty[key];
-        }
+    _setup: function() {
+        var self = this;
+        attrs(this).forEach(function(attrName) {
+            var dynamicKey = "%@IsDirty".fmt(attrName);
+            return Ember.defineProperty(self, dynamicKey, Ember.computed(function() {
+                var dirty = this.get("_dirty");
+                var dirtyKey = "%@:isDirty".fmt(attrName);
+                return dirty[dirtyKey];
+            }).property("_dirty", "" + attrName));
+        });
     }
 });
 

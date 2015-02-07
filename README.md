@@ -181,9 +181,9 @@ person.rollback();
 If you want to know if an individual property isDirty you can ask like so
 
 ```js
-person.get("firstName:isDirty"); //undefined
+person.get("firstNameIsDirty"); //undefined
 person.set("firstName", "foobar");
-person.get("firstName:isDirty"); //true
+person.get("firstNameIsDirty"); //true
 ```
 
 ## Running the unit tests

@@ -147,42 +147,42 @@ test("isDirty on the individual property will update if attr is changed", functi
     brandon = Person.create(data);
     equal("Brandon", brandon.get("firstName"));
     equal("Williams", brandon.get("lastName"));
-    equal(undefined, brandon.get("firstName:isDirty"));
-    equal(undefined, brandon.get("lastName:isDirty"));
+    equal(undefined, brandon.get("firstNameIsDirty"));
+    equal(undefined, brandon.get("lastNameIsDirty"));
     brandon.set("lastName", "wat");
-    equal(undefined, brandon.get("firstName:isDirty"));
-    equal(true, brandon.get("lastName:isDirty"));
+    equal(undefined, brandon.get("firstNameIsDirty"));
+    equal(true, brandon.get("lastNameIsDirty"));
 });
 
 test("isDirty on the individual property is reset after save", function(){
     brandon = Person.create(data);
     equal("Brandon", brandon.get("firstName"));
-    equal(undefined, brandon.get("firstName:isDirty"));
+    equal(undefined, brandon.get("firstNameIsDirty"));
     brandon.set("firstName", "baz");
-    equal(true, brandon.get("firstName:isDirty"));
+    equal(true, brandon.get("firstNameIsDirty"));
     brandon.save();
-    equal(undefined, brandon.get("firstName:isDirty"));
+    equal(undefined, brandon.get("firstNameIsDirty"));
 });
 
 test("isDirty on the individual property is reset after rollback", function(){
     brandon = Person.create(data);
     equal("Brandon", brandon.get("firstName"));
-    equal(undefined, brandon.get("firstName:isDirty"));
+    equal(undefined, brandon.get("firstNameIsDirty"));
     brandon.set("firstName", "baz");
-    equal(true, brandon.get("firstName:isDirty"));
+    equal(true, brandon.get("firstNameIsDirty"));
     brandon.rollback();
-    equal(undefined, brandon.get("firstName:isDirty"));
+    equal(undefined, brandon.get("firstNameIsDirty"));
 });
 
 test("rollback after it has been saved will be a no-op at the property level also", function(){
     brandon = Person.create(data);
-    equal(undefined, brandon.get("firstName:isDirty"));
+    equal(undefined, brandon.get("firstNameIsDirty"));
     brandon.set("firstName", "baz");
-    equal(true, brandon.get("firstName:isDirty"));
+    equal(true, brandon.get("firstNameIsDirty"));
     brandon.save();
-    equal(undefined, brandon.get("firstName:isDirty"));
+    equal(undefined, brandon.get("firstNameIsDirty"));
     equal("baz", brandon.get("firstName"));
     brandon.rollback();
-    equal(undefined, brandon.get("firstName:isDirty"));
+    equal(undefined, brandon.get("firstNameIsDirty"));
     equal("baz", brandon.get("firstName"));
 });
