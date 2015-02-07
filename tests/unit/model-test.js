@@ -186,3 +186,25 @@ test("rollback after it has been saved will be a no-op at the property level als
     equal(undefined, brandon.get("firstNameIsDirty"));
     equal("baz", brandon.get("firstName"));
 });
+
+test("a prime of the attr with an empty string will not alter the dirty state", function() {
+    brandon = Person.create();
+    equal(undefined, brandon.get("firstName"));
+    equal(false, brandon.get("isDirty"));
+    equal(undefined, brandon.get("firstNameIsDirty"));
+    brandon.set("firstName", "");
+    equal(undefined, brandon.get("firstName"));
+    equal(false, brandon.get("isDirty"));
+    equal(undefined, brandon.get("firstNameIsDirty"));
+});
+
+test("a prime of the attr with a legit value will alter the dirty state", function() {
+    brandon = Person.create();
+    equal(undefined, brandon.get("firstName"));
+    equal(false, brandon.get("isDirty"));
+    equal(undefined, brandon.get("firstNameIsDirty"));
+    brandon.set("firstName", "x");
+    equal("x", brandon.get("firstName"));
+    equal(true, brandon.get("isDirty"));
+    equal(true, brandon.get("firstNameIsDirty"));
+});

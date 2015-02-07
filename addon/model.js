@@ -34,9 +34,12 @@ var attr = function() {
                 var oldState = clone(this);
                 this.set("_oldState", oldState);
             }
-            this.set("isDirty", true);
-            dirty["%@:isDirty".fmt(key)] = true;
-            data[key] = value;
+            var primed = value === "" && !data[key];
+            if(!primed) {
+                this.set("isDirty", true);
+                dirty["%@:isDirty".fmt(key)] = true;
+                data[key] = value;
+            }
         }
         return data[key];
     }.property("_data").meta(meta);
