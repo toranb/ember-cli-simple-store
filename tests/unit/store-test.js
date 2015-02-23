@@ -325,6 +325,32 @@ test("clear will destroy everything for a given type", function() {
   equal(catsAfter.get("length"), 1);
 });
 
+test("clearAll will destroy everything (this kills all the kittens and people)", function() {
+  store.push("person", {
+    id: 9,
+    firstName: "Brandon",
+    lastName: "Williams",
+    cat_id: 1
+  });
+
+  store.push("person", {
+    id: 8,
+    firstName: "Toran",
+    lastName: "Billups",
+    cat_id: 1
+  });
+
+  store.push("cat", {
+    id: 1,
+    color: "red"
+  });
+
+  store.clearAll();
+
+  equal(store.find("person").get("length"), 0);
+  equal(store.find("cat").get("length"), 0);
+});
+
 test("find with filter should raise clear exception when invalid options are passed", function() {
     try {
         store.find("person", {});
