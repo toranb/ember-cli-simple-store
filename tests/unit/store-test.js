@@ -325,7 +325,7 @@ test("clear will destroy everything for a given type", function() {
   equal(catsAfter.get("length"), 1);
 });
 
-test("clearAll will destroy everything (this kills all the kittens and people)", function() {
+test("clear without type will destroy everything", function() {
   store.push("person", {
     id: 9,
     firstName: "Brandon",
@@ -345,7 +345,10 @@ test("clearAll will destroy everything (this kills all the kittens and people)",
     color: "red"
   });
 
-  store.clearAll();
+  equal(store.find("person").get("length"), 2);
+  equal(store.find("cat").get("length"), 1);
+
+  store.clear();
 
   equal(store.find("person").get("length"), 0);
   equal(store.find("cat").get("length"), 0);
