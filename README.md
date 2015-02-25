@@ -60,6 +60,12 @@ this.store.findOne("person");
 this.store.clear("person");
 ```
 
+```js
+//clear the entire identity map of all models
+
+this.store.clear();
+```
+
 ## Using the store by example
 
 Below I'll show how you can use the store with a simple ember object to find/add/remove/update
