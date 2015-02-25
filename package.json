@@ -11,11 +11,18 @@
     "build": "ember build",
     "test": "ember test"
   },
-  "repository": "https://github.com/toranb/ember-cli-simple-store",
+  "homepage": "https://github.com/toranb/ember-cli-simple-store",
+  "bugs": {
+      "url": "https://github.com/toranb/ember-cli-simple-store/issues"
+  },
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/toranb/ember-cli-simple-store"
+  },
   "engines": {
     "node": ">= 0.10.0"
   },
-  "author": "Toran Billups",
+  "author": "Toran Billups toranb@gmail.com",
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.0.0",
@@ -34,7 +41,12 @@
     "phantomjs": "~1.9.13"
   },
   "keywords": [
-    "ember-addon"
+    "data",
+    "ember",
+    "ember-addon",
+    "ember-cli",
+    "simple",
+    "store"
   ],
   "ember-addon": {
     "configPath": "tests/dummy/config"
