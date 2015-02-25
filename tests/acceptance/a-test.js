@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import Foo from "dummy/models/foo";
 import startApp from '../helpers/start-app';
+import { module, test } from 'qunit';
 
 var application;
 
@@ -14,9 +15,9 @@ module('Acceptance: A Test', {
   }
 });
 
-test('the attr in test a should not hold global state across objects', function() {
+test('the attr in test a should not hold global state across objects', function(assert) {
   visit('/wat');
   andThen(function() {
-      ok(true);
+      assert.ok(true);
   });
 });
