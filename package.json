@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-simple-store",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "ember-cli addon that provides a simple identity map for ember.js web applications",
   "directories": {
     "doc": "doc",
@@ -11,30 +11,43 @@
     "build": "ember build",
     "test": "ember test"
   },
-  "repository": "https://github.com/toranb/ember-cli-simple-store",
+  "homepage": "https://github.com/toranb/ember-cli-simple-store",
+  "bugs": {
+      "url": "https://github.com/toranb/ember-cli-simple-store/issues"
+  },
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/toranb/ember-cli-simple-store"
+  },
   "engines": {
     "node": ">= 0.10.0"
   },
-  "author": "Toran Billups",
+  "author": "Toran Billups toranb@gmail.com",
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.0.0",
     "broccoli-ember-hbs-template-compiler": "^1.6.1",
-    "ember-cli": "0.1.5",
+    "ember-cli": "0.1.15",
+    "ember-cli-6to5": "^3.0.0",
+    "ember-cli-app-version": "0.3.1",
     "ember-cli-content-security-policy": "0.3.0",
     "ember-cli-dependency-checker": "0.0.7",
-    "ember-cli-esnext": "0.1.1",
-    "ember-cli-ic-ajax": "0.1.1",
     "ember-cli-inject-live-reload": "^1.3.0",
-    "ember-cli-qunit": "0.1.2",
-    "ember-export-application-global": "^1.0.0",
+    "ember-cli-qunit": "0.3.7",
+    "ember-cli-uglify": "1.0.1",
+    "ember-export-application-global": "^1.0.2",
     "express": "^4.8.5",
     "glob": "^4.0.5",
     "bower": "~1.3.12",
     "phantomjs": "~1.9.13"
   },
   "keywords": [
-    "ember-addon"
+    "data",
+    "ember",
+    "ember-addon",
+    "ember-cli",
+    "simple",
+    "store"
   ],
   "ember-addon": {
     "configPath": "tests/dummy/config"

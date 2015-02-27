@@ -1,5 +1,5 @@
 import Ember from "ember";
-import { test, moduleFor } from "ember-qunit";
+import { module, test } from 'qunit';
 import { attr, Model } from "ember-cli-simple-store/model";
 
 var Person, brandon;
@@ -20,191 +20,191 @@ module("model unit tests", {
     }
 });
 
-test("attr will serve as both gettr and settr", function(){
+test("attr will serve as both gettr and settr", function(assert){
     brandon = Person.create(data);
-    equal("Brandon", brandon.get("firstName"));
-    equal("Williams", brandon.get("lastName"));
-    equal("Brandon Williams", brandon.get("fullName"));
+    assert.equal("Brandon", brandon.get("firstName"));
+    assert.equal("Williams", brandon.get("lastName"));
+    assert.equal("Brandon Williams", brandon.get("fullName"));
     brandon.set("firstName", "x");
     brandon.set("lastName", "y");
-    equal("x", brandon.get("firstName"));
-    equal("y", brandon.get("lastName"));
-    equal("x y", brandon.get("fullName"));
+    assert.equal("x", brandon.get("firstName"));
+    assert.equal("y", brandon.get("lastName"));
+    assert.equal("x y", brandon.get("fullName"));
 });
 
-test("isDirty property on class will update if attr is changed", function(){
+test("isDirty property on class will update if attr is changed", function(assert){
     brandon = Person.create(data);
-    equal(false, brandon.get("isDirty"));
+    assert.equal(false, brandon.get("isDirty"));
     brandon.set("firstName", "baz");
-    equal(true, brandon.get("isDirty"));
+    assert.equal(true, brandon.get("isDirty"));
 });
 
-test("isDirty property on class will not update if non attr is changed", function(){
+test("isDirty property on class will not update if non attr is changed", function(assert){
     brandon = Person.create(data);
-    equal(false, brandon.get("isDirty"));
+    assert.equal(false, brandon.get("isDirty"));
     brandon.set("wat", "baz");
-    equal(false, brandon.get("isDirty"));
+    assert.equal(false, brandon.get("isDirty"));
 });
 
-test("save will reset isDirty", function(){
+test("save will reset isDirty", function(assert){
     brandon = Person.create(data);
-    equal(false, brandon.get("isDirty"));
+    assert.equal(false, brandon.get("isDirty"));
     brandon.set("firstName", "baz");
-    equal(true, brandon.get("isDirty"));
+    assert.equal(true, brandon.get("isDirty"));
     brandon.save();
-    equal(false, brandon.get("isDirty"));
-    equal("baz", brandon.get("firstName"));
+    assert.equal(false, brandon.get("isDirty"));
+    assert.equal("baz", brandon.get("firstName"));
 });
 
-test("save will update internal state", function(){
+test("save will update internal state", function(assert){
     brandon = Person.create(data);
     var preState = brandon.get("_oldState");
-    equal(2, Object.keys(preState).length);
-    equal(undefined, preState["firstName"]);
-    equal(undefined, preState["lastName"]);
+    assert.equal(2, Object.keys(preState).length);
+    assert.equal(undefined, preState["firstName"]);
+    assert.equal(undefined, preState["lastName"]);
 
     brandon.set("firstName", "baz");
     var initState = brandon.get("_oldState");
-    equal(2, Object.keys(initState).length);
-    equal("Brandon", initState["firstName"]);
-    equal("Williams", initState["lastName"]);
+    assert.equal(2, Object.keys(initState).length);
+    assert.equal("Brandon", initState["firstName"]);
+    assert.equal("Williams", initState["lastName"]);
 
     brandon.save();
     var postState = brandon.get("_oldState");
-    equal(2, Object.keys(postState).length);
-    equal("baz", postState["firstName"]);
-    equal("Williams", postState["lastName"]);
+    assert.equal(2, Object.keys(postState).length);
+    assert.equal("baz", postState["firstName"]);
+    assert.equal("Williams", postState["lastName"]);
 });
 
-test("rollback will reset isDirty", function(){
+test("rollback will reset isDirty", function(assert){
     brandon = Person.create(data);
-    equal(false, brandon.get("isDirty"));
+    assert.equal(false, brandon.get("isDirty"));
     brandon.set("firstName", "baz");
-    equal(true, brandon.get("isDirty"));
+    assert.equal(true, brandon.get("isDirty"));
     brandon.rollback();
-    equal(false, brandon.get("isDirty"));
-    equal("Brandon", brandon.get("firstName"));
+    assert.equal(false, brandon.get("isDirty"));
+    assert.equal("Brandon", brandon.get("firstName"));
 });
 
-test("rollback will revert internal state", function(){
+test("rollback will revert internal state", function(assert){
     brandon = Person.create(data);
     var preState = brandon.get("_oldState");
-    equal(2, Object.keys(preState).length);
-    equal(undefined, preState["firstName"]);
-    equal(undefined, preState["lastName"]);
+    assert.equal(2, Object.keys(preState).length);
+    assert.equal(undefined, preState["firstName"]);
+    assert.equal(undefined, preState["lastName"]);
 
     brandon.set("firstName", "baz");
     var initState = brandon.get("_oldState");
-    equal(2, Object.keys(initState).length);
-    equal("Brandon", initState["firstName"]);
-    equal("Williams", initState["lastName"]);
+    assert.equal(2, Object.keys(initState).length);
+    assert.equal("Brandon", initState["firstName"]);
+    assert.equal("Williams", initState["lastName"]);
 
     brandon.rollback();
     var postState = brandon.get("_oldState");
-    equal(2, Object.keys(postState).length);
-    equal("Brandon", postState["firstName"]);
-    equal("Williams", postState["lastName"]);
+    assert.equal(2, Object.keys(postState).length);
+    assert.equal("Brandon", postState["firstName"]);
+    assert.equal("Williams", postState["lastName"]);
 });
 
-test("rollback after it has been saved will be a no-op", function(){
+test("rollback after it has been saved will be a no-op", function(assert){
     brandon = Person.create(data);
-    equal(false, brandon.get("isDirty"));
+    assert.equal(false, brandon.get("isDirty"));
     brandon.set("firstName", "baz");
-    equal(true, brandon.get("isDirty"));
+    assert.equal(true, brandon.get("isDirty"));
     brandon.set("firstName", "wat");
-    equal(true, brandon.get("isDirty"));
+    assert.equal(true, brandon.get("isDirty"));
     brandon.save();
-    equal(false, brandon.get("isDirty"));
-    equal("wat", brandon.get("firstName"));
+    assert.equal(false, brandon.get("isDirty"));
+    assert.equal("wat", brandon.get("firstName"));
     brandon.rollback();
-    equal(false, brandon.get("isDirty"));
-    equal("wat", brandon.get("firstName"));
+    assert.equal(false, brandon.get("isDirty"));
+    assert.equal("wat", brandon.get("firstName"));
 });
 
-test("internal state will be only set the first time a property is set", function(){
+test("internal state will be only set the first time a property is set", function(assert){
     brandon = Person.create(data);
     var preState = brandon.get("_oldState");
-    equal(2, Object.keys(preState).length);
-    equal(undefined, preState["firstName"]);
-    equal(undefined, preState["lastName"]);
+    assert.equal(2, Object.keys(preState).length);
+    assert.equal(undefined, preState["firstName"]);
+    assert.equal(undefined, preState["lastName"]);
 
     brandon.set("firstName", "baz");
     var initState = brandon.get("_oldState");
-    equal(2, Object.keys(initState).length);
-    equal("Brandon", initState["firstName"]);
-    equal("Williams", initState["lastName"]);
+    assert.equal(2, Object.keys(initState).length);
+    assert.equal("Brandon", initState["firstName"]);
+    assert.equal("Williams", initState["lastName"]);
     brandon.set("_oldState.firstName", "nogo");
     brandon.set("_oldState.lastName", "nope");
 
     brandon.set("firstName", "baz");
     var postState = brandon.get("_oldState");
-    equal(2, Object.keys(postState).length);
-    equal("nogo", postState["firstName"]);
-    equal("nope", postState["lastName"]);
+    assert.equal(2, Object.keys(postState).length);
+    assert.equal("nogo", postState["firstName"]);
+    assert.equal("nope", postState["lastName"]);
 });
 
-test("isDirty on the individual property will update if attr is changed", function(){
+test("isDirty on the individual property will update if attr is changed", function(assert){
     brandon = Person.create(data);
-    equal("Brandon", brandon.get("firstName"));
-    equal("Williams", brandon.get("lastName"));
-    equal(undefined, brandon.get("firstNameIsDirty"));
-    equal(undefined, brandon.get("lastNameIsDirty"));
+    assert.equal("Brandon", brandon.get("firstName"));
+    assert.equal("Williams", brandon.get("lastName"));
+    assert.equal(undefined, brandon.get("firstNameIsDirty"));
+    assert.equal(undefined, brandon.get("lastNameIsDirty"));
     brandon.set("lastName", "wat");
-    equal(undefined, brandon.get("firstNameIsDirty"));
-    equal(true, brandon.get("lastNameIsDirty"));
+    assert.equal(undefined, brandon.get("firstNameIsDirty"));
+    assert.equal(true, brandon.get("lastNameIsDirty"));
 });
 
-test("isDirty on the individual property is reset after save", function(){
+test("isDirty on the individual property is reset after save", function(assert){
     brandon = Person.create(data);
-    equal("Brandon", brandon.get("firstName"));
-    equal(undefined, brandon.get("firstNameIsDirty"));
+    assert.equal("Brandon", brandon.get("firstName"));
+    assert.equal(undefined, brandon.get("firstNameIsDirty"));
     brandon.set("firstName", "baz");
-    equal(true, brandon.get("firstNameIsDirty"));
+    assert.equal(true, brandon.get("firstNameIsDirty"));
     brandon.save();
-    equal(undefined, brandon.get("firstNameIsDirty"));
+    assert.equal(undefined, brandon.get("firstNameIsDirty"));
 });
 
-test("isDirty on the individual property is reset after rollback", function(){
+test("isDirty on the individual property is reset after rollback", function(assert){
     brandon = Person.create(data);
-    equal("Brandon", brandon.get("firstName"));
-    equal(undefined, brandon.get("firstNameIsDirty"));
+    assert.equal("Brandon", brandon.get("firstName"));
+    assert.equal(undefined, brandon.get("firstNameIsDirty"));
     brandon.set("firstName", "baz");
-    equal(true, brandon.get("firstNameIsDirty"));
+    assert.equal(true, brandon.get("firstNameIsDirty"));
     brandon.rollback();
-    equal(undefined, brandon.get("firstNameIsDirty"));
+    assert.equal(undefined, brandon.get("firstNameIsDirty"));
 });
 
-test("rollback after it has been saved will be a no-op at the property level also", function(){
+test("rollback after it has been saved will be a no-op at the property level also", function(assert){
     brandon = Person.create(data);
-    equal(undefined, brandon.get("firstNameIsDirty"));
+    assert.equal(undefined, brandon.get("firstNameIsDirty"));
     brandon.set("firstName", "baz");
-    equal(true, brandon.get("firstNameIsDirty"));
+    assert.equal(true, brandon.get("firstNameIsDirty"));
     brandon.save();
-    equal(undefined, brandon.get("firstNameIsDirty"));
-    equal("baz", brandon.get("firstName"));
+    assert.equal(undefined, brandon.get("firstNameIsDirty"));
+    assert.equal("baz", brandon.get("firstName"));
     brandon.rollback();
-    equal(undefined, brandon.get("firstNameIsDirty"));
-    equal("baz", brandon.get("firstName"));
+    assert.equal(undefined, brandon.get("firstNameIsDirty"));
+    assert.equal("baz", brandon.get("firstName"));
 });
 
-test("a prime of the attr with an empty string will not alter the dirty state", function() {
+test("a prime of the attr with an empty string will not alter the dirty state", function(assert) {
     brandon = Person.create();
-    equal(undefined, brandon.get("firstName"));
-    equal(false, brandon.get("isDirty"));
-    equal(undefined, brandon.get("firstNameIsDirty"));
+    assert.equal(undefined, brandon.get("firstName"));
+    assert.equal(false, brandon.get("isDirty"));
+    assert.equal(undefined, brandon.get("firstNameIsDirty"));
     brandon.set("firstName", "");
-    equal(undefined, brandon.get("firstName"));
-    equal(false, brandon.get("isDirty"));
-    equal(undefined, brandon.get("firstNameIsDirty"));
+    assert.equal(undefined, brandon.get("firstName"));
+    assert.equal(false, brandon.get("isDirty"));
+    assert.equal(undefined, brandon.get("firstNameIsDirty"));
 });
 
-test("a prime of the attr with a legit value will alter the dirty state", function() {
+test("a prime of the attr with a legit value will alter the dirty state", function(assert) {
     brandon = Person.create();
-    equal(undefined, brandon.get("firstName"));
-    equal(false, brandon.get("isDirty"));
-    equal(undefined, brandon.get("firstNameIsDirty"));
+    assert.equal(undefined, brandon.get("firstName"));
+    assert.equal(false, brandon.get("isDirty"));
+    assert.equal(undefined, brandon.get("firstNameIsDirty"));
     brandon.set("firstName", "x");
-    equal("x", brandon.get("firstName"));
-    equal(true, brandon.get("isDirty"));
-    equal(true, brandon.get("firstNameIsDirty"));
+    assert.equal("x", brandon.get("firstName"));
+    assert.equal(true, brandon.get("isDirty"));
+    assert.equal(true, brandon.get("firstNameIsDirty"));
 });
