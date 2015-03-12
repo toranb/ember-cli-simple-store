@@ -59,6 +59,11 @@ var Store = Ember.Object.extend({
         if (typeof options === "undefined") {
             return this._findAll(type);
         }
+        if (options instanceof Function) {
+            var computed_keys = arguments[2];
+            Ember.assert("No computed keys found for the filter by function", computed_keys);
+            return this._findWithFilterFunc(type, options, computed_keys);
+        }
         if (typeof options === "object") {
             var params = Object.keys(options);
 
@@ -91,6 +96,22 @@ var Store = Ember.Object.extend({
           }.property(computed_string)
         }).create({
           filter_value: filter_value,
+          source: this._findAll(type)
+        });
+    },
+    _findWithFilterFunc: function(type, filter_func, computed_keys) {
+        var attributes = [];
+        computed_keys.forEach(function(computed_key) {
+            attributes.push("source.@each." + computed_key);
+        });
+        return Ember.ArrayProxy.extend({
+          source: undefined,
+          content: function () {
+            var filter_func = this.get("filter_func");
+            return this.get("source").filter(filter_func);
+          }.property("" + attributes)
+        }).create({
+          filter_func: filter_func,
           source: this._findAll(type)
         });
     }

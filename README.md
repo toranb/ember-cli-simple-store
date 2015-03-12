@@ -49,6 +49,17 @@ this.store.find("person", {account_id: 789});
 ```
 
 ```js
+//find all person models with name toran and salary > 100
+
+var filter = function(person) {
+    var name = person.get("name");
+    var salary = person.get("salary");
+    return name === "toran" && salary > 100;
+}
+this.store.find("person", filter, ["salary", "name"]);
+```
+
+```js
 //find the first person model
 
 this.store.findOne("person");

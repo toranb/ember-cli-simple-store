@@ -398,3 +398,104 @@ test("findOne should return null when no objects exist in the cache for given ty
     var person = store.findOne("person");
     assert.deepEqual(person, null);
 });
+
+test("find with filter function will return bound array", function(assert) {
+  store.push("person", {
+    id: 9,
+    firstName: "Jarrod",
+    lastName: "Taylor",
+    nickname: "foo",
+    group: 2
+  });
+
+  store.push("person", {
+    id: 8,
+    firstName: "Brandon",
+    lastName: "Williams",
+    nickname: "bar",
+    group: 3
+  });
+
+  store.push("person", {
+    id: 7,
+    firstName: "Toran",
+    lastName: "Billups",
+    nickname: "foo",
+    group: 8
+  });
+
+  var filter = function(person) {
+      return person.get("group") > 2 || person.get("nickname") === "bar";
+  };
+
+  var filtered_data = store.find("person", filter, ["group", "nickname"]);
+
+  assert.equal(filtered_data.get("length"), 2);
+  assert.equal(filtered_data.objectAt(0).get("firstName"), "Brandon");
+  assert.equal(filtered_data.objectAt(1).get("firstName"), "Toran");
+
+  store.push("person", {
+    id: 6,
+    firstName: "Taylor",
+    lastName: "Hobbs",
+    nickname: "zzz",
+    group: 8
+  });
+
+  assert.equal(filtered_data.get("length"), 3);
+  assert.equal(filtered_data.objectAt(0).get("firstName"), "Brandon");
+  assert.equal(filtered_data.objectAt(1).get("firstName"), "Toran");
+  assert.equal(filtered_data.objectAt(2).get("firstName"), "Taylor");
+
+  store.push("person", {
+    id: 5,
+    firstName: "Matt",
+    lastName: "Morrison",
+    nickname: "bar",
+    group: 0
+  });
+
+  assert.equal(filtered_data.get("length"), 4);
+  assert.equal(filtered_data.objectAt(0).get("firstName"), "Brandon");
+  assert.equal(filtered_data.objectAt(1).get("firstName"), "Toran");
+  assert.equal(filtered_data.objectAt(2).get("firstName"), "Taylor");
+  assert.equal(filtered_data.objectAt(3).get("firstName"), "Matt");
+
+  var taylor = store.find("person", 6);
+  assert.equal(taylor.get("firstName"), "Taylor");
+  taylor.set("group", 1);
+
+  assert.equal(filtered_data.get("length"), 3);
+  assert.equal(filtered_data.objectAt(0).get("firstName"), "Brandon");
+  assert.equal(filtered_data.objectAt(1).get("firstName"), "Toran");
+  assert.equal(filtered_data.objectAt(2).get("firstName"), "Matt");
+
+  var brandon = store.find("person", 8);
+  assert.equal(brandon.get("firstName"), "Brandon");
+  brandon.set("group", 1);
+
+  assert.equal(filtered_data.get("length"), 3);
+  assert.equal(filtered_data.objectAt(0).get("firstName"), "Brandon");
+  assert.equal(filtered_data.objectAt(1).get("firstName"), "Toran");
+  assert.equal(filtered_data.objectAt(2).get("firstName"), "Matt");
+
+  brandon.set("nickname", "x");
+
+  assert.equal(filtered_data.get("length"), 2);
+  assert.equal(filtered_data.objectAt(0).get("firstName"), "Toran");
+  assert.equal(filtered_data.objectAt(1).get("firstName"), "Matt");
+});
+
+test("doing a filter by function with no computed_keys should raise clear exception", function(assert) {
+    try {
+        store.push("person", {id: 1, name: "Matt"});
+        var name_filter = function(person) {
+            return person.get("name") === "Matt";
+        };
+        var filtered_data = store.find("person", name_filter);
+        assert.ok(false, "find with filter did not fail with clear exception message");
+    } catch(e) {
+        assert.equal(e.message, "Assertion Failed: No computed keys found for the filter by function");
+    }
+});
+
