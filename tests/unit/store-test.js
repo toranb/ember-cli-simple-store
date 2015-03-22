@@ -2,7 +2,7 @@ import Ember from "ember";
 import { module, test } from 'qunit';
 import Store from "ember-cli-simple-store/store";
 
-var store, Person, Cat;
+var store, container, registry, Person, Cat;
 
 module("store unit tests", {
   setup: function() {
@@ -14,11 +14,11 @@ module("store unit tests", {
     Cat = Ember.Object.extend({
         color: ""
     });
-    var container = new Ember.Container();
-    this.container = container;
-    container.register("store:main", Store);
-    container.register("model:person", Person);
-    container.register("model:cat", Cat);
+    registry = new Ember.Registry();
+    container = registry._defaultContainer = registry.container();
+    registry.register("store:main", Store);
+    registry.register("model:person", Person);
+    registry.register("model:cat", Cat);
     store = container.lookup("store:main");
   }
 });
