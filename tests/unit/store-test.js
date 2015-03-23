@@ -14,11 +14,11 @@ module("store unit tests", {
     Cat = Ember.Object.extend({
         color: ""
     });
-    var container = new Ember.Container();
-    this.container = container;
-    container.register("store:main", Store);
-    container.register("model:person", Person);
-    container.register("model:cat", Cat);
+    var registry = new Ember.Registry();
+    var container = registry.container();
+    registry.register("store:main", Store);
+    registry.register("model:person", Person);
+    registry.register("model:cat", Cat);
     store = container.lookup("store:main");
   }
 });
