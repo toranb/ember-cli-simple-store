@@ -151,7 +151,7 @@ test("remove should destory the item by type", function(assert) {
 
   var last_person = store.find("person", last.id);
   assert.ok(last_person.get("content"), "The brandon record was not found");
-  assert.ok(last_person.get("firstName"), undefined);
+  assert.equal(last_person.get("firstName"), "Brandon");
 });
 
 test("find with filter should return array of models filtered by value", function(assert) {
