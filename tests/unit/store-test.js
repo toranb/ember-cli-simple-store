@@ -47,7 +47,7 @@ test("push returns the created record", function(assert) {
 
   var gottenToranb = store.find("person", "toranb");
 
-  assert.strictEqual(pushedToranb, gottenToranb, "both records are identical");
+  assert.strictEqual(pushedToranb, gottenToranb.get("content"), "both records are identical");
 });
 
 test("pushing a record into the store twice updates the original record", function(assert) {
@@ -86,20 +86,28 @@ test("pushing doesn't mangle string ids", function(assert) {
   assert.strictEqual(toranb.get("id"), "toranb");
 });
 
-test("models with int based ids can be lookedup by either str or int values", function(assert) {
+test("models with int based ids must lookedup by int values", function(assert) {
   store.push("person", {
     id: 123,
     firstName: "Toran",
     lastName: "Billups"
   });
 
-  var toranbByStr = store.find("person", "123");
-  assert.strictEqual(toranbByStr.get("id"), 123);
-  assert.ok(toranbByStr instanceof Person);
-
   var toranbByNum = store.find("person", 123);
   assert.strictEqual(toranbByNum.get("id"), 123);
-  assert.ok(toranbByNum instanceof Person);
+  assert.ok(toranbByNum.get("content") instanceof Person);
+});
+
+test("models with str based ids must lookedup by str values", function(assert) {
+  store.push("person", {
+    id: "abc123",
+    firstName: "Toran",
+    lastName: "Billups"
+  });
+
+  var toranbByStr = store.find("person", "abc123");
+  assert.strictEqual(toranbByStr.get("id"), "abc123");
+  assert.ok(toranbByStr.get("content") instanceof Person);
 });
 
 test("find should return array of models", function(assert) {
@@ -138,10 +146,12 @@ test("remove should destory the item by type", function(assert) {
   assert.equal(store.find("person").length, 1);
 
   var first_person = store.find("person", first.id);
-  assert.ok(!first_person, "The toran record was still found");
+  assert.ok(!first_person.get("content"), "The toran record was still found");
+  assert.ok(!first_person.get("firstName"), undefined);
 
   var last_person = store.find("person", last.id);
-  assert.ok(last_person, "The brandon record was not found");
+  assert.ok(last_person.get("content"), "The brandon record was not found");
+  assert.ok(last_person.get("firstName"), undefined);
 });
 
 test("find with filter should return array of models filtered by value", function(assert) {
@@ -313,10 +323,12 @@ test("clear will destroy everything for a given type", function(assert) {
   assert.equal(all.get("length"), 0);
 
   var individualFirstAfter = store.find("person", 9);
-  assert.equal(individualFirstAfter, null);
+  assert.equal(individualFirstAfter.get("content"), null);
+  assert.equal(individualFirstAfter.get("firstName"), undefined);
 
   var individualLastAfter = store.find("person", 8);
-  assert.equal(individualLastAfter, null);
+  assert.equal(individualLastAfter.get("content"), null);
+  assert.equal(individualLastAfter.get("firstName"), undefined);
 
   var catAfter = store.find("cat", 1);
   assert.equal(catAfter.get("color"), "red");
@@ -499,3 +511,46 @@ test("doing a filter by function with no computed_keys should raise clear except
     }
 });
 
+test("findByIdComputed result will be computed property that updates as records are pushed into the store", function(assert) {
+    var done = assert.async();
+    var toranb = store.find("person", 123);
+    assert.equal(toranb.get("id"), undefined);
+    assert.equal(toranb.get("firstName"), undefined);
+    assert.equal(toranb.get("lastName"), undefined);
+
+    setTimeout(function() {
+        store.push("person", {
+          id: 123,
+          firstName: "Toran",
+          lastName: "Billups"
+        });
+        setTimeout(function() {
+            assert.equal(toranb.get("id"), 123);
+            assert.equal(toranb.get("firstName"), "Toran");
+            assert.equal(toranb.get("lastName"), "Billups");
+            done();
+        }, 0);
+    }, 0);
+});
+
+test("findByIdComputed also works with guid based ids", function(assert) {
+    var done = assert.async();
+    var toranb = store.find("person", "abc123");
+    assert.equal(toranb.get("id"), undefined);
+    assert.equal(toranb.get("firstName"), undefined);
+    assert.equal(toranb.get("lastName"), undefined);
+
+    setTimeout(function() {
+        store.push("person", {
+          id: "abc123",
+          firstName: "Toran",
+          lastName: "Billups"
+        });
+        setTimeout(function() {
+            assert.equal(toranb.get("id"), "abc123");
+            assert.equal(toranb.get("firstName"), "Toran");
+            assert.equal(toranb.get("lastName"), "Billups");
+            done();
+        }, 0);
+    }, 0);
+});
