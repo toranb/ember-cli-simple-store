@@ -76,17 +76,21 @@ var Store = Ember.Object.extend({
         return this._findByIdComputed(type, options);
     },
     findOne: function(type) {
-        var all = this._findAll(type);
-        return all.length > 0 ? all.objectAt(0) : null;
+        return Ember.ObjectProxy.extend({
+          content: function() {
+            return this.get("source").objectAt(0);
+          }.property("source.@each")
+        }).create({
+          source: this._findAll(type)
+        });
     },
     _findByIdComputed: function(type, id) {
         var numberId = parseInt(id, 10);
         var actualId = numberId ? numberId : id;
         return Ember.ObjectProxy.extend({
-          source: undefined,
           content: function() {
             var filter_value = this.get("filter_value");
-            return this.get("source").filterBy("id", filter_value).get("firstObject");
+            return this.get("source").filterBy("id", filter_value).objectAt(0);
           }.property("source.@each")
         }).create({
           filter_value: actualId,
@@ -103,7 +107,6 @@ var Store = Ember.Object.extend({
     _findWithFilter: function(type, filter_attr, filter_value) {
         var computed_string = "source.@each." + filter_attr;
         return Ember.ArrayProxy.extend({
-          source: undefined,
           content: function () {
             var filter_value = this.get("filter_value");
             return this.get("source").filterBy(filter_attr, filter_value);
@@ -119,7 +122,6 @@ var Store = Ember.Object.extend({
             attributes.push("source.@each." + computed_key);
         });
         return Ember.ArrayProxy.extend({
-          source: undefined,
           content: function () {
             var filter_func = this.get("filter_func");
             return this.get("source").filter(filter_func);
