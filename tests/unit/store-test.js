@@ -533,7 +533,7 @@ test("findByIdComputed result will be computed property that updates as records 
     }, 0);
 });
 
-test("findByIdComputed also works with guid based ids", function(assert) {
+test("findByIdComputed also works with string based ids", function(assert) {
     var done = assert.async();
     var toranb = store.find("person", "abc123");
     assert.equal(toranb.get("id"), undefined);
@@ -570,6 +570,28 @@ test("findOne result will be computed property that updates as records are pushe
         });
         setTimeout(function() {
             assert.equal(toranb.get("id"), 123);
+            assert.equal(toranb.get("firstName"), "Toran");
+            assert.equal(toranb.get("lastName"), "Billups");
+            done();
+        }, 0);
+    }, 0);
+});
+
+test("findByIdComputed truly works with guid based ids", function(assert) {
+    var done = assert.async();
+    var toranb = store.find("person", "55555555-ca0d-4126-8929-afdsaf789883");
+    assert.equal(toranb.get("id"), undefined);
+    assert.equal(toranb.get("firstName"), undefined);
+    assert.equal(toranb.get("lastName"), undefined);
+
+    setTimeout(function() {
+        store.push("person", {
+          id: "55555555-ca0d-4126-8929-afdsaf789883",
+          firstName: "Toran",
+          lastName: "Billups"
+        });
+        setTimeout(function() {
+            assert.equal(toranb.get("id"), "55555555-ca0d-4126-8929-afdsaf789883");
             assert.equal(toranb.get("firstName"), "Toran");
             assert.equal(toranb.get("lastName"), "Billups");
             done();

@@ -85,8 +85,7 @@ var Store = Ember.Object.extend({
         });
     },
     _findByIdComputed: function(type, id) {
-        var numberId = parseInt(id, 10);
-        var actualId = numberId ? numberId : id;
+        var actualId = this._parseAndTransformId(id);
         return Ember.ObjectProxy.extend({
           content: function() {
             var filter_value = this.get("filter_value");
@@ -130,6 +129,13 @@ var Store = Ember.Object.extend({
           filter_func: filter_func,
           source: this._findAll(type)
         });
+    },
+    _parseAndTransformId: function(id) {
+        var numberId = parseInt(id, 10);
+        if (numberId && numberId.length === id.length) {
+            return numberId;
+        }
+        return id;
     }
 });
 
