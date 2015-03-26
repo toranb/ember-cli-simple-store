@@ -76,13 +76,8 @@ var Store = Ember.Object.extend({
         return this._findByIdComputed(type, options);
     },
     findOne: function(type) {
-        return Ember.ObjectProxy.extend({
-          content: function() {
-            return this.get("source").objectAt(0);
-          }.property("source.@each")
-        }).create({
-          source: this._findAll(type)
-        });
+        var all = this._findAll(type);
+        return all.length > 0 ? all.objectAt(0) : null;
     },
     _findByIdComputed: function(type, id) {
         var actualId = this._parseAndTransformId(id);
@@ -90,7 +85,7 @@ var Store = Ember.Object.extend({
           content: function() {
             var filter_value = this.get("filter_value");
             return this.get("source").filterBy("id", filter_value).objectAt(0);
-          }.property("source.@each")
+          }.property("source.[]")
         }).create({
           filter_value: actualId,
           source: this._findAll(type)

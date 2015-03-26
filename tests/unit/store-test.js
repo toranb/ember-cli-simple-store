@@ -408,7 +408,7 @@ test("findOne will return the first record", function(assert) {
 test("findOne should return null when no objects exist in the cache for given type", function(assert) {
     assert.equal(store.find("person").length, 0);
     var person = store.findOne("person");
-    assert.equal(person.get("content"), null);
+    assert.equal(person, null);
 });
 
 test("find with filter function will return bound array", function(assert) {
@@ -548,28 +548,6 @@ test("findByIdComputed also works with string based ids", function(assert) {
         });
         setTimeout(function() {
             assert.equal(toranb.get("id"), "abc123");
-            assert.equal(toranb.get("firstName"), "Toran");
-            assert.equal(toranb.get("lastName"), "Billups");
-            done();
-        }, 0);
-    }, 0);
-});
-
-test("findOne result will be computed property that updates as records are pushed into the store", function(assert) {
-    var done = assert.async();
-    var toranb = store.findOne("person");
-    assert.equal(toranb.get("id"), undefined);
-    assert.equal(toranb.get("firstName"), undefined);
-    assert.equal(toranb.get("lastName"), undefined);
-
-    setTimeout(function() {
-        store.push("person", {
-          id: 123,
-          firstName: "Toran",
-          lastName: "Billups"
-        });
-        setTimeout(function() {
-            assert.equal(toranb.get("id"), 123);
             assert.equal(toranb.get("firstName"), "Toran");
             assert.equal(toranb.get("lastName"), "Billups");
             done();
