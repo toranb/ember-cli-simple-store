@@ -72,9 +72,11 @@ var Model = Ember.Object.extend({
         attrs(this).forEach(function(attrName) {
             var dynamicKey = "%@IsDirty".fmt(attrName);
             Ember.defineProperty(self, dynamicKey, Ember.computed(function() {
+                var current = this.get(attrName);
+                var original = this.get("_oldState." + attrName);
                 var dirty = this.get("_dirty");
                 var dirtyKey = "%@:isDirty".fmt(attrName);
-                return dirty[dirtyKey];
+                return original === current ? undefined : dirty[dirtyKey];
             }).property("_dirty", "" + attrName));
         });
     }

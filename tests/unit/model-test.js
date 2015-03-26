@@ -208,3 +208,14 @@ test("a prime of the attr with a legit value will alter the dirty state", functi
     assert.equal(true, brandon.get("isDirty"));
     assert.equal(true, brandon.get("firstNameIsDirty"));
 });
+
+test("isDirty is smart enough to know when the attr has been restored", function(assert){
+    brandon = Person.create(data);
+    assert.equal(undefined, brandon.get("firstNameIsDirty"));
+    brandon.set("firstName", "baz");
+    assert.equal(true, brandon.get("firstNameIsDirty"));
+    assert.equal("baz", brandon.get("firstName"));
+    brandon.set("firstName", "Brandon");
+    assert.equal("Brandon", brandon.get("firstName"));
+    assert.equal(undefined, brandon.get("firstNameIsDirty"));
+});
