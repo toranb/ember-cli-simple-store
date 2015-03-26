@@ -127,7 +127,7 @@ var Store = Ember.Object.extend({
     },
     _parseAndTransformId: function(id) {
         var numberId = parseInt(id, 10);
-        if (numberId && numberId.length === id.length) {
+        if (numberId && numberId.toString().length === id.toString().length) {
             return numberId;
         }
         return id;

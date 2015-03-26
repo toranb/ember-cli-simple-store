@@ -576,3 +576,26 @@ test("findByIdComputed truly works with guid based ids", function(assert) {
         }, 0);
     }, 0);
 });
+
+test("findByIdComputed will return result with int based id using string", function(assert) {
+    var done = assert.async();
+    var toranb = store.find("person", "4");
+    assert.equal(toranb.get("id"), undefined);
+    assert.equal(toranb.get("firstName"), undefined);
+    assert.equal(toranb.get("lastName"), undefined);
+
+    setTimeout(function() {
+        store.push("person", {
+          id: 4,
+          firstName: "Toran",
+          lastName: "Billups"
+        });
+        setTimeout(function() {
+            assert.equal(toranb.get("id"), 4);
+            assert.equal(toranb.get("firstName"), "Toran");
+            assert.equal(toranb.get("lastName"), "Billups");
+            done();
+        }, 0);
+    }, 0);
+});
+
