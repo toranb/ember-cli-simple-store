@@ -164,6 +164,52 @@ test("isDirty on the individual property is reset after save", function(assert){
     assert.equal(undefined, brandon.get("firstNameIsDirty"));
 });
 
+test("isDirty on the model is reset only after all values set back to original values", function(assert){
+    brandon = Person.create(data);
+    assert.equal("Brandon", brandon.get("firstName"));
+    assert.equal("Williams", brandon.get("lastName"));
+    assert.equal(false, brandon.get("isDirty"));
+    // brandon.set("firstName", "baz");
+    // brandon.set("lastName", "baz");
+    // // assert.equal(true, brandon.get("isDirty"));
+    // brandon.set("firstName", "Brandon");
+    // // assert.equal(true, brandon.get("isDirty"));
+});
+
+test("isDirty on the model is reset after value set back to original value", function(assert){
+    brandon = Person.create(data);
+    assert.equal("Brandon", brandon.get("firstName"));
+    assert.equal(false, brandon.get("isDirty"));
+    brandon.set("firstName", "baz");
+    assert.equal(true, brandon.get("isDirty"));
+    brandon.set("firstName", "Brandon");
+    assert.equal(false, brandon.get("isDirty"));
+});
+
+test("isDirty on the model is reset after value was empty set back to empty", function(assert){
+    brandon = Person.create({id: 1, firstName: "", lastName: "Williams"});
+    assert.equal(undefined, brandon.get("firstName"));
+    assert.equal(false, brandon.get("isDirty"));
+    brandon.set("firstName", "baz");
+    assert.equal(true, brandon.get("isDirty"));
+    brandon.set("firstName", "");
+    assert.equal(false, brandon.get("isDirty"));
+    brandon.set("firstName", undefined);
+    assert.equal(false, brandon.get("isDirty"));
+    brandon.set("firstName", null);
+    assert.equal(false, brandon.get("isDirty"));
+});
+
+test("isDirty on the individual property is reset after value set back to original value", function(assert){
+    brandon = Person.create(data);
+    assert.equal("Brandon", brandon.get("firstName"));
+    assert.equal(undefined, brandon.get("firstNameIsDirty"));
+    brandon.set("firstName", "baz");
+    assert.equal(true, brandon.get("firstNameIsDirty"));
+    brandon.set("firstName", "Brandon");
+    assert.equal(undefined, brandon.get("firstNameIsDirty"));
+});
+
 test("isDirty on the individual property is reset after rollback", function(assert){
     brandon = Person.create(data);
     assert.equal("Brandon", brandon.get("firstName"));

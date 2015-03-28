@@ -32,11 +32,15 @@ var attr = function() {
         if (arguments.length === 2) {
             if (!this.get("isDirty")) {
                 var oldState = clone(this);
+                console.log("start " + key + " " + value);
+                for(var k in oldState) {
+                    console.log(k + " " + oldState[k]);
+                }
+                console.log("end");
                 this.set("_oldState", oldState);
             }
             var primed = value === "" && !data[key];
             if(!primed) {
-                this.set("isDirty", true);
                 dirty["%@:isDirty".fmt(key)] = true;
                 data[key] = value;
             }
@@ -51,6 +55,25 @@ var Model = Ember.Object.extend({
         this._reset();
         this._setup();
     },
+    isDirty: function() {
+        var oldState = this.get("_oldState");
+        console.log(oldState);
+        if(oldState) {
+            for(var key in oldState) {
+                console.log(key);
+                var oldValue = oldState[key];
+                var value = this.get(key);
+                var setBack = !oldValue &&
+                    (value === "" || value === undefined || value === null);
+                console.log(value);
+                console.log(oldValue);
+                if(value !== oldValue) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }.property("@each"),
     rollback: function() {
         var oldState = this.get("_oldState");
         for(var key in oldState){
@@ -64,7 +87,6 @@ var Model = Ember.Object.extend({
         this._reset();
     },
     _reset: function() {
-        this.set("isDirty", false);
         this.set("_dirty", {});
     },
     _setup: function() {
