@@ -1,6 +1,8 @@
 # ember-cli-simple-store
 
 [![Build Status][]](https://travis-ci.org/toranb/ember-cli-simple-store)
+[![Downloads](https://img.shields.io/npm/dm/ember-cli-simple-store.svg)](https://www.npmjs.com/package/ember-cli-simple-store)
+[![Score](http://emberobserver.com/badges/ember-cli-simple-store.svg)](http://emberobserver.com/addons/ember-cli-simple-store)
 
 ## Description
 
