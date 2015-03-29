@@ -36,7 +36,6 @@ var attr = function() {
             }
             var primed = value === "" && !data[key];
             if(!primed) {
-                this.set("isDirty", true);
                 dirty["%@:isDirty".fmt(key)] = true;
                 data[key] = value;
             }
@@ -64,12 +63,12 @@ var Model = Ember.Object.extend({
         this._reset();
     },
     _reset: function() {
-        this.set("isDirty", false);
         this.set("_dirty", {});
     },
     _setup: function() {
         var self = this;
-        attrs(this).forEach(function(attrName) {
+        var attributes = attrs(this);
+        attributes.forEach(function(attrName) {
             var dynamicKey = "%@IsDirty".fmt(attrName);
             Ember.defineProperty(self, dynamicKey, Ember.computed(function() {
                 var current = this.get(attrName);
@@ -79,6 +78,20 @@ var Model = Ember.Object.extend({
                 return original === current ? undefined : dirty[dirtyKey];
             }).property("_dirty", "" + attrName));
         });
+        var modelIsDirtyAttrs = [];
+        attributes.forEach(function(attr) {
+            modelIsDirtyAttrs.push(attr + "IsDirty");
+        });
+        Ember.defineProperty(self, "isDirty", Ember.computed(function() {
+            var modelIsDirty = false;
+            modelIsDirtyAttrs.forEach(function(attr) {
+                var attrIsDirty = self.get(attr);
+                if(attrIsDirty === true || attrIsDirty === false) {
+                    modelIsDirty = attrIsDirty;
+                }
+            });
+            return modelIsDirty;
+        }).property("" + modelIsDirtyAttrs));
     }
 });
 
