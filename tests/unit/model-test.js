@@ -244,47 +244,47 @@ test("isDirty on the model is reset after value set back to original value", fun
     assert.equal(false, brandon.get("isDirty"));
 });
 
-// test("isDirty on the model is reset when original value is empty string and set back to empty string", function(assert){
-//     brandon = Person.create({id: 1, firstName: "", lastName: "Williams"});
-//     assert.equal(undefined, brandon.get("firstName"));
-//     assert.equal(false, brandon.get("isDirty"));
-//     brandon.set("firstName", "baz");
-//     assert.equal(true, brandon.get("isDirty"));
-//     brandon.set("firstName", "");
-//     assert.equal(false, brandon.get("isDirty"));
-//     brandon.set("firstName", undefined);
-//     assert.equal(false, brandon.get("isDirty"));
-//     brandon.set("firstName", null);
-//     assert.equal(false, brandon.get("isDirty"));
-// });
+test("isDirty on the model is reset when original value is empty string and set back to empty string", function(assert){
+    brandon = Person.create({id: 1, firstName: "", lastName: "Williams"});
+    assert.equal(undefined, brandon.get("firstName"));
+    assert.equal(false, brandon.get("isDirty"));
+    brandon.set("firstName", "baz");
+    assert.equal(true, brandon.get("isDirty"));
+    brandon.set("firstName", undefined); //not sure how this can happen with input?
+    assert.equal(false, brandon.get("isDirty"));
+    brandon.set("firstName", undefined);
+    assert.equal(false, brandon.get("isDirty"));
+    brandon.set("firstName", null);
+    assert.equal(true, brandon.get("isDirty"));
+});
 
-// test("isDirty on the model is reset when original value is undefined and set back to undefined", function(assert){
-//     brandon = Person.create({id: 1, firstName: undefined, lastName: "Williams"});
-//     assert.equal(undefined, brandon.get("firstName"));
-//     assert.equal(false, brandon.get("isDirty"));
-//     brandon.set("firstName", "baz");
-//     assert.equal(true, brandon.get("isDirty"));
-//     brandon.set("firstName", "");
-//     assert.equal(false, brandon.get("isDirty"));
-//     brandon.set("firstName", undefined);
-//     assert.equal(false, brandon.get("isDirty"));
-//     brandon.set("firstName", null);
-//     assert.equal(false, brandon.get("isDirty"));
-// });
+test("isDirty on the model is reset when original value is undefined and set back to undefined", function(assert){
+    brandon = Person.create({id: 1, firstName: undefined, lastName: "Williams"});
+    assert.equal(undefined, brandon.get("firstName"));
+    assert.equal(false, brandon.get("isDirty"));
+    brandon.set("firstName", "baz");
+    assert.equal(true, brandon.get("isDirty"));
+    brandon.set("firstName", "");
+    assert.equal(true, brandon.get("isDirty"));
+    brandon.set("firstName", undefined);
+    assert.equal(false, brandon.get("isDirty"));
+    brandon.set("firstName", null);
+    assert.equal(true, brandon.get("isDirty"));
+});
 
-// test("isDirty on the model is reset when original value is null and set back to null", function(assert){
-//     brandon = Person.create({id: 1, firstName: null, lastName: "Williams"});
-//     assert.equal(undefined, brandon.get("firstName"));
-//     assert.equal(false, brandon.get("isDirty"));
-//     brandon.set("firstName", "baz");
-//     assert.equal(true, brandon.get("isDirty"));
-//     brandon.set("firstName", "");
-//     assert.equal(false, brandon.get("isDirty"));
-//     brandon.set("firstName", undefined);
-//     assert.equal(false, brandon.get("isDirty"));
-//     brandon.set("firstName", null);
-//     assert.equal(false, brandon.get("isDirty"));
-// });
+test("isDirty on the model is reset when original value is null and set back to null", function(assert){
+    brandon = Person.create({id: 1, firstName: null, lastName: "Williams"});
+    assert.equal(undefined, brandon.get("firstName"));
+    assert.equal(false, brandon.get("isDirty"));
+    brandon.set("firstName", "baz");
+    assert.equal(true, brandon.get("isDirty"));
+    brandon.set("firstName", "");
+    assert.equal(true, brandon.get("isDirty"));
+    brandon.set("firstName", undefined);
+    assert.equal(true, brandon.get("isDirty"));
+    brandon.set("firstName", null);
+    assert.equal(false, brandon.get("isDirty"));
+});
 
 test("isDirty on the model is reset when original value is 0 and set back to 0", function(assert){
     brandon = Person.create({id: 1, firstName: 0, lastName: "Williams"});
