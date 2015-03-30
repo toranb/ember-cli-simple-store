@@ -67,11 +67,8 @@ var Model = Ember.Object.extend({
     },
     _setup: function() {
         var self = this;
-        var oldState = clone(this);
-        this.set("_oldState", oldState);
-        var allAttrs = "";
-        attrs(this).forEach(function(attrName) {
-            allAttrs += "," + attrName;
+        var attributes = attrs(this);
+        attributes.forEach(function(attrName) {
             var dynamicKey = "%@IsDirty".fmt(attrName);
             Ember.defineProperty(self, dynamicKey, Ember.computed(function() {
                 var current = this.get(attrName);
@@ -81,19 +78,16 @@ var Model = Ember.Object.extend({
                 return original === current ? undefined : dirty[dirtyKey];
             }).property("_dirty", "" + attrName));
         });
+        var modelIsDirtyAttrs = [];
+        attributes.forEach(function(attr) {
+            modelIsDirtyAttrs.push(attr + "IsDirty");
+        });
         Ember.defineProperty(this, "isDirty", Ember.computed(function() {
-            var oldState = this.get("_oldState");
-            for(var key in oldState) {
-                var oldValue = oldState[key];
-                var value = self.get(key);
-                var setBack = (oldValue === undefined || oldValue === "" || oldValue === null) &&
-                    (value === "" || value === undefined || value === null);
-                if(value !== oldValue && !setBack) {
-                    return true;
-                }
-            }
-            return false;
-        }).property("_oldState" + allAttrs));
+            var modelAttrs = modelIsDirtyAttrs.filter(function(attr){
+                return self.get(attr) === true;
+            });
+            return modelAttrs.length > 0;
+        }).property("" + modelIsDirtyAttrs));
     }
 });
 

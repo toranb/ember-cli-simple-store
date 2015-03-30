@@ -61,7 +61,7 @@ test("save will update internal state", function(assert){
     var preState = brandon.get("_oldState");
     assert.equal(2, Object.keys(preState).length);
     assert.equal("Brandon", preState["firstName"]);
-    assert.equal("Williams", preState["lastName"]);
+    assert.equal(undefined, preState["lastName"]);
 
     brandon.set("firstName", "baz");
     var initState = brandon.get("_oldState");
@@ -91,7 +91,7 @@ test("rollback will revert internal state", function(assert){
     var preState = brandon.get("_oldState");
     assert.equal(2, Object.keys(preState).length);
     assert.equal("Brandon", preState["firstName"]);
-    assert.equal("Williams", preState["lastName"]);
+    assert.equal(undefined, preState["lastName"]);
 
     brandon.set("firstName", "baz");
     var initState = brandon.get("_oldState");
@@ -126,7 +126,7 @@ test("internal state will be only set the first time a property is set", functio
     var preState = brandon.get("_oldState");
     assert.equal(2, Object.keys(preState).length);
     assert.equal("Brandon", preState["firstName"]);
-    assert.equal("Williams", preState["lastName"]);
+    assert.equal(undefined, preState["lastName"]);
 
     brandon.set("firstName", "baz");
     var initState = brandon.get("_oldState");
@@ -195,11 +195,7 @@ test("isDirty on the model is reset when original value is empty string and set 
     brandon.set("firstName", "baz");
     assert.equal(true, brandon.get("isDirty"));
     brandon.set("firstName", "");
-    assert.equal(false, brandon.get("isDirty"));
-    brandon.set("firstName", undefined);
-    assert.equal(false, brandon.get("isDirty"));
-    brandon.set("firstName", null);
-    assert.equal(false, brandon.get("isDirty"));
+    assert.equal(true, brandon.get("isDirty"));
 });
 
 test("isDirty on the model is reset when original value is undefined and set back to undefined", function(assert){
@@ -208,11 +204,7 @@ test("isDirty on the model is reset when original value is undefined and set bac
     assert.equal(false, brandon.get("isDirty"));
     brandon.set("firstName", "baz");
     assert.equal(true, brandon.get("isDirty"));
-    brandon.set("firstName", "");
-    assert.equal(false, brandon.get("isDirty"));
     brandon.set("firstName", undefined);
-    assert.equal(false, brandon.get("isDirty"));
-    brandon.set("firstName", null);
     assert.equal(false, brandon.get("isDirty"));
 });
 
@@ -222,10 +214,6 @@ test("isDirty on the model is reset when original value is null and set back to 
     assert.equal(false, brandon.get("isDirty"));
     brandon.set("firstName", "baz");
     assert.equal(true, brandon.get("isDirty"));
-    brandon.set("firstName", "");
-    assert.equal(false, brandon.get("isDirty"));
-    brandon.set("firstName", undefined);
-    assert.equal(false, brandon.get("isDirty"));
     brandon.set("firstName", null);
     assert.equal(false, brandon.get("isDirty"));
 });
