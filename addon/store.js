@@ -73,7 +73,7 @@ var Store = Ember.Object.extend({
             var value = options[attr];
             return this._findWithFilter(type, attr, value);
         }
-        return this._findById(type, options);
+        return this._findByIdComputed(type, options);
     },
     findOne: function(type) {
         var all = this._findAll(type);
@@ -111,6 +111,42 @@ var Store = Ember.Object.extend({
         }).create({
           filter_func: filter_func,
           source: this._findAll(type)
+        });
+    },
+    _coerceId: function(id) {
+        var numberId = parseInt(id, 10);
+        if (numberId && numberId.toString().length === id.toString().length) {
+            return numberId;
+        }
+        return id;
+    },
+    _findByIdComputed: function(type, id) {
+        var store = this;
+        var actualId = this._coerceId(id);
+        return Ember.ObjectProxy.extend({
+            content: function() {
+                var filter_value = this.get("filter_value");
+                return this.get("source").filterBy("id", filter_value).objectAt(0);
+            }.property("source.[]")
+        }).create({
+            filter_value: actualId,
+            source: this._findAll(type),
+            init: function () {
+                var model = store.container.lookup("model:" + type);
+                for(var method in model) {
+                    if(typeof model[method] === "function") {
+                        if(!this[method]) {
+                            this.proxyMethod(method);
+                        }
+                    }
+                }
+            },
+            proxyMethod: function(method) {
+                this[method] = function() {
+                    var content = this.get("content");
+                    return content[method].apply(content, arguments);
+                };
+            }
         });
     }
 });
