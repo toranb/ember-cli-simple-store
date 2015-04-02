@@ -75,10 +75,6 @@ var Store = Ember.Object.extend({
         }
         return this._findByIdComputed(type, options);
     },
-    findOne: function(type) {
-        var all = this._findAll(type);
-        return all.length > 0 ? all.objectAt(0) : null;
-    },
     _findById: function(type, id) {
         var identityMap = identityMapForType(type, this);
         return identityMap[id] || null;
@@ -130,6 +126,32 @@ var Store = Ember.Object.extend({
             }.property("source.[]")
         }).create({
             filter_value: actualId,
+            source: this._findAll(type),
+            init: function () {
+                var model = store.container.lookup("model:" + type);
+                for(var method in model) {
+                    if(typeof model[method] === "function") {
+                        if(!this[method]) {
+                            this.proxyMethod(method);
+                        }
+                    }
+                }
+            },
+            proxyMethod: function(method) {
+                this[method] = function() {
+                    var content = this.get("content");
+                    return content[method].apply(content, arguments);
+                };
+            }
+        });
+    },
+    findOne: function(type) {
+        var store = this;
+        return Ember.ObjectProxy.extend({
+            content: function() {
+                return this.get("source").objectAt(0);
+            }.property("source.[]")
+        }).create({
             source: this._findAll(type),
             init: function () {
                 var model = store.container.lookup("model:" + type);

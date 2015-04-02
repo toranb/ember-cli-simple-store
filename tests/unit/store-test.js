@@ -396,30 +396,34 @@ test("pushing a model that does not exist should raise clear exception", functio
 });
 
 test("findOne will return the first record", function(assert) {
-  var first = store.push("person", {
+  var first = store.push("toran", {
     id: 1,
-    firstName: "Toran",
-    lastName: "Billups"
+    firstName: "Jake",
+    lastName: "Good"
   });
 
-  var last = store.push("person", {
+  var last = store.push("toran", {
     id: 2,
     firstName: "Brandon",
     lastName: "Williams"
   });
 
-  assert.equal(store.find("person").length, 2);
+  assert.equal(store.find("toran").length, 2);
 
-  var toranb = store.findOne("person");
-  assert.equal(toranb.get("firstName"), "Toran", "the firstName property is correct");
-  assert.equal(toranb.get("lastName"), "Billups", "the lastName property is correct");
+  var toranb = store.findOne("toran");
+  assert.equal(toranb.get("firstName"), "Jake", "the firstName property is correct");
+  assert.equal(toranb.get("lastName"), "Good", "the lastName property is correct");
   assert.equal(toranb.get("id"), "1", "the id property is correct");
+  assert.equal(toranb.get("content").fake(), "Jake 999");
+  assert.equal(toranb.get("content").demo(), "Jake 777");
+  assert.equal(toranb.fake(), "Jake 999");
+  assert.equal(toranb.demo(), "Jake 777");
 });
 
 test("findOne should return null when no objects exist in the cache for given type", function(assert) {
     assert.equal(store.find("person").length, 0);
     var person = store.findOne("person");
-    assert.equal(person, null);
+    assert.equal(person.get("content"), null);
 });
 
 test("find with filter function will return bound array", function(assert) {
@@ -672,4 +676,31 @@ test("findById will proxy each method for the given type when already in the sto
   assert.equal(toranb.get("content").demo(), "Toran 777");
   assert.equal(toranb.fake(), "Toran 999");
   assert.equal(toranb.demo(), "Toran 777");
+});
+
+test("findOne result will be computed property that updates as records are pushed into the store", function(assert) {
+  var done = assert.async();
+  var toran = store.findOne("toran");
+  assert.equal(toran.get("id"), undefined);
+  assert.equal(toran.get("firstName"), undefined);
+  assert.equal(toran.get("lastName"), undefined);
+  setTimeout(function() {
+    store.push("toran", {
+      id: 123,
+      firstName: "Toran",
+      lastName: "Billups"
+    });
+
+    setTimeout(function() {
+      assert.equal(toran.get("id"), 123);
+      assert.equal(toran.get("firstName"), "Toran");
+      assert.equal(toran.get("lastName"), "Billups");
+      assert.equal(toran.get("content").fake(), "Toran 999");
+      assert.equal(toran.get("content").demo(), "Toran 777");
+      assert.equal(toran.fake(), "Toran 999");
+      assert.equal(toran.demo(), "Toran 777");
+
+      done();
+    }, 0);
+  }, 0);
 });
