@@ -30,12 +30,13 @@ var attr = function() {
         var data = this.get("_data") || {};
         var dirty = this.get("_dirty") || {};
         if (arguments.length === 2) {
-            if (!this.get("isDirty")) {
+            if (!this.get("isDirty") && !this.get("isPrimed")) {
                 var oldState = clone(this);
                 this.set("_oldState", oldState);
             }
             var primed = value === "" && !data[key];
             if(!primed) {
+                this.set("isPrimed", true);
                 dirty["%@:isDirty".fmt(key)] = true;
                 data[key] = value;
             }
@@ -63,6 +64,7 @@ var Model = Ember.Object.extend({
         this._reset();
     },
     _reset: function() {
+        this.set("isPrimed", false);
         this.set("_dirty", {});
     },
     _setup: function() {

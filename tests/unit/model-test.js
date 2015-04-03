@@ -60,7 +60,7 @@ test("save will update internal state", function(assert){
     brandon = Person.create(data);
     var preState = brandon.get("_oldState");
     assert.equal(2, Object.keys(preState).length);
-    assert.equal("Brandon", preState["firstName"]);
+    assert.equal(undefined, preState["firstName"]);
     assert.equal(undefined, preState["lastName"]);
 
     brandon.set("firstName", "baz");
@@ -90,7 +90,7 @@ test("rollback will revert internal state", function(assert){
     brandon = Person.create(data);
     var preState = brandon.get("_oldState");
     assert.equal(2, Object.keys(preState).length);
-    assert.equal("Brandon", preState["firstName"]);
+    assert.equal(undefined, preState["firstName"]);
     assert.equal(undefined, preState["lastName"]);
 
     brandon.set("firstName", "baz");
@@ -125,7 +125,7 @@ test("internal state will be only set the first time a property is set", functio
     brandon = Person.create(data);
     var preState = brandon.get("_oldState");
     assert.equal(2, Object.keys(preState).length);
-    assert.equal("Brandon", preState["firstName"]);
+    assert.equal(undefined, preState["firstName"]);
     assert.equal(undefined, preState["lastName"]);
 
     brandon.set("firstName", "baz");
