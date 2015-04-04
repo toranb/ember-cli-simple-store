@@ -34,7 +34,7 @@ var attr = function() {
                 var oldState = clone(this);
                 this.set("_oldState", oldState);
             }
-            var primed = value === "" && data[key] === undefined;
+            var primed = Ember.isNone(value) && !data[key];
             if(!primed) {
                 this.set("isPrimed", true);
                 dirty["%@:isDirty".fmt(key)] = true;
@@ -78,6 +78,12 @@ var Model = Ember.Object.extend({
                 var dirty = this.get("_dirty");
                 var dirtyKey = "%@:isDirty".fmt(attrName);
                 var dirtyCheck = (original === current) || (original === undefined && current === "");
+                if(attrName === "firstName") {
+                    console.log(typeof original);
+                    console.log(typeof current);
+                    console.log(original === current);
+                    console.log(dirtyCheck);
+                }
                 return dirtyCheck ? undefined : dirty[dirtyKey];
             }).property("_dirty", "" + attrName));
         });

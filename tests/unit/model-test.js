@@ -190,7 +190,7 @@ test("isDirty on the model is reset after value set back to original value", fun
 
 test("isDirty on the model is reset when original value is empty string and set back to empty string", function(assert){
     brandon = Person.create({id: 1, firstName: "", lastName: "Williams"});
-    assert.equal(undefined, brandon.get("firstName"));
+    assert.equal("", brandon.get("firstName"));
     assert.equal(false, brandon.get("isDirty"));
     brandon.set("firstName", "baz");
     assert.equal(true, brandon.get("isDirty"));
@@ -212,10 +212,11 @@ test("isDirty on the model is reset when original value is undefined and set bac
 
 test("isDirty on the model is reset when original value is null and set back to null", function(assert){
     brandon = Person.create({id: 1, firstName: null, lastName: "Williams"});
-    assert.equal(undefined, brandon.get("firstName"));
+    assert.equal(null, brandon.get("firstName"));
     assert.equal(false, brandon.get("isDirty"));
     brandon.set("firstName", "baz");
     assert.equal(true, brandon.get("isDirty"));
+    console.log("I care now");
     brandon.set("firstName", null);
     assert.equal(false, brandon.get("isDirty"));
 });
@@ -271,7 +272,7 @@ test("a prime of the attr with an empty string will not alter the dirty state", 
     assert.equal(false, brandon.get("isDirty"));
     assert.equal(undefined, brandon.get("firstNameIsDirty"));
     brandon.set("firstName", "");
-    assert.equal(undefined, brandon.get("firstName"));
+    assert.equal("", brandon.get("firstName"));
     assert.equal(false, brandon.get("isDirty"));
     assert.equal(undefined, brandon.get("firstNameIsDirty"));
 });
