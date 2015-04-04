@@ -195,7 +195,7 @@ test("isDirty on the model is reset when original value is empty string and set 
     brandon.set("firstName", "baz");
     assert.equal(true, brandon.get("isDirty"));
     brandon.set("firstName", "");
-    assert.equal(true, brandon.get("isDirty"));
+    assert.equal(false, brandon.get("isDirty"));
 });
 
 test("isDirty on the model is reset when original value is undefined and set back to undefined", function(assert){
@@ -205,6 +205,8 @@ test("isDirty on the model is reset when original value is undefined and set bac
     brandon.set("firstName", "baz");
     assert.equal(true, brandon.get("isDirty"));
     brandon.set("firstName", undefined);
+    assert.equal(false, brandon.get("isDirty"));
+    brandon.set("firstName", "");
     assert.equal(false, brandon.get("isDirty"));
 });
 
