@@ -23,31 +23,31 @@
 ```js
 //create or update person model
 
-this.store.push("person", {id: 1, name: "toran"});
+store.push("person", {id: 1, name: "toran"});
 ```
 
 ```js
 //remove person model with id=123
 
-this.store.remove("person", 123);
+store.remove("person", 123);
 ```
 
 ```js
 //find all person models
 
-this.store.find("person");
+store.find("person");
 ```
 
 ```js
 //find a single person model with id=123
 
-this.store.find("person", 123);
+store.find("person", 123);
 ```
 
 ```js
 //find all person models with account_id=789
 
-this.store.find("person", {account_id: 789});
+store.find("person", {account_id: 789});
 ```
 
 ```js
@@ -58,25 +58,25 @@ var filter = function(person) {
     var salary = person.get("salary");
     return name === "toran" && salary > 100;
 }
-this.store.find("person", filter, ["salary", "name"]);
+store.find("person", filter, ["salary", "name"]);
 ```
 
 ```js
 //find the first person model
 
-this.store.findOne("person");
+store.findOne("person");
 ```
 
 ```js
 //clear the entire identity map of all person models
 
-this.store.clear("person");
+store.clear("person");
 ```
 
 ```js
 //clear the entire identity map of all models
 
-this.store.clear();
+store.clear();
 ```
 
 ## Using the store by example
