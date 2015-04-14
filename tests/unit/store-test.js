@@ -498,3 +498,22 @@ test("doing a filter by function with no computed_keys should raise clear except
         assert.equal(e.message, "Assertion Failed: No computed keys found for the filter by function");
     }
 });
+
+test("store will not update object with id of undefined", function(assert) {
+    var person = store.push("person", {});
+    assert.equal(store.find("person").length, 1);
+    store.push("person", {id: 1, name: "foo"});
+    assert.equal(store.find("person").length, 2);
+    var people = store.find("person");
+    assert.equal(people[0].id, undefined);
+    assert.equal(people[1].id, 1);
+});
+
+test("store will update object with id of undefined when setting properties", function(assert) {
+    var person = store.push("person", {});
+    assert.equal(store.find("person").length, 1);
+    person.setProperties({id: 1, name: "foo"});
+    assert.equal(store.find("person").length, 1);
+    var people = store.find("person");
+    assert.equal(people[0].id, 1);
+});
