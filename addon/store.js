@@ -40,6 +40,7 @@ var Store = Ember.Object.extend({
         arrayForType(type, this).clear();
     },
     push: function(type, data) {
+        Ember.deprecate("Using the store.push without data.id is deprecated and will be removed in 1.0.0", data.id === undefined);
         var record = this._findById(type, data.id);
         if (record) {
             record.setProperties(data);
