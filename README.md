@@ -83,17 +83,15 @@ store.clear();
 
 Below I'll show how you can use the store with a simple ember object to find/add/remove/update
 
-The full example below relies on a small xhr mixin [PromiseMixin][]
+The full example below relies on a small xhr addon [PromiseMixin][]
 
 ```js
-import PromiseMixin from "js/mixins/promise";
+import Ember from "ember";
+import PromiseMixin from "ember-promise/mixins/promise";
 
-var Person = Ember.Object.extend({
-    firstName: "",
-    lastName: "",
-    phone: ""
-}).reopenClass({
-    find: function(store) {
+var PersonRepository = Ember.Object.extend({
+    find: function() {
+        var store = this.get("store");
         return PromiseMixin.xhr("/api/people/", "GET").then(function(response) {
             response.forEach(function(person) {
                 store.push("person", person);
@@ -101,11 +99,13 @@ var Person = Ember.Object.extend({
             return store.find("person");
         });
     },
-    findById: function(store, id) {
+    findById: function(id) {
+        var store = this.get("store");
         return store.find("person", id);
     },
-    insert: function(store, person) {
+    insert: function(person) {
         var self = this;
+        var store = this.get("store");
         var hash = {data: JSON.stringify(person)};
         return new Ember.RSVP.Promise(function(resolve,reject) {
             return PromiseMixin.xhr("/api/people/", "POST", hash).then(function(persisted) {
@@ -122,8 +122,9 @@ var Person = Ember.Object.extend({
         var endpoint = "/api/people/%@/".fmt(person_id);
         return PromiseMixin.xhr(endpoint, "PUT", hash);
     },
-    remove: function(store, person) {
+    remove: function(person) {
         var self = this;
+        var store = this.get("store");
         var person_id = person.get("id");
         var endpoint = "/api/people/%@/".fmt(person_id);
         return new Ember.RSVP.Promise(function(resolve,reject) {
@@ -137,7 +138,7 @@ var Person = Ember.Object.extend({
     }
 });
 
-export default Person;
+export default PersonRepository;
 ```
 
 ## What about relationship support?
@@ -152,6 +153,7 @@ var PeoplePersonRoute = Ember.Route.extend({
   model: function(params) {
     var store = this.get("store");
     var person = Person.findById(store, params.person_id);
+    //in findByPerson you could simply filter down objects for the parent
     var actions = Action.findByPerson(store, params.person_id);
     return Ember.RSVP.hash({person: person, actions: actions});
   },
@@ -160,13 +162,14 @@ var PeoplePersonRoute = Ember.Route.extend({
     controller.set("actions", hash.actions);
   }
 });
+
+export default PeoplePersonRoute;
 ```
 
 This approach is not without it's tradeoffs
 
-* additional http calls to fetch related data instead of using embedded json. You could make a single http call and parse this out if latency becomes problematic but you might find yourself managing complex object hierarchies all over again.
-* you will find yourself passing the store instance into model object class methods from the route/controller
-* you begin to use a different pattern for object materialization/filtering in the route objects because the models themselves are relationship-less.
+* additional http calls to fetch related data instead of using embedded json. Or you can make a single http call and parse this out if latency becomes problematic but you might find yourself managing complex object hierarchies all over again.
+* you will need to inject the store instance into each class that does data access (service/repository for example).
 
 I've personally found this is a great approach for apps that want to avoid the complexity of bigger projects like ember-data, but still need a single pointer /reference for the models in your ember application.
 
@@ -228,4 +231,4 @@ Licensed under the MIT License
 [Build Status]: https://travis-ci.org/toranb/ember-cli-simple-store.svg?branch=master
 [ember-cli]: http://www.ember-cli.com/
 [ember.js]: http://emberjs.com/
-[PromiseMixin]: https://gist.github.com/toranb/98abc9616f2abecde0d4
+[PromiseMixin]: https://github.com/toranb/ember-promise
