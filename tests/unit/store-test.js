@@ -704,3 +704,22 @@ test("findOne result will be computed property that updates as records are pushe
     }, 0);
   }, 0);
 });
+
+test("store will not update object with id of undefined", function(assert) {
+    var person = store.push("person", {});
+    assert.equal(store.find("person").length, 1);
+    store.push("person", {id: 1, name: "foo"});
+    assert.equal(store.find("person").length, 2);
+    var people = store.find("person");
+    assert.equal(people[0].id, undefined);
+    assert.equal(people[1].id, 1);
+});
+
+test("store will update object with id of undefined when setting properties", function(assert) {
+    var person = store.push("person", {});
+    assert.equal(store.find("person").length, 1);
+    person.setProperties({id: 1, name: "foo"});
+    assert.equal(store.find("person").length, 1);
+    var people = store.find("person");
+    assert.equal(people[0].id, 1);
+});
