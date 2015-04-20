@@ -5,6 +5,9 @@ ember-cli-simple-store Changelog
 1.0.0
 -----
 
+* [DOCS]: added changelog
+  ([commit](https://github.com/toranb/ember-cli-simple-store/commit/d93349710094cd9fdc7cfb5775582f1cb36a4cfe))
+
 * [DOCS]: updated the readme to show more example apps
   ([commit](https://github.com/toranb/ember-cli-simple-store/commit/0522f17209aed395de42e15175c8f7293f3944dd))
 
