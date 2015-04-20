@@ -143,39 +143,33 @@ export default PersonRepository;
 
 ## What about relationship support?
 
-With this simple reference implementation you can side step the relationship complexity by adding what you need in your route(s)
+With this simple reference implementation you can side step the relationship complexity by adding what you need in your route
 
 ```js
-import Action from "js/models/action";
-import Person from "js/models/person";
-
-var PeoplePersonRoute = Ember.Route.extend({
-  model: function(params) {
-    var store = this.get("store");
-    var person = Person.findById(store, params.person_id);
-    //in findByPerson you could simply filter down objects for the parent
-    var actions = Action.findByPerson(store, params.person_id);
-    return Ember.RSVP.hash({person: person, actions: actions});
-  },
-  setupController: function(controller, hash) {
-    controller.set("model", hash.person);
-    controller.set("actions", hash.actions);
-  }
+export default Ember.Route.extend({
+    model: function(params) {
+        var store = this.get("store");
+        var model = store.find("todo", params.todo_id);
+        var notes = store.find("note", {todo_id: params.todo_id});
+        return Ember.RSVP.hash({model: model, notes: notes});
+    },
+    setupController: function(controller, hash) {
+        controller.set("model", hash.model);
+        controller.set("notes", hash.notes);
+    }
 });
-
-export default PeoplePersonRoute;
 ```
 
 This approach is not without it's tradeoffs
 
-* additional http calls to fetch related data instead of using embedded json. Or you can make a single http call and parse this out if latency becomes problematic but you might find yourself managing complex object hierarchies all over again.
-* you will need to inject the store instance into each class that does data access (service/repository for example).
+* you need to inject the store instance into each class that does data access (service/repository/route/controller)
+* you need to write each xhr yourself and pull objects from the store / push objects into the store
 
-I've personally found this is a great approach for apps that want to avoid the complexity of bigger projects like ember-data, but still need a single pointer /reference for the models in your ember application.
+I've personally found this is a great approach for apps that want to avoid the complexity of bigger projects like ember-data, but still need a single pointer /reference for each model in your ember application.
 
 ## What about dirty tracking?
 
-If you want the ability to track if your model is dirty use the attr for each field and the Model base class to get save/rollback
+If you want the ability to track if your model is dirty use the attr for each field and the Model to get save/rollback
 
 ```js
 import { attr, Model } from "ember-cli-simple-store/model";
@@ -208,18 +202,28 @@ person.set("firstName", "foobar");
 person.get("firstNameIsDirty"); //true
 ```
 
+## Example applications
+
+**Simplest example with the least amount of complexity (tests included)**
+
+https://github.com/toranb/kanban-board-without-ember-data
+
+**Async example that will paint right away (loading section included w/ tests)**
+
+https://github.com/toranb/async-kanban-board-store-example
+
+**Async example with relationships (loading section included w/ tests)**
+
+https://github.com/toranb/async-kanban-with-relationships-store-example
+
+**Dirty tracking example with both save and rollback**
+
+https://github.com/toranb/ember-cli-store-dirty-tracking-example
+
 ## Running the unit tests
 
     npm install
     ember test
-
-## Example project
-
-https://github.com/toranb/ember-cli-store-example
-
-## Example project with dirty tracking (save/rollback)
-
-https://github.com/toranb/ember-cli-store-dirty-tracking-example
 
 ## License
 
