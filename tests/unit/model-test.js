@@ -188,17 +188,24 @@ test("isDirty on the model is reset after value set back to original value", fun
     assert.equal(false, brandon.get("isDirty"));
 });
 
-test("isDirty on the model is reset when original value is empty string and set back to empty string", function(assert){
+test("when setting empty string, default value is undefined", function(assert){
+    brandon = Person.create({id: 1, firstName: "", lastName: "Williams"});
+    assert.equal(undefined, brandon.get("firstName"));
+});
+
+test("when originally set to empty string (undefined) and key value into input, and backspace, field should be dirty", function(assert){
     brandon = Person.create({id: 1, firstName: "", lastName: "Williams"});
     assert.equal(undefined, brandon.get("firstName"));
     assert.equal(false, brandon.get("isDirty"));
     brandon.set("firstName", "baz");
     assert.equal(true, brandon.get("isDirty"));
     brandon.set("firstName", "");
+    assert.equal(true, brandon.get("isDirty"));
+    brandon.set("firstName", undefined);
     assert.equal(false, brandon.get("isDirty"));
 });
 
-test("isDirty on the model is reset when original value is undefined and set back to undefined", function(assert){
+test("isDirty on the model is not reset when value is undefined and set to empty string", function(assert){
     brandon = Person.create({id: 1, firstName: undefined, lastName: "Williams"});
     assert.equal(undefined, brandon.get("firstName"));
     assert.equal(false, brandon.get("isDirty"));
@@ -207,6 +214,18 @@ test("isDirty on the model is reset when original value is undefined and set bac
     brandon.set("firstName", undefined);
     assert.equal(false, brandon.get("isDirty"));
     brandon.set("firstName", "");
+    assert.equal(false, brandon.get("isDirty"));
+});
+
+test("isDirty on the model is reset when value is empty string and set to undefined", function(assert){
+    brandon = Person.create({id: 1, firstName: undefined, lastName: "Williams"});
+    assert.equal(undefined, brandon.get("firstName"));
+    assert.equal(false, brandon.get("isDirty"));
+    brandon.set("firstName", "baz");
+    assert.equal(true, brandon.get("isDirty"));
+    brandon.set("firstName", "");
+    assert.equal(true, brandon.get("isDirty"));
+    brandon.set("firstName", undefined);
     assert.equal(false, brandon.get("isDirty"));
 });
 

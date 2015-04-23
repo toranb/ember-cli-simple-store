@@ -77,8 +77,7 @@ var Model = Ember.Object.extend({
                 var original = this.get("_oldState." + attrName);
                 var dirty = this.get("_dirty");
                 var dirtyKey = "%@:isDirty".fmt(attrName);
-                var dirtyCheck = (original === current) || (original === undefined && current === "");
-                return dirtyCheck ? undefined : dirty[dirtyKey];
+                return original === current ? undefined : dirty[dirtyKey];
             }).property("_dirty", "" + attrName));
         });
         var modelIsDirtyAttrs = [];
