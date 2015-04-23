@@ -1,6 +1,12 @@
 ember-cli-simple-store Changelog
 ==============================
 
+1.0.1
+-----
+
+* [BUG]: isDirty should remain when undefined attr set to empty str
+  ([commit](https://github.com/toranb/ember-cli-simple-store/commit/944f9c56d4282c6d9d887128ca9a8f45d81998fe))
+
 
 1.0.0
 -----
