@@ -401,3 +401,22 @@ test("rolling back and saving a new model with no changes is a no-op", function(
     assert.equal(undefined, brandon.get("firstNameIsDirty"));
     assert.equal(undefined, brandon.get("lastNameIsDirty"));
 });
+
+test("saving and rolling back a new model immediately is a no-op", function(assert){
+    brandon = Person.create();
+    assert.equal(undefined, brandon.get("firstName"));
+    assert.equal(undefined, brandon.get("lastName"));
+    assert.equal(false, brandon.get("isDirty"));
+    assert.equal(undefined, brandon.get("firstNameIsDirty"));
+    assert.equal(undefined, brandon.get("lastNameIsDirty"));
+
+    brandon.set("firstName", "Brandon");
+    brandon.set("lastName", "Williams");
+    brandon.save();
+    brandon.rollback();
+    assert.equal("Brandon", brandon.get("firstName"));
+    assert.equal("Williams", brandon.get("lastName"));
+    assert.equal(false, brandon.get("isDirty"));
+    assert.equal(undefined, brandon.get("firstNameIsDirty"));
+    assert.equal(undefined, brandon.get("lastNameIsDirty"));
+});
