@@ -47,9 +47,11 @@ var attr = function() {
 
 var Model = Ember.Object.extend({
     init: function() {
-        this.set("_data", {});
+        this._super();
         this._reset();
         this._setup();
+        this.set("_data", {});
+        this.set("_oldState", clone(this));
     },
     rollback: function() {
         var oldState = this.get("_oldState");
