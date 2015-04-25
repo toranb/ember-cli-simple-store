@@ -1,6 +1,19 @@
 ember-cli-simple-store Changelog
 ==============================
 
+1.0.2
+-----
+
+* [TEST]: adding test for save then immediate rollback
+  ([#10](https://github.com/toranb/ember-cli-simple-store/pull/10))
+
+* [BUG]: rollback is now idempotent
+  ([commit](https://github.com/toranb/ember-cli-simple-store/commit/2d0cc9417b1bee7f674923906953045e8dc61a97))
+
+* [PERIPHERAL]: updating to ember 1.11.3
+  ([commit](https://github.com/toranb/ember-cli-simple-store/commit/aa572e44b1a9c057726ea9d5a5782e59cb7e5727))
+
+
 1.0.1
 -----
 
