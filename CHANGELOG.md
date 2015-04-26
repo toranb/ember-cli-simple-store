@@ -1,6 +1,13 @@
 ember-cli-simple-store Changelog
 ==============================
 
+1.0.3
+-----
+
+* [BUG] when setting field to empty string, model is not dirty
+  ([#12](https://github.com/toranb/ember-cli-simple-store/pull/12))
+
+
 1.0.2
 -----
 
