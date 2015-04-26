@@ -421,7 +421,7 @@ test("saving and rolling back a new model immediately is a no-op", function(asse
     assert.equal(undefined, brandon.get("lastNameIsDirty"));
 });
 
-test("wat", function(assert) {
+test("isDirty is true if the values are cleared out", function(assert){
     brandon = Person.create(data);
     assert.equal(false, brandon.get("isDirty"));
     brandon.set("firstName", "");
