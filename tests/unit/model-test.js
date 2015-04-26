@@ -353,7 +353,7 @@ test("rolling back a model after initial state is modified should revert to orig
     brandon = Person.create(data);
     assert.equal("Brandon", brandon.get("firstName"));
     brandon.set("firstName", "");
-    assert.equal(undefined, brandon.get("firstName"));
+    assert.equal("", brandon.get("firstName"));
     brandon.rollback();
     assert.equal("Brandon", brandon.get("firstName"));
     brandon.set("firstName", undefined);
@@ -419,4 +419,11 @@ test("saving and rolling back a new model immediately is a no-op", function(asse
     assert.equal(false, brandon.get("isDirty"));
     assert.equal(undefined, brandon.get("firstNameIsDirty"));
     assert.equal(undefined, brandon.get("lastNameIsDirty"));
+});
+
+test("isDirty is true if the values are cleared out", function(assert){
+    brandon = Person.create(data);
+    assert.equal(false, brandon.get("isDirty"));
+    brandon.set("firstName", "");
+    assert.equal(true, brandon.get("isDirty"));
 });

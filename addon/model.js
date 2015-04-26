@@ -50,7 +50,7 @@ var Model = Ember.Object.extend({
         this._super();
         this._reset();
         this._setup();
-        this.set("_data", {});
+        this.set("_data", clone(this));
         this.set("_oldState", clone(this));
     },
     rollback: function() {
