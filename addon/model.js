@@ -37,7 +37,7 @@ var attr = function() {
             var primed = value === "" && data[key] === undefined;
             if(!primed) {
                 this.set("isPrimed", true);
-                dirty["%@:isDirty".fmt(key)] = true;
+                dirty[key + ":isDirty"] = true;
                 data[key] = value;
             }
         }
@@ -73,12 +73,12 @@ var Model = Ember.Object.extend({
         var self = this;
         var attributes = attrs(this);
         attributes.forEach(function(attrName) {
-            var dynamicKey = "%@IsDirty".fmt(attrName);
+            var dynamicKey = attrName + "IsDirty";
             Ember.defineProperty(self, dynamicKey, Ember.computed(function() {
                 var current = this.get(attrName);
                 var original = this.get("_oldState." + attrName);
                 var dirty = this.get("_dirty");
-                var dirtyKey = "%@:isDirty".fmt(attrName);
+                var dirtyKey = attrName + ":isDirty";
                 return original === current ? undefined : dirty[dirtyKey];
             }).property("_dirty", "" + attrName));
         });
