@@ -26,7 +26,7 @@ function clone(obj) {
 
 var attr = function() {
     var meta = {isAttribute: true};
-    return function(key, value) {
+    return Ember.computed(function(key, value) {
         var data = this.get("_data") || {};
         var dirty = this.get("_dirty") || {};
         if (arguments.length === 2) {
@@ -42,7 +42,7 @@ var attr = function() {
             }
         }
         return data[key];
-    }.property("_data").meta(meta);
+    }).property("_data").meta(meta);
 };
 
 var Model = Ember.Object.extend({
