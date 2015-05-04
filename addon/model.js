@@ -26,7 +26,7 @@ function clone(obj) {
 
 var attr = function() {
     var meta = {isAttribute: true, defaults: arguments[0]};
-    return function(key, value) {
+    return Ember.computed(function(key, value) {
         var data = this.get("_data") || {};
         var dirty = this.get("_dirty") || {};
         var defaults = this.get("_defaults") || {};
@@ -39,12 +39,12 @@ var attr = function() {
             var primed = value === "" && data[key] === undefined;
             if(!primed) {
                 this.set("isPrimed", true);
-                dirty["%@:isDirty".fmt(key)] = true;
+                dirty[key + ":isDirty"] = true;
                 data[key] = value;
             }
         }
         return data[key];
-    }.property("_data").meta(meta);
+    }).property("_data").meta(meta);
 };
 
 var Model = Ember.Object.extend({
@@ -76,13 +76,13 @@ var Model = Ember.Object.extend({
         var self = this;
         var attributes = attrs(this);
         attributes.forEach(function(attrName) {
-            var dynamicKey = "%@IsDirty".fmt(attrName);
+            var dynamicKey = attrName + "IsDirty";
             Ember.defineProperty(self, dynamicKey, Ember.computed(function() {
                 var current = this.get(attrName);
                 var defaults = this.get("_defaults")[attrName];
                 var original = this.get("_oldState." + attrName);
                 var dirty = this.get("_dirty");
-                var dirtyKey = "%@:isDirty".fmt(attrName);
+                var dirtyKey = attrName + ":isDirty";
                 var legit = (current === defaults && original === undefined) || (original === current);
                 return legit ? undefined : dirty[dirtyKey];
             }).property("_dirty", "_defaults", "" + attrName));

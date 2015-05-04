@@ -12,13 +12,13 @@ module("store unit tests", {
         cat_id: null,
         demo: function() {
             var firstName = this.get("firstName");
-            return "%@ 777".fmt(firstName);
+            return firstName + " 777";
         }
     });
     Toran = Person.extend({
         fake: function() {
             var firstName = this.get("firstName");
-            return "%@ 999".fmt(firstName);
+            return firstName + " 999";
         }
     });
     Cat = Ember.Object.extend({
