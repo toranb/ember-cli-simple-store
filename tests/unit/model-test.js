@@ -11,11 +11,11 @@ module("model unit tests", {
             wat: "",
             firstName: attr(),
             lastName: attr(),
-            fullName: function() {
+            fullName: Ember.computed(function() {
                 var first = this.get("firstName");
                 var last = this.get("lastName");
                 return first + " " + last;
-            }.property("firstName", "lastName")
+            }).property("firstName", "lastName")
         });
     }
 });
