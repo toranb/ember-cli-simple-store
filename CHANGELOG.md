@@ -10,8 +10,6 @@ ember-cli-simple-store Changelog
 * [DEPENDENCY] getting new dependencies and bumping versions
   ([commit](https://github.com/toranb/ember-cli-simple-store/commit/9f2e9b867edf99a4b0b49e087bf4f8408768e4a1))
 
-* [REFACTOR] removing Function.prototype.property
-  ([commit](https://github.com/toranb/ember-cli-simple-store/commit/f5758471c15a88c99a8394516276c91bc4f98a02))
 
 1.0.3
 -----
