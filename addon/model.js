@@ -29,25 +29,22 @@ var attr = function() {
     return Ember.computed(function(key, value) {
         var data = this.get("_data") || {};
         var dirty = this.get("_dirty") || {};
-        //var primd = this.get("_primed") || {};
+        var primed = this.get("_primed") || {};
         var defaults = this.get("_defaults") || {};
         if (arguments.length === 2) {
             defaults[key] = meta.defaults;
-            //if (!this.get("isDirty") && !this.get("isPrimed")) {
+
             if (!this.get("isDirty")) {
-                var oldState = clone(this);
-                this.set("_oldState", oldState);
+                this.set("_oldState", clone(this));
             }
-            // primd[key + ":isPrimed"] = true;
+
             dirty[key + ":isDirty"] = true;
             data[key] = value;
-            // var primed = value === "" && data[key] === undefined;
-            // if(!primed) {
-            //     this.set("isPrimed", true);
-            //     dirty[key + ":isDirty"] = true;
-            //     primd[key + ":isPrimed"] = true;
-            //     data[key] = value;
-            // }
+
+            var ready = (value === "" || value === undefined) && (data[key] === undefined || data[key] === "");
+            if(!ready && !primed[key + ":isPrimed"]) {
+                primed[key + ":isPrimed"] = true;
+            }
         }
         return data[key];
     }).property("_data").meta(meta);
@@ -95,14 +92,10 @@ var Model = Ember.Object.extend({
             }).property("_dirty", "_defaults", "" + attrName));
             var dynamicPrimedKey = attrName + "IsPrimed";
             Ember.defineProperty(self, dynamicPrimedKey, Ember.computed(function() {
-                var current = this.get(attrName);
-                var defaults = this.get("_defaults")[attrName];
-                var original = this.get("_oldState." + attrName);
                 var primed = this.get("_primed");
                 var primedKey = attrName + ":isPrimed";
-                var legit = (current === defaults && original === undefined) || (original === current);
-                return legit ? undefined : primed[primedKey];
-            }).property("_primed", "_defaults", "" + attrName));
+                return primed[primedKey];
+            }).property("_primed", "" + attrName));
         });
         var modelIsDirtyAttrs = [];
         attributes.forEach(function(attr) {

@@ -23,6 +23,7 @@ test("isDirty property on class will show correctly when set to default string v
     assert.equal(true, leopard.get("isDirty"));
     assert.equal("", leopard.get("name"));
     assert.equal(true, leopard.get("nameIsDirty"));
+    assert.equal(true, leopard.get("nameIsPrimed"));
 });
 
 test("isDirty property on class will show correctly when set to default boolean value", function(assert){
@@ -32,6 +33,7 @@ test("isDirty property on class will show correctly when set to default boolean 
     assert.equal(true, leopard.get("isDirty"));
     assert.equal(false, leopard.get("fast"));
     assert.equal(true, leopard.get("fastIsDirty"));
+    assert.equal(true, leopard.get("fastIsPrimed"));
 });
 
 test("save will reset isDirty", function(assert){
@@ -128,14 +130,18 @@ test("rolling back a model with no changes is a no-op", function(assert){
     assert.equal(true, leopard.get("fast"));
     assert.equal(false, leopard.get("isDirty"));
     assert.equal(undefined, leopard.get("nameIsDirty"));
+    assert.equal(undefined, leopard.get("nameIsPrimed"));
     assert.equal(undefined, leopard.get("fastIsDirty"));
+    assert.equal(undefined, leopard.get("fastIsPrimed"));
 
     leopard.rollback();
     assert.equal("toran", leopard.get("name"));
     assert.equal(true, leopard.get("fast"));
     assert.equal(false, leopard.get("isDirty"));
     assert.equal(undefined, leopard.get("nameIsDirty"));
+    assert.equal(undefined, leopard.get("nameIsPrimed"));
     assert.equal(undefined, leopard.get("fastIsDirty"));
+    assert.equal(undefined, leopard.get("fastIsPrimed"));
 });
 
 test("rolling back and saving a new model with no changes is a no-op", function(assert){
@@ -144,7 +150,9 @@ test("rolling back and saving a new model with no changes is a no-op", function(
     assert.equal(undefined, leopard.get("fast"));
     assert.equal(false, leopard.get("isDirty"));
     assert.equal(undefined, leopard.get("nameIsDirty"));
+    assert.equal(undefined, leopard.get("nameIsPrimed"));
     assert.equal(undefined, leopard.get("fastIsDirty"));
+    assert.equal(undefined, leopard.get("fastIsPrimed"));
     leopard.set("name", "wat");
 
     leopard.rollback();
@@ -152,14 +160,18 @@ test("rolling back and saving a new model with no changes is a no-op", function(
     assert.equal(undefined, leopard.get("fast"));
     assert.equal(false, leopard.get("isDirty"));
     assert.equal(undefined, leopard.get("nameIsDirty"));
+    assert.equal(undefined, leopard.get("nameIsPrimed"));
     assert.equal(undefined, leopard.get("fastIsDirty"));
+    assert.equal(undefined, leopard.get("fastIsPrimed"));
 
     leopard.save();
     assert.equal(undefined, leopard.get("name"));
     assert.equal(undefined, leopard.get("fast"));
     assert.equal(false, leopard.get("isDirty"));
     assert.equal(undefined, leopard.get("nameIsDirty"));
+    assert.equal(undefined, leopard.get("nameIsPrimed"));
     assert.equal(undefined, leopard.get("fastIsDirty"));
+    assert.equal(undefined, leopard.get("fastIsPrimed"));
 
     leopard.set("name", "wat");
     leopard.save();
@@ -167,7 +179,9 @@ test("rolling back and saving a new model with no changes is a no-op", function(
     assert.equal(undefined, leopard.get("fast"));
     assert.equal(false, leopard.get("isDirty"));
     assert.equal(undefined, leopard.get("nameIsDirty"));
+    assert.equal(undefined, leopard.get("nameIsPrimed"));
     assert.equal(undefined, leopard.get("fastIsDirty"));
+    assert.equal(undefined, leopard.get("fastIsPrimed"));
 });
 
 test("isDirty is true if the values are cleared out", function(assert){

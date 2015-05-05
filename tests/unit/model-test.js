@@ -155,7 +155,7 @@ test("isDirty on the individual property will update if attr is changed", functi
     assert.equal(undefined, brandon.get("firstNameIsDirty"));
     assert.equal(undefined, brandon.get("firstNameIsPrimed"));
     assert.equal(true, brandon.get("lastNameIsDirty"));
-    // assert.equal(true, brandon.get("lastNameIsPrimed"));
+    assert.equal(true, brandon.get("lastNameIsPrimed"));
 });
 
 test("isDirty on the individual property is reset after save", function(assert){
@@ -165,7 +165,7 @@ test("isDirty on the individual property is reset after save", function(assert){
     assert.equal(undefined, brandon.get("firstNameIsPrimed"));
     brandon.set("firstName", "baz");
     assert.equal(true, brandon.get("firstNameIsDirty"));
-    // assert.equal(true, brandon.get("firstNameIsPrimed"));
+    assert.equal(true, brandon.get("firstNameIsPrimed"));
     brandon.save();
     assert.equal(undefined, brandon.get("firstNameIsDirty"));
     assert.equal(undefined, brandon.get("firstNameIsPrimed"));
@@ -193,12 +193,6 @@ test("isDirty on the model is reset after value set back to original value", fun
     assert.equal(true, brandon.get("isDirty"));
     brandon.set("firstName", "Brandon");
     assert.equal(false, brandon.get("isDirty"));
-});
-
-//TODO: kill this test as it's not true anymore
-test("when setting empty string, default value is undefined", function(assert){
-    brandon = Person.create({id: 1, firstName: "", lastName: "Williams"});
-    assert.equal("", brandon.get("firstName"));
 });
 
 test("isDirty on the model is updated when value is empty string and later set to undefined", function(assert){
@@ -267,10 +261,10 @@ test("isDirty on the individual property is reset after value set back to origin
     assert.equal(undefined, brandon.get("firstNameIsPrimed"));
     brandon.set("firstName", "baz");
     assert.equal(true, brandon.get("firstNameIsDirty"));
-    // assert.equal(true, brandon.get("firstNameIsPrimed"));
+    assert.equal(true, brandon.get("firstNameIsPrimed"));
     brandon.set("firstName", "Brandon");
     assert.equal(undefined, brandon.get("firstNameIsDirty"));
-    // assert.equal(undefined, brandon.get("firstNameIsPrimed"));
+    assert.equal(true, brandon.get("firstNameIsPrimed"));
 });
 
 test("isDirty on the individual property is reset after rollback", function(assert){
@@ -280,10 +274,10 @@ test("isDirty on the individual property is reset after rollback", function(asse
     assert.equal(undefined, brandon.get("firstNameIsPrimed"));
     brandon.set("firstName", "baz");
     assert.equal(true, brandon.get("firstNameIsDirty"));
-    // assert.equal(true, brandon.get("firstNameIsPrimed"));
+    assert.equal(true, brandon.get("firstNameIsPrimed"));
     brandon.rollback();
     assert.equal(undefined, brandon.get("firstNameIsDirty"));
-    // assert.equal(undefined, brandon.get("firstNameIsPrimed"));
+    assert.equal(undefined, brandon.get("firstNameIsPrimed"));
 });
 
 test("rollback after it has been saved will be a no-op at the property level also", function(assert){
@@ -292,7 +286,7 @@ test("rollback after it has been saved will be a no-op at the property level als
     assert.equal(undefined, brandon.get("firstNameIsPrimed"));
     brandon.set("firstName", "baz");
     assert.equal(true, brandon.get("firstNameIsDirty"));
-    // assert.equal(true, brandon.get("firstNameIsPrimed"));
+    assert.equal(true, brandon.get("firstNameIsPrimed"));
     brandon.save();
     assert.equal(undefined, brandon.get("firstNameIsDirty"));
     assert.equal(undefined, brandon.get("firstNameIsPrimed"));
@@ -313,7 +307,7 @@ test("a prime of the attr with an empty string will alter the dirty state", func
     assert.equal("", brandon.get("firstName"));
     assert.equal(true, brandon.get("isDirty"));
     assert.equal(true, brandon.get("firstNameIsDirty"));
-    // assert.equal(undefined, brandon.get("firstNameIsPrimed"));
+    assert.equal(undefined, brandon.get("firstNameIsPrimed"));
 });
 
 test("a prime of the attr with any other value will alter the dirty state", function(assert) {
@@ -326,7 +320,7 @@ test("a prime of the attr with any other value will alter the dirty state", func
     assert.equal("x", brandon.get("firstName"));
     assert.equal(true, brandon.get("isDirty"));
     assert.equal(true, brandon.get("firstNameIsDirty"));
-    // assert.equal(true, brandon.get("firstNameIsPrimed"));
+    assert.equal(true, brandon.get("firstNameIsPrimed"));
 });
 
 test("isDirty is smart enough to know when the attr has been restored", function(assert){
@@ -335,12 +329,12 @@ test("isDirty is smart enough to know when the attr has been restored", function
     assert.equal(undefined, brandon.get("firstNameIsPrimed"));
     brandon.set("firstName", "baz");
     assert.equal(true, brandon.get("firstNameIsDirty"));
-    // assert.equal(true, brandon.get("firstNameIsPrimed"));
+    assert.equal(true, brandon.get("firstNameIsPrimed"));
     assert.equal("baz", brandon.get("firstName"));
     brandon.set("firstName", "Brandon");
     assert.equal("Brandon", brandon.get("firstName"));
     assert.equal(undefined, brandon.get("firstNameIsDirty"));
-    assert.equal(undefined, brandon.get("firstNameIsPrimed"));
+    assert.equal(true, brandon.get("firstNameIsPrimed"));
 });
 
 test("rolling back a model with no changes is a no-op", function(assert){
@@ -474,4 +468,72 @@ test("isDirty is true if the values are cleared out", function(assert){
     assert.equal(false, brandon.get("isDirty"));
     brandon.set("firstName", "");
     assert.equal(true, brandon.get("isDirty"));
+});
+
+test("isPrimed is undefined when attr is undefined and later set to empty string", function(assert){
+    brandon = Person.create({id: 1, firstName: undefined, lastName: "Williams"});
+    assert.equal(undefined, brandon.get("firstName"));
+    assert.equal(undefined, brandon.get("firstNameIsPrimed"));
+    brandon.set("firstName", "");
+    assert.equal(undefined, brandon.get("firstNameIsPrimed"));
+});
+
+test("isPrimed is undefined when attr is empty string and later set to undefined", function(assert){
+    brandon = Person.create({id: 1, firstName: "", lastName: "Williams"});
+    assert.equal("", brandon.get("firstName"));
+    assert.equal(undefined, brandon.get("firstNameIsPrimed"));
+    brandon.set("firstName", undefined);
+    assert.equal(undefined, brandon.get("firstNameIsPrimed"));
+});
+
+test("isPrimed is true when attr is undefined and later set to valid string", function(assert){
+    brandon = Person.create({id: 1, firstName: undefined, lastName: "Williams"});
+    assert.equal(undefined, brandon.get("firstName"));
+    assert.equal(undefined, brandon.get("firstNameIsPrimed"));
+    brandon.set("firstName", "");
+    assert.equal(undefined, brandon.get("firstNameIsPrimed"));
+    brandon.set("firstName", "x");
+    assert.equal(true, brandon.get("firstNameIsPrimed"));
+});
+
+test("isPrimed is true when attr is undefined then string and again undefined", function(assert){
+    brandon = Person.create({id: 1, firstName: undefined, lastName: "Williams"});
+    assert.equal(undefined, brandon.get("firstName"));
+    assert.equal(undefined, brandon.get("firstNameIsPrimed"));
+    brandon.set("firstName", "");
+    assert.equal(undefined, brandon.get("firstNameIsPrimed"));
+    brandon.set("firstName", "x");
+    assert.equal(true, brandon.get("firstNameIsPrimed"));
+    brandon.set("firstName", undefined);
+    assert.equal(true, brandon.get("firstNameIsPrimed"));
+});
+
+test("isPrimed is undefined after save and rollback", function(assert){
+    brandon = Person.create({id: 1, firstName: undefined, lastName: "Williams"});
+    assert.equal(undefined, brandon.get("firstName"));
+    assert.equal(undefined, brandon.get("firstNameIsPrimed"));
+    brandon.set("firstName", "");
+    assert.equal(undefined, brandon.get("firstNameIsPrimed"));
+    brandon.set("firstName", "x");
+    assert.equal(true, brandon.get("firstNameIsPrimed"));
+    brandon.save();
+    assert.equal("x", brandon.get("firstName"));
+    assert.equal(undefined, brandon.get("firstNameIsPrimed"));
+    brandon.set("firstName", "xe");
+    assert.equal(true, brandon.get("firstNameIsPrimed"));
+    brandon.rollback();
+    assert.equal("x", brandon.get("firstName"));
+    assert.equal(undefined, brandon.get("firstNameIsPrimed"));
+});
+
+test("isPrimed is undefined after save and rollback on new object", function(assert){
+    brandon = Person.create();
+    assert.equal(undefined, brandon.get("firstName"));
+    assert.equal(undefined, brandon.get("firstNameIsPrimed"));
+    brandon.rollback();
+    assert.equal(undefined, brandon.get("firstName"));
+    assert.equal(undefined, brandon.get("firstNameIsPrimed"));
+    brandon.save();
+    assert.equal(undefined, brandon.get("firstName"));
+    assert.equal(undefined, brandon.get("firstNameIsPrimed"));
 });
