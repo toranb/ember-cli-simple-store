@@ -1,8 +1,9 @@
 import Ember from "ember";
 import { module, test } from 'qunit';
 import Store from "ember-cli-simple-store/store";
+import {attr, Model} from "ember-cli-simple-store/model";
 
-var store, Person, Toran, Cat;
+var store, Person, Toran, Cat, Computer;
 
 module("store unit tests", {
   setup: function() {
@@ -14,6 +15,10 @@ module("store unit tests", {
             var firstName = this.get("firstName");
             return firstName + " 777";
         }
+    });
+    Computer = Model.extend({
+        brand: attr(),
+        year: attr()
     });
     Toran = Person.extend({
         fake: function() {
@@ -27,6 +32,7 @@ module("store unit tests", {
     var registry = new Ember.Registry();
     var container = registry.container();
     registry.register("store:main", Store);
+    registry.register("model:computer", Computer);
     registry.register("model:person", Person);
     registry.register("model:toran", Toran);
     registry.register("model:cat", Cat);
@@ -47,6 +53,45 @@ test("records can be pushed into the store", function(assert) {
   assert.equal(toranb.get("firstName"), "Toran", "the firstName property is correct");
   assert.equal(toranb.get("lastName"), "Billups", "the lastName property is correct");
   assert.equal(toranb.get("id"), "toranb", "the id property is correct");
+});
+
+test("when a record is pushed over a clean record, the record should stay clean", function(assert) {
+  var record = store.push("computer", {
+    id: "mine",
+    brand: "Dell",
+    year: "2017"
+  });
+
+  assert.ok(!record.get("isDirty"));
+
+  store.push("computer", {
+    id: "mine",
+    brand: "Dell",
+    year: "2016"
+  });
+
+  assert.ok(!record.get("isDirty"));
+});
+
+test("when a record is pushed over a dirty record, the record should be clean", function(assert) {
+  var record = store.push("computer", {
+    id: "mine",
+    brand: "Dell",
+    year: "2017"
+  });
+
+  record.set("brand", "foo");
+
+  assert.ok(record.get("isDirty"));
+
+  store.push("computer", {
+    id: "mine",
+    brand: "Dell",
+    year: "2016"
+  });
+
+  assert.ok(!record.get("isDirty"));
+  assert.equal(record.get("year"), "2016");
 });
 
 test("push returns the created record", function(assert) {

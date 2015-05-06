@@ -43,6 +43,9 @@ var Store = Ember.Object.extend({
         var record = this._findById(type, data.id);
         if (record) {
             record.setProperties(data);
+            if (record.get("meta.type") === "ember-cli-simple-store.model") {
+                record.save();
+            }
         } else {
             record = buildRecord(type, data, this);
         }
