@@ -86,7 +86,7 @@ test("rollback will reset isDirty", function(assert){
     assert.equal("Brandon", brandon.get("firstName"));
 });
 
-test("rollback will revert internal state", function(assert){
+test("rollback will not alter the internal state", function(assert){
     brandon = Person.create(data);
     var preState = brandon.get("_oldState");
     assert.equal(2, Object.keys(preState).length);
@@ -297,7 +297,7 @@ test("rollback after it has been saved will be a no-op at the property level als
     assert.equal("baz", brandon.get("firstName"));
 });
 
-test("a prime of the attr with an empty string will alter the dirty state", function(assert) {
+test("a prime of the attr with an empty string will alter isDirty but not isPrimed", function(assert) {
     brandon = Person.create();
     assert.equal(undefined, brandon.get("firstName"));
     assert.equal(false, brandon.get("isDirty"));
@@ -310,7 +310,7 @@ test("a prime of the attr with an empty string will alter the dirty state", func
     assert.equal(undefined, brandon.get("firstNameIsPrimed"));
 });
 
-test("a prime of the attr with any other value will alter the dirty state", function(assert) {
+test("a prime of the attr with a non empty string will alter both isDirty and isPrimed", function(assert) {
     brandon = Person.create();
     assert.equal(undefined, brandon.get("firstName"));
     assert.equal(false, brandon.get("isDirty"));

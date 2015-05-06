@@ -189,6 +189,10 @@ test("isDirty is true if the values are cleared out", function(assert){
     assert.equal(false, leopard.get("isDirty"));
     leopard.set("name", "");
     assert.equal(true, leopard.get("isDirty"));
+    leopard.set("name", "toran");
+    assert.equal(false, leopard.get("isDirty"));
     leopard.set("fast", false);
     assert.equal(true, leopard.get("isDirty"));
+    leopard.set("fast", true);
+    assert.equal(false, leopard.get("isDirty"));
 });
