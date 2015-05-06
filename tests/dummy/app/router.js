@@ -10,6 +10,7 @@ Router.map(function() {
     this.route("defaulta", {path: "/defaulta"});
     this.route("defaultb", {path: "/defaultb"});
     this.route("defaultx", {path: "/defaultx"});
+    this.route("edit", {path: "/edit"});
 });
 
 export default Router;

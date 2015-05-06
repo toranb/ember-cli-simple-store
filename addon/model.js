@@ -38,10 +38,11 @@ var attr = function() {
                 this.set("_oldState", clone(this));
             }
 
+            var ready = (value === "" || value === undefined) && (data[key] === undefined);
+
             dirty[key + ":isDirty"] = true;
             data[key] = value;
 
-            var ready = (value === "" || value === undefined) && (data[key] === undefined || data[key] === "");
             if(!ready && !primed[key + ":isPrimed"]) {
                 primed[key + ":isPrimed"] = true;
             }
