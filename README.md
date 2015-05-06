@@ -202,6 +202,23 @@ person.set("firstName", "foobar");
 person.get("firstNameIsDirty"); //true
 ```
 
+For new forms that start with undefined properties you can define the default state for isDirty. Example: you have a model that is bound to a form with a checkbox input. The create form starts with a new model so each bound property is undefined. If the user decides to check the bound checkbox (setting the value to true) and then decides to uncheck it (setting the value to false) you would expect the form is not dirty - but because undefined !== false you find the model is dirty. To prevent this behavior set a default value for dirty tracking on the models attr like so.
+
+```js
+var Animal = Model.extend({
+    omnivore: attr(false)
+});
+
+var animal = Animal.create();
+
+animal.get("omnivore"); //undefined
+animal.get("isDirty"); //false
+animal.set("omnivore", true);
+animal.get("isDirty"); //true
+animal.set("omnivore", false);
+animal.get("isDirty"); //false
+```
+
 ## Example applications
 
 **Simplest example with the least amount of complexity (tests included)**
