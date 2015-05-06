@@ -65,6 +65,9 @@ var Model = Ember.Object.extend({
         this.set("_oldState", oldState);
         this._reset();
     },
+    meta: {
+      type: "ember-cli-simple-store.model"
+    },
     _reset: function() {
         this.set("isPrimed", false);
         this.set("_dirty", {});
