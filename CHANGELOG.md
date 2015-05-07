@@ -1,6 +1,13 @@
 ember-cli-simple-store Changelog
 ==============================
 
+2.0.0
+-----
+
+* [FEATURE]: attr now supports default value for dirty tracking
+  ([#13](https://github.com/toranb/ember-cli-simple-store/pull/13))
+
+
 1.0.4
 -----
 
