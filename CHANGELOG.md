@@ -1,6 +1,13 @@
 ember-cli-simple-store Changelog
 ==============================
 
+2.1.0
+-----
+
+* [FEATURE]: added isNotDirty to allow for easy inverse template usage
+  ([commit](https://github.com/toranb/ember-cli-simple-store/commit/b28514a9f5504f3ebf2c28afd253846b7bbe527e))
+
+
 2.0.0
 -----
 
