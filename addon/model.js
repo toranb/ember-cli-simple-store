@@ -102,6 +102,7 @@ var Model = Ember.Object.extend({
         attributes.forEach(function(attr) {
             modelIsDirtyAttrs.push(attr + "IsDirty");
         });
+        Ember.defineProperty(this, "isNotDirty", Ember.computed.not('isDirty'));
         Ember.defineProperty(this, "isDirty", Ember.computed(function() {
             var modelAttrs = modelIsDirtyAttrs.filter(function(attr){
                 return self.get(attr) === true;

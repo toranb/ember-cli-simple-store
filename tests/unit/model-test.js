@@ -39,6 +39,18 @@ test("isDirty property on class will update if attr is changed", function(assert
     assert.equal(true, brandon.get("isDirty"));
 });
 
+test("isNotDirty property on class will reflect the inverse of isDirty computed", function(assert){
+    brandon = Person.create(data);
+    assert.equal(false, brandon.get("isDirty"));
+    assert.equal(true, brandon.get("isNotDirty"));
+    brandon.set("firstName", "baz");
+    assert.equal(true, brandon.get("isDirty"));
+    assert.equal(false, brandon.get("isNotDirty"));
+    brandon.set("firstName", "Brandon");
+    assert.equal(false, brandon.get("isDirty"));
+    assert.equal(true, brandon.get("isNotDirty"));
+});
+
 test("isDirty property on class will not update if non attr is changed", function(assert){
     brandon = Person.create(data);
     assert.equal(false, brandon.get("isDirty"));
