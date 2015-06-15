@@ -26,12 +26,17 @@ function clone(obj) {
 
 var attr = function() {
     var meta = {isAttribute: true, defaults: arguments[0]};
-    return Ember.computed(function(key, value) {
-        var data = this.get("_data") || {};
-        var dirty = this.get("_dirty") || {};
-        var primed = this.get("_primed") || {};
-        var defaults = this.get("_defaults") || {};
-        if (arguments.length === 2) {
+    return Ember.computed({
+        get(key) {
+            var data = this.get("_data") || {};
+            return data[key];
+        },
+        set(key, value) {
+            var data = this.get("_data") || {};
+            var dirty = this.get("_dirty") || {};
+            var primed = this.get("_primed") || {};
+            var defaults = this.get("_defaults") || {};
+
             defaults[key] = meta.defaults;
 
             if (!this.get("isDirty")) {
@@ -46,8 +51,8 @@ var attr = function() {
             if(!ready && !primed[key + ":isPrimed"]) {
                 primed[key + ":isPrimed"] = true;
             }
+            return data[key];
         }
-        return data[key];
     }).property("_data").meta(meta);
 };
 
