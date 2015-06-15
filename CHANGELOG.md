@@ -1,6 +1,16 @@
 ember-cli-simple-store Changelog
 ==============================
 
+2.2.0
+-----
+
+* [DEPENDENCY]: updated ember-cli to 0.2.7
+  ([commit](https://github.com/toranb/ember-cli-simple-store/commit/a4642351a3a93a264ad24710d0bcef70f91243db))
+
+* [DEPENDENCY]: bumping bower version of ember to 1.12.1
+  ([commit](https://github.com/toranb/ember-cli-simple-store/commit/d8683cd20a14fe19ccbe32f0842bea5d0fab0e2d))
+
+
 2.1.0
 -----
 
