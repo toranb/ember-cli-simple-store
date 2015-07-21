@@ -124,6 +124,47 @@ test("isDirty on the model is not reset when value is undefined and set to defau
     assert.equal(false, leopard.get("isDirty"));
 });
 
+test("isDirty on the model is reset when value starts as empty array and set back to empty array value", function(assert){
+    var Batman = Model.extend({batarangs: attr()});
+    var watman = Batman.create({batarangs: []});
+    assert.deepEqual([], watman.get("batarangs"));
+    assert.equal(false, watman.get("isDirty"));
+    watman.set("batarangs", [1, 2]);
+    assert.equal(true, watman.get("isDirty"));
+    watman.set("batarangs", []);
+    assert.equal(false, watman.get("isDirty"));
+    watman.set("batarangs", [3]);
+    assert.equal(true, watman.get("isDirty"));
+    watman.set("batarangs", []);
+    assert.equal(false, watman.get("isDirty"));
+});
+
+test("isDirty on the model is reset when value starts as empty array and set back to empty array value and default value is empty array", function(assert){
+    var Batman = Model.extend({batarangs: attr([])});
+    var watman = Batman.create({batarangs: []});
+    assert.deepEqual([], watman.get("batarangs"));
+    assert.equal(false, watman.get("isDirty"));
+    watman.set("batarangs", [1, 2]);
+    assert.equal(true, watman.get("isDirty"));
+    watman.set("batarangs", []);
+    assert.equal(false, watman.get("isDirty"));
+    watman.set("batarangs", [3]);
+    assert.equal(true, watman.get("isDirty"));
+    watman.set("batarangs", []);
+    assert.equal(false, watman.get("isDirty"));
+});
+
+test("isDirty on the model is reset when value starts as undefined and set to default array value", function(assert){
+    var Batman = Model.extend({batarangs: attr([])});
+    var watman = Batman.create({batarangs: undefined});
+    assert.equal(undefined, watman.get("batarangs"));
+    assert.equal(false, watman.get("isDirty"));
+    watman.set("batarangs", [1, 2]);
+    assert.equal(true, watman.get("isDirty"));
+    watman.set("batarangs", []);
+    assert.equal(false, watman.get("isDirty"));
+});
+
 test("rolling back a model with no changes is a no-op", function(assert){
     leopard = Animal.create({name: "toran", fast: true});
     assert.equal("toran", leopard.get("name"));

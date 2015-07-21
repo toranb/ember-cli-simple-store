@@ -412,6 +412,43 @@ test("rolling back a model after initial state is modified should revert to orig
     assert.equal(undefined, brandon.get("lastNameIsPrimed"));
 });
 
+test("rolling back a model after initial state is modified should revert to original value when array", function(assert){
+    var Beast = Model.extend({things: attr()});
+    var beast = Beast.create({id: 1, things: [1, 2]});
+    assert.deepEqual([1, 2], beast.get("things"));
+    beast.set("things", [1]);
+    assert.equal(true, beast.get("isDirty"));
+    assert.deepEqual([1], beast.get("things"));
+    assert.equal(true, beast.get("thingsIsDirty"));
+    assert.equal(true, beast.get("thingsIsPrimed"));
+    beast.rollback();
+    assert.equal(false, beast.get("isDirty"));
+    assert.deepEqual([1, 2], beast.get("things"));
+    assert.equal(undefined, beast.get("thingsIsDirty"));
+    assert.equal(undefined, beast.get("thingsIsPrimed"));
+    beast.set("things", undefined);
+    assert.equal(true, beast.get("isDirty"));
+    assert.equal(undefined, beast.get("things"));
+    assert.equal(true, beast.get("thingsIsDirty"));
+    assert.equal(true, beast.get("thingsIsPrimed"));
+    beast.rollback();
+    assert.equal(false, beast.get("isDirty"));
+    assert.deepEqual([1, 2], beast.get("things"));
+    assert.equal(undefined, beast.get("thingsIsDirty"));
+    assert.equal(undefined, beast.get("thingsIsPrimed"));
+    beast.set("things", null);
+    assert.equal(true, beast.get("isDirty"));
+    assert.equal(null, beast.get("things"));
+    assert.equal(true, beast.get("thingsIsDirty"));
+    assert.equal(true, beast.get("thingsIsPrimed"));
+    beast.rollback();
+    assert.equal(false, beast.get("isDirty"));
+    assert.deepEqual([1, 2], beast.get("things"));
+    assert.equal(false, beast.get("isDirty"));
+    assert.equal(undefined, beast.get("thingsIsDirty"));
+    assert.equal(undefined, beast.get("thingsIsPrimed"));
+});
+
 test("rolling back and saving a new model with no changes is a no-op", function(assert){
     brandon = Person.create();
     assert.equal(undefined, brandon.get("firstName"));

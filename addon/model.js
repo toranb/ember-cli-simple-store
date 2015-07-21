@@ -1,5 +1,12 @@
 import Ember from "ember";
 
+function equal(first, second) {
+    if (first instanceof Array && second instanceof Array) {
+        return Ember.$(first).not(second).get().length === 0 && Ember.$(second).not(first).get().length === 0;
+    }
+    return first === second;
+}
+
 function factory(obj) {
     return obj.get("constructor.ClassMixin.ownerConstructor");
 }
@@ -93,7 +100,7 @@ var Model = Ember.Object.extend({
                 var original = this.get("_oldState." + attrName);
                 var dirty = this.get("_dirty");
                 var dirtyKey = attrName + ":isDirty";
-                var legit = (current === defaults && original === undefined) || (original === current);
+                var legit = (equal(current, defaults) && original === undefined) || (equal(original, current));
                 return legit ? undefined : dirty[dirtyKey];
             }).property("_dirty", "_defaults", "" + attrName));
             var dynamicPrimedKey = attrName + "IsPrimed";
