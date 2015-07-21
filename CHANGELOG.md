@@ -1,6 +1,13 @@
 ember-cli-simple-store Changelog
 ==============================
 
+2.3.0
+-----
+
+* [BUG]: array attrs are now compared accurately
+  ([commit](https://github.com/toranb/ember-cli-simple-store/commit/fd4b7dd7a8210cc4eb4da324a4a61e162ccf2ab7))
+
+
 2.2.0
 -----
 
