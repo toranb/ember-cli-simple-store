@@ -1,6 +1,16 @@
 ember-cli-simple-store Changelog
 ==============================
 
+2.4.0
+-----
+
+* [FEATURE]: bound array proxy now supports push
+  ([commit](https://github.com/toranb/ember-cli-simple-store/commit/4a73bd9bb5147cc17aedfdc22cbdd36b6c7b9e2f))
+
+* [DEPENDENCY]: added es5Shim to test phantomJS w/ bind
+  ([commit](https://github.com/toranb/ember-cli-simple-store/commit/4f46a392b3be0ec93864342ba2edddbd3430e293))
+
+
 2.3.0
 -----
 
