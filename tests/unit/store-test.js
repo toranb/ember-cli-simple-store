@@ -723,3 +723,109 @@ test("store will update object with id of undefined when setting properties", fu
     var people = store.find("person");
     assert.equal(people[0].id, 1);
 });
+
+test("find with filter returns array proxy with push function that adds record", function(assert) {
+  store.push("person", {
+    id: 9,
+    firstName: "Jarrod",
+    lastName: "Taylor",
+    nickname: "foo",
+    group: 2
+  });
+
+  store.push("person", {
+    id: 8,
+    firstName: "Toran",
+    lastName: "Billups",
+    nickname: "wat",
+    group: 3
+  });
+
+  var filtered_data = store.find("person", {group: 2});
+
+  assert.equal(filtered_data.get("length"), 1);
+  assert.equal(filtered_data.objectAt(0).get("firstName"), "Jarrod");
+
+  filtered_data.push({
+    id: 6,
+    firstName: "Taylor",
+    lastName: "Hobbs",
+    nickname: "zzz",
+    group: 2
+  });
+
+  assert.equal(filtered_data.get("length"), 2);
+  assert.equal(filtered_data.objectAt(0).get("firstName"), "Jarrod");
+  assert.equal(filtered_data.objectAt(1).get("firstName"), "Taylor");
+
+  assert.equal(store.find("person", 6).get("firstName"), "Taylor");
+  assert.equal(store.find("person", 9).get("firstName"), "Jarrod");
+});
+
+test("find with filter function returns array proxy with push function that adds record", function(assert) {
+  store.push("person", {
+    id: 9,
+    firstName: "Jarrod",
+    lastName: "Taylor",
+    nickname: "foo",
+    group: 2
+  });
+
+  store.push("person", {
+    id: 8,
+    firstName: "Brandon",
+    lastName: "Williams",
+    nickname: "bar",
+    group: 3
+  });
+
+  store.push("person", {
+    id: 7,
+    firstName: "Toran",
+    lastName: "Billups",
+    nickname: "foo",
+    group: 8
+  });
+
+  var filter = function(person) {
+      return person.get("group") > 2 || person.get("nickname") === "bar";
+  };
+
+  var filtered_data = store.find("person", filter, ["group", "nickname"]);
+
+  assert.equal(filtered_data.get("length"), 2);
+  assert.equal(filtered_data.objectAt(0).get("firstName"), "Brandon");
+  assert.equal(filtered_data.objectAt(1).get("firstName"), "Toran");
+
+  store.push("person", {
+    id: 6,
+    firstName: "Taylor",
+    lastName: "Hobbs",
+    nickname: "zzz",
+    group: 8
+  });
+
+  assert.equal(filtered_data.get("length"), 3);
+  assert.equal(filtered_data.objectAt(0).get("firstName"), "Brandon");
+  assert.equal(filtered_data.objectAt(1).get("firstName"), "Toran");
+  assert.equal(filtered_data.objectAt(2).get("firstName"), "Taylor");
+
+  filtered_data.push({
+    id: 5,
+    firstName: "Scott",
+    lastName: "Newcomer",
+    nickname: "bar",
+    group: 1
+  });
+
+  assert.equal(filtered_data.get("length"), 4);
+  assert.equal(filtered_data.objectAt(0).get("firstName"), "Brandon");
+  assert.equal(filtered_data.objectAt(1).get("firstName"), "Toran");
+  assert.equal(filtered_data.objectAt(2).get("firstName"), "Taylor");
+  assert.equal(filtered_data.objectAt(3).get("firstName"), "Scott");
+
+  assert.equal(store.find("person", 8).get("firstName"), "Brandon");
+  assert.equal(store.find("person", 7).get("firstName"), "Toran");
+  assert.equal(store.find("person", 6).get("firstName"), "Taylor");
+  assert.equal(store.find("person", 5).get("firstName"), "Scott");
+});

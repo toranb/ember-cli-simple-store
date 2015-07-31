@@ -85,6 +85,9 @@ var Store = Ember.Object.extend({
     _findWithFilter: function(type, filter_attr, filter_value) {
         var computed_string = "source.@each." + filter_attr;
         return Ember.ArrayProxy.extend({
+          push: function(type, data) {
+              this.push(type, data);
+          }.bind(this, type),
           content: Ember.computed(function () {
             var filter_value = this.get("filter_value");
             return Ember.A(this.get("source").filterBy(filter_attr, filter_value));
@@ -100,6 +103,9 @@ var Store = Ember.Object.extend({
             attributes.push("source.@each." + computed_key);
         });
         return Ember.ArrayProxy.extend({
+          push: function(type, data) {
+              this.push(type, data);
+          }.bind(this, type),
           content: Ember.computed(function () {
             var filter_func = this.get("filter_func");
             return Ember.A(this.get("source").filter(filter_func));
