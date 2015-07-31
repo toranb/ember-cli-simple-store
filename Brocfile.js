@@ -2,6 +2,12 @@
 /* global require, module */
 
 var EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
+var funnel = require('broccoli-funnel');
+
+var es5Shim = funnel('node_modules/es5-shim', {
+    files: ['es5-shim.js'],
+    destDir: '/assets'
+});
 
 /*
   This Brocfile specifes the options for the dummy test app of this
@@ -13,4 +19,4 @@ var EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 
 var app = new EmberAddon();
 
-module.exports = app.toTree();
+module.exports = app.toTree([es5Shim]);
