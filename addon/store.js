@@ -57,7 +57,7 @@ var Store = Ember.Object.extend({
     },
     find: function(type, options) {
         if (typeof options === "undefined") {
-            return this._findAll(type);
+            return this._findAllProxy(type);
         }
         if (options instanceof Function) {
             var computed_keys = arguments[2];
@@ -81,6 +81,18 @@ var Store = Ember.Object.extend({
     },
     _findAll: function(type) {
         return arrayForType(type, this);
+    },
+    _findAllProxy: function(type) {
+        return Ember.ArrayProxy.extend({
+          push: function(type, data) {
+              this.push(type, data);
+          }.bind(this, type),
+          content: Ember.computed(function () {
+            return Ember.A(this.get("source"));
+          }).property()
+        }).create({
+          source: this._findAll(type)
+        });
     },
     _findWithFilter: function(type, filter_attr, filter_value) {
         var computed_string = "source.@each." + filter_attr;
