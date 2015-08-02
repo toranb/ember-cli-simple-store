@@ -1,6 +1,16 @@
 ember-cli-simple-store Changelog
 ==============================
 
+3.0.0
+-----
+
+* [TEST]: added another array proxy push test to prove type is respected
+  ([commit](https://github.com/toranb/ember-cli-simple-store/commit/f4353f9933983622d825438c94d662e955d95b3c))
+
+* [FEATURE]: find(all) now returns array proxy
+  ([commit](https://github.com/toranb/ember-cli-simple-store/commit/f8e8fa725237804b0f2ca972c12a91d77a226c33))
+
+
 2.4.0
 -----
 
