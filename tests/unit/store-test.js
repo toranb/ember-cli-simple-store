@@ -875,3 +875,75 @@ test("find returns array proxy with push function that adds record", function(as
   assert.equal(store.find("person", 2).get("firstName"), "Brandon");
   assert.equal(store.find("person", 3).get("firstName"), "Scott");
 });
+
+test("bound array proxy from find will correctly respect the push of different types", function(assert) {
+  store.push("person", {
+    id: 1,
+    firstName: "Toran",
+    lastName: "Billups"
+  });
+
+  store.push("person", {
+    id: 2,
+    firstName: "Brandon",
+    lastName: "Williams"
+  });
+
+  store.push("cat", {
+    id: 1,
+    color: "red"
+  });
+
+  store.push("cat", {
+    id: 2,
+    color: "green"
+  });
+
+  var found_data = store.find("person");
+  assert.equal(found_data.get("length"), 2);
+  assert.equal(found_data.objectAt(0).get("firstName"), "Toran");
+  assert.equal(found_data.objectAt(1).get("firstName"), "Brandon");
+
+  found_data.push({
+    id: 3,
+    firstName: "Scott",
+    lastName: "Newcomer"
+  });
+
+  assert.equal(found_data.get("length"), 3);
+  assert.equal(found_data.objectAt(0).get("firstName"), "Toran");
+  assert.equal(found_data.objectAt(1).get("firstName"), "Brandon");
+  assert.equal(found_data.objectAt(2).get("firstName"), "Scott");
+
+  assert.equal(store.find("person", 1).get("firstName"), "Toran");
+  assert.equal(store.find("person", 2).get("firstName"), "Brandon");
+  assert.equal(store.find("person", 3).get("firstName"), "Scott");
+
+  var found_cats = store.find("cat");
+  assert.equal(found_cats.get("length"), 2);
+  assert.equal(found_cats.objectAt(0).get("color"), "red");
+  assert.equal(found_cats.objectAt(1).get("color"), "green");
+
+  found_cats.push({
+    id: 3,
+    color: "yellow"
+  });
+
+  assert.equal(found_cats.get("length"), 3);
+  assert.equal(found_cats.objectAt(0).get("color"), "red");
+  assert.equal(found_cats.objectAt(1).get("color"), "green");
+  assert.equal(found_cats.objectAt(2).get("color"), "yellow");
+
+  assert.equal(store.find("cat", 1).get("color"), "red");
+  assert.equal(store.find("cat", 2).get("color"), "green");
+  assert.equal(store.find("cat", 3).get("color"), "yellow");
+
+  found_data.push({
+    id: 4,
+    firstName: "Matt",
+    lastName: "Morrison"
+  });
+
+  assert.equal(found_cats.get("length"), 3);
+  assert.equal(found_data.get("length"), 4);
+});
