@@ -87,6 +87,9 @@ var Store = Ember.Object.extend({
           push: function(type, data) {
               this.push(type, data);
           }.bind(this, type),
+          remove: function(type, id) {
+              this.remove(type, id); 
+          }.bind(this, type),
           content: Ember.computed(function () {
             return Ember.A(this.get("source"));
           }).property()
@@ -99,6 +102,9 @@ var Store = Ember.Object.extend({
         return Ember.ArrayProxy.extend({
           push: function(type, data) {
               this.push(type, data);
+          }.bind(this, type),
+          remove: function(type, id) {
+              this.remove(type, id); 
           }.bind(this, type),
           content: Ember.computed(function () {
             var filter_value = this.get("filter_value");
@@ -117,6 +123,9 @@ var Store = Ember.Object.extend({
         return Ember.ArrayProxy.extend({
           push: function(type, data) {
               this.push(type, data);
+          }.bind(this, type),
+          remove: function(type, id) {
+              this.remove(type, id); 
           }.bind(this, type),
           content: Ember.computed(function () {
             var filter_func = this.get("filter_func");
