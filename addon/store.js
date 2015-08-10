@@ -85,7 +85,7 @@ var Store = Ember.Object.extend({
     _findAllProxy: function(type) {
         return Ember.ArrayProxy.extend({
           push: function(type, data) {
-              this.push(type, data);
+              return this.push(type, data);
           }.bind(this, type),
           remove: function(type, id) {
               this.remove(type, id); 
@@ -101,7 +101,7 @@ var Store = Ember.Object.extend({
         var computed_string = "source.@each." + filter_attr;
         return Ember.ArrayProxy.extend({
           push: function(type, data) {
-              this.push(type, data);
+              return this.push(type, data);
           }.bind(this, type),
           remove: function(type, id) {
               this.remove(type, id); 
@@ -122,7 +122,7 @@ var Store = Ember.Object.extend({
         });
         return Ember.ArrayProxy.extend({
           push: function(type, data) {
-              this.push(type, data);
+             return this.push(type, data);
           }.bind(this, type),
           remove: function(type, id) {
               this.remove(type, id); 

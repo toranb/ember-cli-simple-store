@@ -1,5 +1,5 @@
 import Ember from "ember";
-import { module, test } from 'qunit';
+import { module, test } from "qunit";
 import Store from "ember-cli-simple-store/store";
 
 var store, Person, Toran, Cat;
@@ -758,13 +758,16 @@ test("find with filter returns array proxy with push function that adds record",
   assert.equal(filtered_data.get("length"), 1);
   assert.equal(filtered_data.objectAt(0).get("firstName"), "Jarrod");
 
-  filtered_data.push({
+  var created = filtered_data.push({
     id: 6,
     firstName: "Taylor",
     lastName: "Hobbs",
     nickname: "zzz",
     group: 2
   });
+
+  assert.equal(created.get("id"), 6);
+  assert.equal(created.get("firstName"), "Taylor");
 
   assert.equal(filtered_data.get("length"), 2);
   assert.equal(filtered_data.objectAt(0).get("firstName"), "Jarrod");
@@ -822,7 +825,7 @@ test("find with filter function returns array proxy with push function that adds
   assert.equal(filtered_data.objectAt(1).get("firstName"), "Toran");
   assert.equal(filtered_data.objectAt(2).get("firstName"), "Taylor");
 
-  filtered_data.push({
+  var created = filtered_data.push({
     id: 5,
     firstName: "Scott",
     lastName: "Newcomer",
@@ -835,6 +838,9 @@ test("find with filter function returns array proxy with push function that adds
   assert.equal(filtered_data.objectAt(1).get("firstName"), "Toran");
   assert.equal(filtered_data.objectAt(2).get("firstName"), "Taylor");
   assert.equal(filtered_data.objectAt(3).get("firstName"), "Scott");
+
+  assert.equal(created.get("id"), 5);  
+  assert.equal(created.get("firstName"), "Scott");  
 
   assert.equal(store.find("person", 8).get("firstName"), "Brandon");
   assert.equal(store.find("person", 7).get("firstName"), "Toran");
@@ -860,7 +866,7 @@ test("find returns array proxy with push function that adds record", function(as
   assert.equal(found_data.objectAt(0).get("firstName"), "Toran");
   assert.equal(found_data.objectAt(1).get("firstName"), "Brandon");
 
-  found_data.push({
+  var created = found_data.push({
     id: 3,
     firstName: "Scott",
     lastName: "Newcomer"
@@ -870,6 +876,9 @@ test("find returns array proxy with push function that adds record", function(as
   assert.equal(found_data.objectAt(0).get("firstName"), "Toran");
   assert.equal(found_data.objectAt(1).get("firstName"), "Brandon");
   assert.equal(found_data.objectAt(2).get("firstName"), "Scott");
+
+  assert.equal(created.get("id"), 3);
+  assert.equal(created.get("firstName"), "Scott");
 
   assert.equal(store.find("person", 1).get("firstName"), "Toran");
   assert.equal(store.find("person", 2).get("firstName"), "Brandon");
