@@ -947,3 +947,131 @@ test("bound array proxy from find will correctly respect the push of different t
   assert.equal(found_cats.get("length"), 3);
   assert.equal(found_data.get("length"), 4);
 });
+
+test("find returns array proxy that has a remove function that removes the record", function(assert) {
+  store.push("person", {
+    id: 1,
+    firstName: "Toran",
+    lastName: "Billups"
+  });
+
+  store.push("person", {
+    id: 2,
+    firstName: "Brandon",
+    lastName: "Williams"
+  });
+
+  var found_data = store.find("person");
+  assert.equal(found_data.get("length"), 2);
+  assert.equal(found_data.objectAt(0).get("firstName"), "Toran");
+  assert.equal(found_data.objectAt(1).get("firstName"), "Brandon");
+
+  found_data.remove(1);
+
+  assert.equal(found_data.get("length"), 1);
+  assert.equal(found_data.objectAt(0).get("firstName"), "Brandon");
+  assert.equal(store.find("person", 2).get("firstName"), "Brandon");
+
+  found_data.push({
+      id: 1,
+      lastName: "new"
+  });
+
+  assert.equal(store._findById("person", 1).get("firstName"), "");
+  assert.equal(store._findById("person", 1).get("lastName"), "new");
+});
+
+test("find with filter returns array proxy that has a remove function that removes the record", function(assert) {
+  store.push("person", {
+    id: 9,
+    firstName: "Jarrod",
+    lastName: "Taylor",
+    nickname: "foo",
+    group: 2
+  });
+
+  store.push("person", {
+    id: 8,
+    firstName: "Toran",
+    lastName: "Billups",
+    nickname: "wat",
+    group: 3
+  });
+
+  store.push("person", {
+    id: 7,
+    firstName: "Scott",
+    lastName: "Newcomer",
+    nickname: "barz",
+    group: 2
+  });
+
+  var filtered_data = store.find("person", {group: 2});
+
+  assert.equal(filtered_data.get("length"), 2);
+  assert.equal(filtered_data.objectAt(0).get("firstName"), "Jarrod");
+
+  filtered_data.remove(9);
+
+  assert.equal(filtered_data.get("length"), 1);
+  assert.equal(filtered_data.objectAt(0).get("firstName"), "Scott");
+  assert.equal(store.find("person", 7).get("firstName"), "Scott");
+  assert.equal(store.find("person", 8).get("firstName"), "Toran");
+
+  filtered_data.push({
+      id: 9,
+      lastName: "new"
+  });
+
+  assert.equal(store._findById("person", 9).get("firstName"), "");
+  assert.equal(store._findById("person", 9).get("lastName"), "new");
+});
+
+test("find with filter function returns array proxy that has a remove function that removes the record", function(assert) {
+  store.push("person", {
+    id: 9,
+    firstName: "Jarrod",
+    lastName: "Taylor",
+    nickname: "foo",
+    group: 2
+  });
+
+  store.push("person", {
+    id: 8,
+    firstName: "Brandon",
+    lastName: "Williams",
+    nickname: "bar",
+    group: 3
+  });
+
+  store.push("person", {
+    id: 7,
+    firstName: "Toran",
+    lastName: "Billups",
+    nickname: "foo",
+    group: 8
+  });
+
+  var filter = function(person) {
+      return person.get("group") > 2 || person.get("nickname") === "bar";
+  };
+
+  var filtered_data = store.find("person", filter, ["group", "nickname"]);
+
+  assert.equal(filtered_data.get("length"), 2);
+  assert.equal(filtered_data.objectAt(0).get("firstName"), "Brandon");
+  assert.equal(filtered_data.objectAt(1).get("firstName"), "Toran");
+
+  filtered_data.remove(8);
+
+  assert.equal(filtered_data.get("length"), 1);
+  assert.equal(filtered_data.objectAt(0).get("firstName"), "Toran");
+
+  filtered_data.push({
+      id: 8,
+      lastName: "new"
+  });
+
+  assert.equal(store._findById("person", 8).get("firstName"), "");
+  assert.equal(store._findById("person", 8).get("lastName"), "new");
+});
