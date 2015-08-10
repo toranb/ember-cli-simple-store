@@ -4,6 +4,9 @@ ember-cli-simple-store Changelog
 3.0.0
 -----
 
+* [FEATURE]: array proxy now supports remove
+  ([#18](https://github.com/toranb/ember-cli-simple-store/pull/18))
+
 * [TEST]: added another array proxy push test to prove type is respected
   ([commit](https://github.com/toranb/ember-cli-simple-store/commit/f4353f9933983622d825438c94d662e955d95b3c))
 
