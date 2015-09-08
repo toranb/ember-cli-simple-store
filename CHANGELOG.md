@@ -1,6 +1,13 @@
 ember-cli-simple-store Changelog
 ==============================
 
+3.1.0
+-----
+
+* [DEPENDENCY]: removing container from the initializer for ember 2.1
+  ([commit](https://github.com/toranb/ember-cli-simple-store/commit/1f68d63e445a83b9298d03c9bbf95af7b93680d7))
+
+
 3.0.0
 -----
 
