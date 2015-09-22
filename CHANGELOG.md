@@ -1,6 +1,16 @@
 ember-cli-simple-store Changelog
 ==============================
 
+3.2.0
+-----
+
+* [TEST]: added unit and acceptance tests for isPrimed (starting null)
+  ([commit](https://github.com/toranb/ember-cli-simple-store/commit/1e1e6d0231c1a3a34974d06ffe352ffc5215a2d5))
+
+* [FEATURE]: replaced === undefined operator with Ember.isNone
+  ([#21](https://github.com/toranb/ember-cli-simple-store/pull/21))
+
+
 3.1.0
 -----
 
