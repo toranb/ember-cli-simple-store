@@ -50,7 +50,7 @@ var attr = function() {
                 this.set("_oldState", clone(this));
             }
 
-            var ready = (value === "" || value === undefined) && (data[key] === undefined);
+            var ready = (value === "" || Ember.isNone(value)) && (Ember.isNone(data[key]));
 
             dirty[key + ":isDirty"] = true;
             data[key] = value;
@@ -100,7 +100,7 @@ var Model = Ember.Object.extend({
                 var original = this.get("_oldState." + attrName);
                 var dirty = this.get("_dirty");
                 var dirtyKey = attrName + ":isDirty";
-                var legit = (equal(current, defaults) && original === undefined) || (equal(original, current));
+                var legit = (equal(current, defaults) && Ember.isNone(original)) || (equal(original, current));
                 return legit ? undefined : dirty[dirtyKey];
             }).property("_dirty", "_defaults", "" + attrName));
             var dynamicPrimedKey = attrName + "IsPrimed";

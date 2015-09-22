@@ -112,6 +112,20 @@ test("isDirty on the model is not reset when value is undefined and set to empty
     assert.equal(false, leopard.get("isDirty"));
 });
 
+test("isDirty on the model is not reset when value is null and set to empty string", function(assert){
+    leopard = Animal.create({name: null, fast: true});
+    assert.equal(null, leopard.get("name"));
+    assert.equal(false, leopard.get("isDirty"));
+    leopard.set("name", "baz");
+    assert.equal(true, leopard.get("isDirty"));
+    leopard.set("name", undefined);
+    assert.equal(true, leopard.get("isDirty"));
+    leopard.set("name", null);
+    assert.equal(false, leopard.get("isDirty"));
+    leopard.set("name", "");
+    assert.equal(false, leopard.get("isDirty"));
+});
+
 test("isDirty on the model is not reset when value is undefined and set to default boolean value", function(assert){
     leopard = Animal.create({name: "toran", fast: undefined});
     assert.equal(undefined, leopard.get("fast"));
@@ -119,6 +133,20 @@ test("isDirty on the model is not reset when value is undefined and set to defau
     leopard.set("fast", true);
     assert.equal(true, leopard.get("isDirty"));
     leopard.set("fast", undefined);
+    assert.equal(false, leopard.get("isDirty"));
+    leopard.set("fast", false);
+    assert.equal(false, leopard.get("isDirty"));
+});
+
+test("isDirty on the model is not reset when value is null and set to default boolean value", function(assert){
+    leopard = Animal.create({name: "toran", fast: null});
+    assert.equal(undefined, leopard.get("fast"));
+    assert.equal(false, leopard.get("isDirty"));
+    leopard.set("fast", true);
+    assert.equal(true, leopard.get("isDirty"));
+    leopard.set("fast", undefined);
+    assert.equal(true, leopard.get("isDirty"));
+    leopard.set("fast", null);
     assert.equal(false, leopard.get("isDirty"));
     leopard.set("fast", false);
     assert.equal(false, leopard.get("isDirty"));
