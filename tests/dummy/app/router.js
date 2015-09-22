@@ -11,6 +11,7 @@ Router.map(function() {
     this.route("defaultb", {path: "/defaultb"});
     this.route("defaultx", {path: "/defaultx"});
     this.route("edit", {path: "/edit"});
+    this.route("isnone", {path: "/isnone"});
 });
 
 export default Router;

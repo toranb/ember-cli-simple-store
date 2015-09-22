@@ -50,7 +50,7 @@ var attr = function() {
                 this.set("_oldState", clone(this));
             }
 
-            var ready = (value === "" || Ember.isNone(value)) && (Ember.isNone(data[key]));
+            var ready = value === "" && (Ember.isNone(data[key]));
 
             dirty[key + ":isDirty"] = true;
             data[key] = value;

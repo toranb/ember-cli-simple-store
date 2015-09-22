@@ -1,0 +1,5 @@
+{{#each model as |item|}}
+  {{input class="name" value=item.name}}
+  <div class="nameDirty">{{item.nameIsDirty}}</div>
+  <div class="namePrimed">{{item.nameIsPrimed}}</div>
+{{/each}}
