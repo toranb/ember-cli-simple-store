@@ -48,6 +48,13 @@ var Store = Ember.Object.extend({
         }
         return record;
     },
+    pushMany: function(type, data) {
+        this.beginPropertyChanges();
+        data.forEach(function(el) {
+            this.push(type, el);
+        }, this);
+        this.endPropertyChanges();
+    },
     remove: function(type, id) {
         var record = this._findById(type, id);
         if (record) {
