@@ -408,13 +408,13 @@ test("pushing a model that does not exist should raise clear exception", functio
 });
 
 test("findOne will return the first record", function(assert) {
-  var first = store.push("toran", {
+  store.push("toran", {
     id: 1,
     firstName: "Jake",
     lastName: "Good"
   });
 
-  var last = store.push("toran", {
+  store.push("toran", {
     id: 2,
     firstName: "Brandon",
     lastName: "Williams"
@@ -531,7 +531,7 @@ test("doing a filter by function with no computed_keys should raise clear except
         var name_filter = function(person) {
             return person.get("name") === "Matt";
         };
-        var filtered_data = store.find("person", name_filter);
+        store.find("person", name_filter);
         assert.ok(false, "find with filter did not fail with clear exception message");
     } catch(e) {
         assert.equal(e.message, "Assertion Failed: No computed keys found for the filter by function");
@@ -718,7 +718,7 @@ test("findOne result will be computed property that updates as records are pushe
 });
 
 test("store will not update object with id of undefined", function(assert) {
-    var person = store.push("person", {});
+    store.push("person", {});
     assert.equal(store.find("person").get("length"), 1);
     store.push("person", {id: 1, name: "foo"});
     assert.equal(store.find("person").get("length"), 2);
@@ -839,8 +839,8 @@ test("find with filter function returns array proxy with push function that adds
   assert.equal(filtered_data.objectAt(2).get("firstName"), "Taylor");
   assert.equal(filtered_data.objectAt(3).get("firstName"), "Scott");
 
-  assert.equal(created.get("id"), 5);  
-  assert.equal(created.get("firstName"), "Scott");  
+  assert.equal(created.get("id"), 5);
+  assert.equal(created.get("firstName"), "Scott");
 
   assert.equal(store.find("person", 8).get("firstName"), "Brandon");
   assert.equal(store.find("person", 7).get("firstName"), "Toran");
