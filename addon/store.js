@@ -88,11 +88,11 @@ var Store = Ember.Object.extend({
               return this.push(type, data);
           }.bind(this, type),
           remove: function(type, id) {
-              this.remove(type, id); 
+              this.remove(type, id);
           }.bind(this, type),
           content: Ember.computed(function () {
             return Ember.A(this.get("source"));
-          }).property()
+          })
         }).create({
           source: this._findAll(type)
         });
@@ -104,12 +104,12 @@ var Store = Ember.Object.extend({
               return this.push(type, data);
           }.bind(this, type),
           remove: function(type, id) {
-              this.remove(type, id); 
+              this.remove(type, id);
           }.bind(this, type),
-          content: Ember.computed(function () {
+          content: Ember.computed(computed_string, function () {
             var filter_value = this.get("filter_value");
             return Ember.A(this.get("source").filterBy(filter_attr, filter_value));
-          }).property(computed_string)
+          })
         }).create({
           filter_value: filter_value,
           source: this._findAll(type)
@@ -125,12 +125,12 @@ var Store = Ember.Object.extend({
              return this.push(type, data);
           }.bind(this, type),
           remove: function(type, id) {
-              this.remove(type, id); 
+              this.remove(type, id);
           }.bind(this, type),
-          content: Ember.computed(function () {
+          content: Ember.computed("" + attributes, function () {
             var filter_func = this.get("filter_func");
             return Ember.A(this.get("source").filter(filter_func));
-          }).property("" + attributes)
+          })
         }).create({
           filter_func: filter_func,
           source: this._findAll(type)
@@ -147,11 +147,11 @@ var Store = Ember.Object.extend({
         var store = this;
         var actualId = this._coerceId(id);
         return Ember.ObjectProxy.extend({
-            content: Ember.computed(function() {
+            content: Ember.computed("source.[]", function() {
                 var filter_value = this.get("filter_value");
                 var list = Ember.A(this.get("source").filterBy("id", filter_value));
                 return list.objectAt(0);
-            }).property("source.[]")
+            })
         }).create({
             filter_value: actualId,
             source: this._findAll(type),
@@ -176,9 +176,9 @@ var Store = Ember.Object.extend({
     findOne: function(type) {
         var store = this;
         return Ember.ObjectProxy.extend({
-            content: Ember.computed(function() {
+            content: Ember.computed("source.[]", function() {
                 return this.get("source").objectAt(0);
-            }).property("source.[]")
+            })
         }).create({
             source: this._findAll(type),
             init: function () {
