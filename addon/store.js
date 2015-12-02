@@ -1,8 +1,9 @@
 import Ember from "ember";
+import getOwner from "ember-getowner-polyfill";
 
 function buildRecord(type, data, store) {
     var containerKey = "model:" + type;
-    var factory = store.container.lookupFactory(containerKey);
+    var factory = getOwner(store)._lookupFactory(containerKey);
 
     Ember.assert("No model was found for type: " + type, factory);
 
