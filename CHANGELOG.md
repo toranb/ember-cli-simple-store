@@ -1,6 +1,19 @@
 ember-cli-simple-store Changelog
 ==============================
 
+3.3.0
+-----
+
+* [DEPENDENCY]: using getOwner to support ember 2.3
+  ([commit](https://github.com/toranb/ember-cli-simple-store/commit/dc6ac20e82ecb1750e5c23041075f7a2b2893512))
+
+* [REFACTOR]: cleaning up the computed properties
+  ([#27](https://github.com/toranb/ember-cli-simple-store/pull/27))
+
+* [DEPENDENCY]: update ember-cli and all other dependencies
+  ([#26](https://github.com/toranb/ember-cli-simple-store/pull/26))
+
+
 3.2.0
 -----
 
