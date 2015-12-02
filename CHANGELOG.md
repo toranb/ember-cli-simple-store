@@ -1,6 +1,13 @@
 ember-cli-simple-store Changelog
 ==============================
 
+3.4.0
+-----
+
+* [DEPENDENCY]: more getOwner cleanup
+  ([commit](https://github.com/toranb/ember-cli-simple-store/commit/3f1b88b2492eaf81ecba8bd67ce465d18a37c9f6))
+
+
 3.3.0
 -----
 

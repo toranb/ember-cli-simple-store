@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-simple-store",
-  "version": "3.3.0",
+  "version": "3.4.0",
   "description": "ember-cli addon that provides a simple identity map for ember.js web applications",
   "directories": {
     "doc": "doc",
