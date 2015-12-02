@@ -157,7 +157,7 @@ var Store = Ember.Object.extend({
             filter_value: actualId,
             source: this._findAll(type),
             init: function () {
-                var model = store.container.lookup("model:" + type);
+                var model = getOwner(store).lookup("model:" + type);
                 for(var method in model) {
                     if(typeof model[method] === "function") {
                         if(!this[method]) {
@@ -183,7 +183,7 @@ var Store = Ember.Object.extend({
         }).create({
             source: this._findAll(type),
             init: function () {
-                var model = store.container.lookup("model:" + type);
+                var model = getOwner(store).lookup("model:" + type);
                 for(var method in model) {
                     if(typeof model[method] === "function") {
                         if(!this[method]) {
