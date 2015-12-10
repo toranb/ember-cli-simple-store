@@ -72,7 +72,10 @@ var Store = Ember.Object.extend({
 
             var attr = params[0];
             var value = options[attr];
-            return this._findWithFilter(type, attr, value);
+            var func = function(m) {
+                return m.get(attr) === value;
+            };
+            return this._findWithFilterFunc(type, func, [attr]);
         }
         return this._findByIdComputed(type, options);
     },
@@ -95,24 +98,6 @@ var Store = Ember.Object.extend({
             return Ember.A(this.get("source"));
           })
         }).create({
-          source: this._findAll(type)
-        });
-    },
-    _findWithFilter: function(type, filter_attr, filter_value) {
-        var computed_string = "source.@each." + filter_attr;
-        return Ember.ArrayProxy.extend({
-          push: function(type, data) {
-              return this.push(type, data);
-          }.bind(this, type),
-          remove: function(type, id) {
-              this.remove(type, id);
-          }.bind(this, type),
-          content: Ember.computed(computed_string, function () {
-            var filter_value = this.get("filter_value");
-            return Ember.A(this.get("source").filterBy(filter_attr, filter_value));
-          })
-        }).create({
-          filter_value: filter_value,
           source: this._findAll(type)
         });
     },
