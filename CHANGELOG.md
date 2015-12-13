@@ -1,6 +1,13 @@
 ember-cli-simple-store Changelog
 ==============================
 
+3.5.0
+-----
+
+* [REFACTOR]: removed the duplicate ArrayProxy (filter w/ object)
+  ([commit](https://github.com/toranb/ember-cli-simple-store/commit/454e4e4e2ad7cd3cd5faf2ea76d71685af5cc1dd))
+
+
 3.4.0
 -----
 
