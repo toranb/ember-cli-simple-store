@@ -4,7 +4,7 @@ import Store from "ember-cli-simple-store/store";
 
 var store, Person, Toran, Cat, run = Ember.run;
 
-module("toran store unit tests", {
+module("store unit tests", {
   setup: function() {
     Person = Ember.Object.extend({
         firstName: "",
