@@ -42,8 +42,8 @@ test('updateContent only fires for models with subscribers and only once per run
       assert.equal(store.find('user', 2).get('role.id'), 9);
       var filtersMap = store.get("filtersMap");
       var roleFunc = filtersMap["role"];
-      var origRoleFunc = roleFunc.updateContent;
-      roleFunc.updateContent = function() {
+      var origRoleFunc = roleFunc[0].updateContent;
+      roleFunc[0].updateContent = function() {
           roleUpdated = roleUpdated + 1;
           return origRoleFunc.apply(this, arguments);
       };

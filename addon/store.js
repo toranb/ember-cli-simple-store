@@ -75,11 +75,13 @@ var Store = Ember.Object.extend({
         var recompute = this.get("recompute");
         var filtersMap = this.get("filtersMap");
         Object.keys(filtersMap).forEach(function(type) {
-            var func = filtersMap[type];
-            if(func && Ember.$.inArray(type, recompute) > -1) {
-                var updatedContent = func.updateContent();
-                func.set('content', Ember.A(updatedContent));
-            }
+            var filters = filtersMap[type] || [];
+            filters.forEach(function(func) {
+                if(Ember.$.inArray(type, recompute) > -1) {
+                    var updatedContent = func.updateContent();
+                    func.set('content', Ember.A(updatedContent));
+                }
+            });
         });
         this.set("recompute", []);
     },
@@ -149,7 +151,9 @@ var Store = Ember.Object.extend({
             source: this._findAll(type)
         });
         var filtersMap = this.get("filtersMap");
-        filtersMap[type] = func;
+        var filters = filtersMap[type] || [];
+        filters.push(func);
+        filtersMap[type] = filters;
         return func;
     },
     _coerceId: function(id) {
