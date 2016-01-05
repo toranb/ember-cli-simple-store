@@ -58,7 +58,7 @@ var filter = function(person) {
     var salary = person.get("salary");
     return name === "toran" && salary > 100;
 }
-store.find("person", filter);
+store.find("person", filter, ["salary", "name"]);
 ```
 
 ```js
