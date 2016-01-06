@@ -6,7 +6,7 @@ var Person, brandon;
 var data = {id: 1, firstName: "Brandon", lastName: "Williams"};
 
 module("model unit tests", {
-    setup: function() {
+    beforeEach: function() {
         Person = Model.extend({
             wat: "",
             firstName: attr(),

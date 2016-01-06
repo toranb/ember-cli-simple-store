@@ -43,7 +43,9 @@ var Store = Ember.Object.extend({
         delete this.get("identityMap")[type];
         arrayForType(type, this).clear();
 
-        this.scheduleUpdate(type);
+        Ember.run.once(() => {
+            this.scheduleUpdate(type);
+        });
     },
     remove: function(type, id) {
         var record = this._findById(type, id);
@@ -51,7 +53,9 @@ var Store = Ember.Object.extend({
             delete this.get("identityMap")[type][record.id];
             arrayForType(type, this).removeObject(record);
 
-            this.scheduleUpdate(type);
+            Ember.run.once(() => {
+                this.scheduleUpdate(type);
+            });
         }
     },
     push: function(type, data) {
@@ -62,14 +66,16 @@ var Store = Ember.Object.extend({
             record = buildRecord(type, data, this);
         }
 
-        this.scheduleUpdate(type);
+        Ember.run.once(() => {
+            this.scheduleUpdate(type);
+        });
 
         return record;
     },
     scheduleUpdate: function(type) {
         var recompute = this.get("recompute");
         recompute.push(type);
-        Ember.run.scheduleOnce("afterRender", this, "updateFilters");
+        Ember.run.scheduleOnce("actions", this, "updateFilters");
     },
     updateFilters: function() {
         var recompute = this.get("recompute");
@@ -90,6 +96,8 @@ var Store = Ember.Object.extend({
             return this._findAllProxy(type);
         }
         if (options instanceof Function) {
+            // var computed_keys = arguments[2] || [];
+            // Ember.deprecate("find with filter no longer requires an array of computed keys", computed_keys);
             return this._findWithFilterFunc(type, options);
         }
         if (typeof options === "object") {

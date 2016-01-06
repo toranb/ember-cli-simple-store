@@ -21,16 +21,12 @@ test('push will trigger filter for each subscription', function(assert) {
       assert.equal(find('.two').find('option').length, 3);
       assert.equal(find('.three').find('option').length, 3);
       assert.equal(find('.four').find('option').length, 3);
-      Ember.run(function() {
-          store.push('robot', {id: 2, size: 20});
-          store.push('robot', {id: 1, size: 10});
-          store.push('robot', {id: 3, size: 30});
-      });
-      Ember.run(function() {
-          store.push('zing', {id: 2, number: 80});
-          store.push('zing', {id: 1, number: 90});
-          store.push('zing', {id: 3, number: 70});
-      });
+      store.push('robot', {id: 2, size: 20});
+      store.push('robot', {id: 1, size: 10});
+      store.push('robot', {id: 3, size: 30});
+      store.push('zing', {id: 2, number: 80});
+      store.push('zing', {id: 1, number: 90});
+      store.push('zing', {id: 3, number: 70});
   });
   andThen(function() {
       assert.equal(find('.one').find('option').length, 0);
