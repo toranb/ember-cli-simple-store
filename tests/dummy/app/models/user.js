@@ -26,13 +26,11 @@ export default Model.extend({
         });
         var new_role = store.find("role", new_role_id);
         var new_role_users = new_role.get("users") || [];
-        Ember.run(function() {
-            store.push("user", {id: user_id, name: user_name}); //only to test perf
-            // old_role.set("users", updated_old_role_users); in v3 this worked but v4 requires a push
-            store.push("role", {id: old_role.get("id"), users: updated_old_role_users});
-            // new_role.set("users", new_role_users.concat(user_id)); in v3 this worked but v4 requires a push
-            store.push("role", {id: new_role.get("id"), users: new_role_users.concat(user_id)});
-            store.push("user", {id: user_id, nope: "wat"}); //only to test perf
-        });
+        store.push("user", {id: user_id, name: user_name}); //only to test perf
+        // old_role.set("users", updated_old_role_users); in v3 this worked but v4 requires a push
+        store.push("role", {id: old_role.get("id"), users: updated_old_role_users});
+        // new_role.set("users", new_role_users.concat(user_id)); in v3 this worked but v4 requires a push
+        store.push("role", {id: new_role.get("id"), users: new_role_users.concat(user_id)});
+        store.push("user", {id: user_id, nope: "wat"}); //only to test perf
     }
 });
