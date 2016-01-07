@@ -98,7 +98,7 @@ var Store = Ember.Object.extend({
         if (options instanceof Function) {
             // var computed_keys = arguments[2] || [];
             // Ember.deprecate("find with filter no longer requires an array of computed keys", computed_keys);
-            return this._findWithFilterFunc(type, options);
+            return this._findWithFilterFunc(type, options, true);
         }
         if (typeof options === "object") {
             var params = Object.keys(options);
@@ -136,7 +136,17 @@ var Store = Ember.Object.extend({
           source: this._findAll(type)
         });
     },
-    _findWithFilterFunc: function(type, filter_func) {
+    _findWithFilterFunc: function(type, filter_func, cache) {
+        var filtersMap = this.get("filtersMap");
+        var filters = filtersMap[type] || [];
+        if(cache) {
+            var exists = filters.filter(function(fn) {
+                return fn.filter_func.toString() === filter_func.toString();
+            })[0];
+            if(exists) {
+                return exists;
+            }
+        }
         var func = Ember.ArrayProxy.extend({
           push: function(type, data) {
              return this.push(type, data);
@@ -158,8 +168,6 @@ var Store = Ember.Object.extend({
             filter_func: filter_func,
             source: this._findAll(type)
         });
-        var filtersMap = this.get("filtersMap");
-        var filters = filtersMap[type] || [];
         filters.push(func);
         filtersMap[type] = filters;
         return func;
