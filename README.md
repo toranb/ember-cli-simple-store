@@ -104,7 +104,6 @@ var PersonRepository = Ember.Object.extend({
         return store.find("person", id);
     },
     insert: function(person) {
-        var self = this;
         var store = this.get("store");
         var hash = {data: JSON.stringify(person)};
         return new Ember.RSVP.Promise(function(resolve,reject) {
@@ -123,7 +122,6 @@ var PersonRepository = Ember.Object.extend({
         return PromiseMixin.xhr(endpoint, "PUT", hash);
     },
     remove: function(person) {
-        var self = this;
         var store = this.get("store");
         var person_id = person.get("id");
         var endpoint = "/api/people/%@/".fmt(person_id);
@@ -154,8 +152,10 @@ export default Ember.Route.extend({
         return Ember.RSVP.hash({model: model, notes: notes});
     },
     setupController: function(controller, hash) {
-        controller.set("model", hash.model);
-        controller.set("notes", hash.notes);
+        controller.setProperties({
+          "model": hash.model,
+          "notes": hash.notes
+        });
     }
 });
 ```
