@@ -219,6 +219,39 @@ animal.set("omnivore", false);
 animal.get("isDirty"); //false
 ```
 
+## Support for working in parallel with ember-data
+
+Disabling auto-injection of the store is optional, but useful in the scenario where you need to run `ember-cli-simple-store` and `ember-data` in parallel -- since they both attempt to register a type against `store:main`.  In order to work around this, manually register and inject `ember-cli-simple-store/store` under a new name.
+
+```js
+// config/environment.js
+'use strict';
+
+module.exports = function() {
+  return {
+    'ember-cli-simple-store': {
+      disableAutoInject: true
+    }
+  };
+};
+```
+
+```js
+// app/initializers/ember-cli-simple-store.js
+import SimpleStore from 'ember-cli-simple-store/store';
+
+export default {
+    name: 'simple-store',
+    initialize() {
+        var app = arguments[1] || arguments[0];
+        app.register('simpleStore:main', SimpleStore);
+        app.inject('controller', 'simpleStore', 'simpleStore:main');
+        app.inject('route', 'simpleStore', 'simpleStore:main');
+    }
+};
+
+```
+
 ## Example applications
 
 **Simplest example with the least amount of complexity (tests included)**
