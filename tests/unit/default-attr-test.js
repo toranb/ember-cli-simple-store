@@ -4,7 +4,7 @@ import { attr, Model } from "ember-cli-simple-store/model";
 var Animal, leopard;
 
 module("default attr unit tests", {
-    setup: function() {
+    beforeEach: function() {
         Animal = Model.extend({
             name: attr(""),
             fast: attr(false)
