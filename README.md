@@ -241,7 +241,7 @@ module.exports = function() {
 import SimpleStore from 'ember-cli-simple-store/store';
 
 export default {
-    name: 'simple-store',
+    name: 'override-simple-store',
     initialize() {
         var app = arguments[1] || arguments[0];
         app.register('simpleStore:main', SimpleStore);
