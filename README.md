@@ -18,7 +18,7 @@
 5) npm install ember-cli-simple-store --save-dev
 ```
 
-## You get 5 methods: push/remove/find/findOne/clear
+## You get 6 methods: push/remove/find/findOne/clear/unsubscribe
 
 ```js
 //create or update person model
@@ -58,7 +58,16 @@ var filter = function(person) {
     var salary = person.get("salary");
     return name === "toran" && salary > 100;
 }
-store.find("person", filter, ["salary", "name"]);
+store.find("person", filter);
+```
+
+```js
+//remove any find that that used a filter (to prevent memory leaks)
+
+var people = store.find("person", {account_id: 789});
+var orders = store.find("order", {amount: 250});
+var customers = store.find("customer", {name: "toran"});
+store.unsubscribe(people, orders, customers);
 ```
 
 ```js
