@@ -1,6 +1,22 @@
 ember-cli-simple-store Changelog
 ==============================
 
+3.6.0
+-----
+
+* [DOCS]: Update README.md
+  ([commit](https://github.com/toranb/ember-cli-simple-store/commit/d7bc3808325785cd61f80707fb4db1e41c7e1d68))
+
+* [FEATURE]: Conditionally disable initializer
+  ([commit](https://github.com/toranb/ember-cli-simple-store/commit/edf2d41b60ab2959224146dee4169e9805189a7a))
+
+* [DEPENDENCY]: Lock jQuery to 1.11.3
+  ([commit](https://github.com/toranb/ember-cli-simple-store/commit/16de403f8b2eb7e3f115a83f8ff8f6402d02243c))
+
+* [DOCS]: Fix readme examples
+  ([commit](https://github.com/toranb/ember-cli-simple-store/commit/2de430133dd9345de0034124880bf1c42fcef451))
+
+
 3.5.0
 -----
 
