@@ -91,6 +91,23 @@ var Store = Ember.Object.extend({
         });
         this.set("recompute", []);
     },
+    unsubscribe: function() {
+        var updatedFiltersMap;
+        for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; ++_key) {
+            args[_key] = arguments[_key];
+        }
+        var filterIds = args.map(function(func) {
+            return func.id;
+        });
+        var filtersMap = this.get("filtersMap");
+        Object.keys(filtersMap).forEach(function(type) {
+            var filters = filtersMap[type] || [];
+            updatedFiltersMap = filters.filter(function(func) {
+                return Ember.$.inArray(func.id, filterIds) === -1;
+            });
+            filtersMap[type] = updatedFiltersMap;
+        });
+    },
     find: function(type, options) {
         if (typeof options === "undefined") {
             return this._findAllProxy(type);
@@ -155,6 +172,7 @@ var Store = Ember.Object.extend({
               return Ember.A(source.filter(filter_func));
           })
         }).create({
+            id: Ember.uuid(),
             filter_func: filter_func,
             source: this._findAll(type)
         });

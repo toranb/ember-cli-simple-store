@@ -3,12 +3,15 @@ import Ember from "ember";
 var FiltersRoute = Ember.Route.extend({
     model: function() {
         var store = this.get("store");
-        store.push("robot", {id: 1, name: "r one", size: 51});
-        store.push("robot", {id: 2, name: "r two", size: 52});
-        store.push("robot", {id: 3, name: "r three", size: 53});
-        store.push("zing", {id: 1, name: "z one", number: 49});
-        store.push("zing", {id: 2, name: "z two", number: 48});
-        store.push("zing", {id: 3, name: "z three", number: 47});
+        if(store.find("robot").get("length") === 0) {
+            //hack to prevent another push of the same data
+            store.push("robot", {id: 1, name: "r one", size: 51});
+            store.push("robot", {id: 2, name: "r two", size: 52});
+            store.push("robot", {id: 3, name: "r three", size: 53});
+            store.push("zing", {id: 1, name: "z one", number: 49});
+            store.push("zing", {id: 2, name: "z two", number: 48});
+            store.push("zing", {id: 3, name: "z three", number: 47});
+        }
         var one = function(m) {
             return m.get("size") > 50;
         };
@@ -32,6 +35,13 @@ var FiltersRoute = Ember.Route.extend({
         controller.set("filtertwo", hash.filtertwo);
         controller.set("filterthree", hash.filterthree);
         controller.set("filterfour", hash.filterfour);
+    },
+    actions: {
+        willTransition: function() {
+            var store = this.get("store");
+            var currentModel = this.get("currentModel");
+            store.unsubscribe(currentModel.filterone, currentModel.filtertwo, currentModel.filterthree, currentModel.filterfour);
+        }
     }
 });
 
