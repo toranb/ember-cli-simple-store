@@ -1,11 +1,5 @@
 /* global require, module */
 var EmberApp = require('ember-cli/lib/broccoli/ember-addon');
-var funnel = require('broccoli-funnel');
-
-var es5Shim = funnel('node_modules/es5-shim', {
-    files: ['es5-shim.js'],
-    destDir: '/assets'
-});
 
 module.exports = function(defaults) {
   var app = new EmberApp(defaults, {
@@ -19,5 +13,5 @@ module.exports = function(defaults) {
     behave. You most likely want to be modifying `./index.js` or app's build file
   */
 
-  return app.toTree([es5Shim]);
+  return app.toTree();
 };
