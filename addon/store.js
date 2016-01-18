@@ -188,8 +188,7 @@ var Store = Ember.Object.extend({
             source: this._findAll(type),
             compute() {
                 var filter_value = this.get("filter_value");
-                var list = Ember.A(this.get("source").filterBy("id", filter_value));
-                return list.objectAt(0);
+                return this.get("source").findBy("id", filter_value);
             }
         });
     }
