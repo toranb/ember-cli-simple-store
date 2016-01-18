@@ -1,6 +1,6 @@
 import Ember from "ember";
 
-const { computed } = Ember;
+const { computed, defineProperty, get } = Ember;
 
 function equal(first, second) {
     if (first instanceof Array && second instanceof Array) {
@@ -101,13 +101,11 @@ var Model = Ember.Object.extend({
         this.set("_primed", {});
     },
     _setup() {
-        var self = this;
+        var model = this;
         var attributes = attrs(this);
 
         attributes.forEach((attrName) => {
-            var dynamicDirtyKey = attrName + "IsDirty";
-
-            Ember.defineProperty(self, dynamicDirtyKey, computed(function() {
+            defineProperty(model, attrName + "IsDirty", computed(function() {
                 var current = this.get(attrName);
                 var defaults = this.get("_defaults")[attrName];
                 var original = this.get("_oldState." + attrName);
@@ -120,7 +118,7 @@ var Model = Ember.Object.extend({
 
             var dynamicPrimedKey = attrName + "IsPrimed";
 
-            Ember.defineProperty(self, dynamicPrimedKey, computed(function() {
+            defineProperty(model, dynamicPrimedKey, computed(function() {
                 var primed = this.get("_primed");
                 var primedKey = attrName + ":isPrimed";
 
@@ -130,12 +128,10 @@ var Model = Ember.Object.extend({
 
         var modelIsDirtyAttrs = attributes.map((attr) => attr + "IsDirty");
 
-        Ember.defineProperty(this, "isNotDirty", computed.not('isDirty'));
+        defineProperty(model, "isNotDirty", computed.not('isDirty'));
 
-        Ember.defineProperty(this, "isDirty", computed(function() {
-            var modelAttrs = modelIsDirtyAttrs.filter(function(attr){
-                return self.get(attr) === true;
-            });
+        defineProperty(model, "isDirty", computed(function() {
+            var modelAttrs = modelIsDirtyAttrs.filter((attr) => get(model, attr) === true);
 
             return modelAttrs.length > 0;
         }).property("" + modelIsDirtyAttrs));
