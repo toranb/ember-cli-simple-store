@@ -1,13 +1,15 @@
 import Ember from "ember";
 import getOwner from "ember-getowner-polyfill";
+import RecordArray from './record-array';
+import FilteredRecordArray from './filtered-record-array';
 
-const { computed, ArrayProxy, run, get } = Ember;
+const { computed, run, get, setProperties, assert } = Ember;
 
 function buildRecord(type, data, store) {
     var containerKey = "model:" + type;
     var factory = getOwner(store)._lookupFactory(containerKey);
 
-    Ember.assert("No model was found for type: " + type, factory);
+    assert("No model was found for type: " + type, factory);
 
     var record = factory.create(data);
     var { id } = data;
@@ -35,14 +37,17 @@ function identityMapForType(type, store) {
 var Store = Ember.Object.extend({
     init() {
         this._super(...arguments);
-        this.set("recompute", Ember.A());
-        this.set("filtersMap", {});
-        this.set("identityMap", {});
-        this.set("array", {});
+        this.reset();
+    },
+    reset() {
+      this.set("recompute", Ember.A());
+      this.set("filtersMap", {});
+      this.set("identityMap", {});
+      this.set("array", {});
     },
     clear(type) {
         if(type === undefined) {
-            this.init();
+            this.reset();
         }
         delete this.get("identityMap")[type];
         arrayForType(type, this).clear();
@@ -65,7 +70,7 @@ var Store = Ember.Object.extend({
     push(type, data) {
         var record = this._findById(type, data.id);
         if (record) {
-            record.setProperties(data);
+            setProperties(record, data);
         } else {
             record = buildRecord(type, data, this);
         }
@@ -118,10 +123,11 @@ var Store = Ember.Object.extend({
             // Ember.deprecate("find with filter no longer requires an array of computed keys", computed_keys);
             return this._findWithFilterFunc(type, options);
         }
+
         if (typeof options === "object") {
             var params = Object.keys(options);
 
-            Ember.assert("No key was found in the filter options", params.length);
+            assert("No key was found in the filter options", params.length);
 
             var attr = params[0];
             var value = options[attr];
@@ -140,41 +146,16 @@ var Store = Ember.Object.extend({
         return arrayForType(type, this);
     },
     _findAllProxy(type) {
-        var store = this;
-        return ArrayProxy.extend({
-          push(data) {
-              return store.push(type, data);
-          },
-          remove(id) {
-              store.remove(type, id);
-          },
-          content: computed(function () {
-              return Ember.A(this.get("source"));
-          })
-        }).create({
+        return RecordArray.create({
+            type: type,
+            store: this,
             source: this._findAll(type)
         });
     },
     _findWithFilterFunc(type, filter_func) {
-        var store = this;
-        var func = ArrayProxy.extend({
-          push(data) {
-             return store.push(type, data);
-          },
-          remove(id) {
-              store.remove(type, id);
-          },
-          updateContent() {
-              var source = this.get("source");
-              var filter_func = this.get("filter_func");
-              return source.filter(filter_func);
-          },
-          content: computed(function () {
-              var source = this.get("source");
-              var filter_func = this.get("filter_func");
-              return Ember.A(source.filter(filter_func));
-          })
-        }).create({
+        var func = FilteredRecordArray.create({
+            type: type,
+            store: this,
             id: Ember.uuid(),
             filter_func: filter_func,
             source: this._findAll(type)
