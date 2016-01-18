@@ -1,0 +1,5 @@
+<select class="all-roles" onchange={{action "changed" value="target.value"}}>
+  {{#each roles as |role|}}
+    <option value={{role.id}} selected={{is-equal role.id model.role.id}}>{{role.name}}</option>
+  {{/each}}
+</select>

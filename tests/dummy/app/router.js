@@ -12,6 +12,9 @@ Router.map(function() {
     this.route("defaultx", {path: "/defaultx"});
     this.route("edit", {path: "/edit"});
     this.route("isnone", {path: "/isnone"});
+    this.route("relationships", {path: "/relationships"});
+    this.route("filters", {path: "/filters"});
+    this.route("robots", {path: "/robots"});
 });
 
 export default Router;
