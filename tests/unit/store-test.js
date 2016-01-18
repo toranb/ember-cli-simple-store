@@ -392,6 +392,16 @@ test("clear without type will destroy everything", function(assert) {
   assert.equal(store.find("cat").get("length"), 0);
 });
 
+test("invoking clear multiple times will only schedule a recompute once per type", function(assert) {
+  run(() => {
+    store.clear("foo");
+    store.clear("foo");
+    store.clear("bar");
+    store.clear("foo");
+    assert.equal(store.get('recompute.length'), 2);
+  });
+});
+
 test("find with filter should raise clear exception when invalid options are passed", function(assert) {
     try {
         store.find("person", {});

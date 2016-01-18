@@ -46,49 +46,44 @@ var Store = Ember.Object.extend({
       this.set("array", {});
     },
     clear(type) {
-        if(type === undefined) {
+        if (type === undefined) {
             this.reset();
         }
+
         delete this.get("identityMap")[type];
         arrayForType(type, this).clear();
-
-        run.once(() => {
-            this.scheduleUpdate(type);
-        });
+        this.scheduleUpdate(type);
     },
     remove(type, id) {
         var record = this._findById(type, id);
         if (record) {
             delete this.get("identityMap")[type][record.id];
             arrayForType(type, this).removeObject(record);
-
-            run.once(() => {
-                this.scheduleUpdate(type);
-            });
+            this.scheduleUpdate(type);
         }
     },
     push(type, data) {
         var record = this._findById(type, data.id);
+
         if (record) {
             setProperties(record, data);
         } else {
             record = buildRecord(type, data, this);
         }
 
-        run.once(() => {
-            this.scheduleUpdate(type);
-        });
+        this.scheduleUpdate(type);
 
         return record;
     },
     scheduleUpdate(type) {
         var recompute = this.get("recompute");
-        recompute.push(type);
-        run.scheduleOnce("actions", this, "updateFilters");
+        recompute.addObject(type);
+        run.scheduleOnce('actions', this, 'updateFilters');
     },
     updateFilters() {
         var recompute = this.get("recompute");
         var filtersMap = this.get("filtersMap");
+
         Object.keys(filtersMap).forEach((type) => {
             var filters = filtersMap[type] || [];
             filters.forEach((func) => {
@@ -101,11 +96,8 @@ var Store = Ember.Object.extend({
 
         this.set("recompute", Ember.A());
     },
-    unsubscribe() {
+    unsubscribe(...args) {
         var updatedFiltersMap;
-        for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; ++_key) {
-            args[_key] = arguments[_key];
-        }
         var filterIds = Ember.A(args.map((func) => func.id));
         var filtersMap = this.get("filtersMap");
         Object.keys(filtersMap).forEach((type) => {
@@ -118,6 +110,7 @@ var Store = Ember.Object.extend({
         if (typeof options === "undefined") {
             return this._findAllProxy(type);
         }
+
         if (options instanceof Function) {
             // var computed_keys = arguments[2] || [];
             // Ember.deprecate("find with filter no longer requires an array of computed keys", computed_keys);
@@ -131,12 +124,40 @@ var Store = Ember.Object.extend({
 
             var attr = params[0];
             var value = options[attr];
-            var func = function(m) {
+
+            return this._findWithFilterFunc(type, function filterFunction(m) {
                 return get(m, attr) === value;
-            };
-            return this._findWithFilterFunc(type, func);
+            });
         }
+
         return this._findByIdComputed(type, options);
+    },
+    findOne(type) {
+        var store = this;
+
+        return Ember.ObjectProxy.extend({
+            content: computed("source.[]", function() {
+                return this.get("source").objectAt(0);
+            })
+        }).create({
+            source: this._findAll(type),
+            init() {
+                var model = getOwner(store).lookup(`model:${type}`);
+                for(var method in model) {
+                    if(typeof model[method] === "function") {
+                        if(!this[method]) {
+                            this.proxyMethod(method);
+                        }
+                    }
+                }
+            },
+            proxyMethod(method) {
+                this[method] = function() {
+                    var content = this.get("content");
+                    return content[method].apply(content, arguments);
+                };
+            }
+        });
     },
     _findById(type, id) {
         var identityMap = identityMapForType(type, this);
@@ -185,33 +206,6 @@ var Store = Ember.Object.extend({
             })
         }).create({
             filter_value: actualId,
-            source: this._findAll(type),
-            init() {
-                var model = getOwner(store).lookup(`model:${type}`);
-                for(var method in model) {
-                    if(typeof model[method] === "function") {
-                        if(!this[method]) {
-                            this.proxyMethod(method);
-                        }
-                    }
-                }
-            },
-            proxyMethod(method) {
-                this[method] = function() {
-                    var content = this.get("content");
-                    return content[method].apply(content, arguments);
-                };
-            }
-        });
-    },
-    findOne(type) {
-        var store = this;
-
-        return Ember.ObjectProxy.extend({
-            content: computed("source.[]", function() {
-                return this.get("source").objectAt(0);
-            })
-        }).create({
             source: this._findAll(type),
             init() {
                 var model = getOwner(store).lookup(`model:${type}`);
