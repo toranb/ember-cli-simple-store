@@ -83,6 +83,7 @@ var Store = Ember.Object.extend({
     updateFilters() {
         var recompute = this.get("recompute");
         var filtersMap = this.get("filtersMap");
+
         Object.keys(filtersMap).forEach((type) => {
             var filters = filtersMap[type] || [];
             filters.forEach((func) => {
