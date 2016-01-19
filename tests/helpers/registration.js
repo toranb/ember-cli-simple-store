@@ -1,12 +1,14 @@
-import Store from "ember-cli-simple-store/store";
+import SimpleStore from "ember-cli-simple-store/store";
 
-export default function(container, registry, keys) {
+export default function(owner, keys) {
     var factory = window.require("ember/resolver")["default"];
-    var resolver = factory.create({namespace: {modulePrefix: "dummy"}});
-    registry.register("store:main", Store);
-    keys.forEach(function(key) {
-        var factory = resolver.resolve("dummy@" + key);
-        registry.register(key, factory);
+    var resolver = factory.create({ namespace: { modulePrefix: "dummy" }});
+
+    owner.register("service:simple-store", SimpleStore);
+
+    keys.forEach((key) => {
+        owner.register(key, resolver.resolve("dummy@" + key));
     });
-    return container.lookup("store:main");
+
+    return owner.lookup("service:simple-store");
 }

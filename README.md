@@ -247,15 +247,15 @@ module.exports = function() {
 
 ```js
 // app/initializers/ember-cli-simple-store.js
-import SimpleStore from 'ember-cli-simple-store/store';
+import SimpleStore from '../services/simple-store';
 
 export default {
     name: 'override-simple-store',
     initialize() {
         var app = arguments[1] || arguments[0];
-        app.register('simpleStore:main', SimpleStore);
-        app.inject('controller', 'simpleStore', 'simpleStore:main');
-        app.inject('route', 'simpleStore', 'simpleStore:main');
+        app.register('service:simple-store', SimpleStore);
+        app.inject('controller', 'simpleStore', 'service:simple-store');
+        app.inject('route', 'simpleStore', 'service:simple-store');
     }
 };
 ```

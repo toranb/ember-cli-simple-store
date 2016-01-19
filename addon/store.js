@@ -1,8 +1,8 @@
 import Ember from "ember";
 import getOwner from "ember-getowner-polyfill";
-import RecordProxy from './record-proxy';
-import RecordArray from './record-array';
-import FilteredRecordArray from './filtered-record-array';
+import RecordProxy from './models/record-proxy';
+import RecordArray from './models/record-array';
+import FilteredRecordArray from './models/filtered-record-array';
 
 const { run, get, setProperties, assert } = Ember;
 
@@ -35,7 +35,9 @@ function identityMapForType(type, store) {
     return idIdentityMap;
 }
 
-var Store = Ember.Object.extend({
+const ServiceType = Ember.Service || Ember.Object;
+
+var Store = ServiceType.extend({
     init() {
         this._super(...arguments);
         this.reset();

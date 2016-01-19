@@ -7,7 +7,7 @@ var application, store;
 module('Acceptance: Relationships Test', {
   setup: function() {
     application = startApp();
-    store = application.__container__.lookup('store:main');
+    store = application.__container__.lookup('service:simple-store');
   },
   teardown: function() {
     Ember.run(application, 'destroy');
