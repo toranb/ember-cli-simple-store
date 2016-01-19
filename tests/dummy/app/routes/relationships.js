@@ -1,17 +1,18 @@
 import Ember from "ember";
 
 var RelationshipsRoute = Ember.Route.extend({
-    model: function() {
+    simpleStore: Ember.inject.service(),
+    model() {
         var user_id = 2;
-        var store = this.get("store");
-        store.push("role", {id: 8, name: "Admin", users: []});
-        store.push("role", {id: 9, name: "Guest", users: [user_id]});
-        store.push("user", {id: user_id, name: "toran"});
-        var model = store.find("user", user_id);
-        var roles = store.find("role");
+        var simpleStore = this.get("simpleStore");
+        simpleStore.push("role", {id: 8, name: "Admin", users: []});
+        simpleStore.push("role", {id: 9, name: "Guest", users: [user_id]});
+        simpleStore.push("user", {id: user_id, name: "toran"});
+        var model = simpleStore.find("user", user_id);
+        var roles = simpleStore.find("role");
         return {model: model, roles: roles};
     },
-    setupController: function(controller, hash) {
+    setupController(controller, hash) {
         controller.set("model", hash.model);
         controller.set("roles", hash.roles);
     }
