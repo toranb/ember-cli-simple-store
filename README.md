@@ -23,13 +23,13 @@
 ```js
 //create or update person model
 
-store.push("person", {id: 1, name: "toran"});
+simpleStore.push("person", {id: 1, name: "toran"});
 ```
 
 ```js
 //remove person model with id=123
 
-store.remove("person", 123);
+simpleStore.remove("person", 123);
 ```
 
 ```js
