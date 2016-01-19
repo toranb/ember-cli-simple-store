@@ -1,9 +1,10 @@
 import Ember from "ember";
 import getOwner from "ember-getowner-polyfill";
+import RecordProxy from './record-proxy';
 import RecordArray from './record-array';
 import FilteredRecordArray from './filtered-record-array';
 
-const { computed, run, get, setProperties, assert } = Ember;
+const { run, get, setProperties, assert } = Ember;
 
 function buildRecord(type, data, store) {
     var containerKey = "model:" + type;
@@ -133,29 +134,12 @@ var Store = Ember.Object.extend({
         return this._findByIdComputed(type, options);
     },
     findOne(type) {
-        var store = this;
-
-        return Ember.ObjectProxy.extend({
-            content: computed("source.[]", function() {
-                return this.get("source").objectAt(0);
-            })
-        }).create({
+        return RecordProxy.create({
+            store: this,
+            type: type,
             source: this._findAll(type),
-            init() {
-                var model = getOwner(store).lookup(`model:${type}`);
-                for(var method in model) {
-                    if(typeof model[method] === "function") {
-                        if(!this[method]) {
-                            this.proxyMethod(method);
-                        }
-                    }
-                }
-            },
-            proxyMethod(method) {
-                this[method] = function() {
-                    var content = this.get("content");
-                    return content[method].apply(content, arguments);
-                };
+            compute() {
+              return this.get("source").objectAt(0);
             }
         });
     },
@@ -195,33 +179,16 @@ var Store = Ember.Object.extend({
         return id;
     },
     _findByIdComputed(type, id) {
-        var store = this;
         var actualId = this._coerceId(id);
 
-        return Ember.ObjectProxy.extend({
-            content: computed("source.[]", function() {
-                var filter_value = this.get("filter_value");
-                var list = Ember.A(this.get("source").filterBy("id", filter_value));
-                return list.objectAt(0);
-            })
-        }).create({
+        return RecordProxy.create({
+            store: this,
+            type: type,
             filter_value: actualId,
             source: this._findAll(type),
-            init() {
-                var model = getOwner(store).lookup(`model:${type}`);
-                for(var method in model) {
-                    if(typeof model[method] === "function") {
-                        if(!this[method]) {
-                            this.proxyMethod(method);
-                        }
-                    }
-                }
-            },
-            proxyMethod(method) {
-                this[method] = function() {
-                    var content = this.get("content");
-                    return content[method].apply(content, arguments);
-                };
+            compute() {
+                var filter_value = this.get("filter_value");
+                return this.get("source").findBy("id", filter_value);
             }
         });
     }
