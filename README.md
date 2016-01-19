@@ -35,19 +35,19 @@ store.remove("person", 123);
 ```js
 //find all person models
 
-store.find("person");
+simpleStore.find("person");
 ```
 
 ```js
 //find a single person model with id=123
 
-store.find("person", 123);
+simpleStore.find("person", 123);
 ```
 
 ```js
 //find all person models with account_id=789
 
-store.find("person", {account_id: 789});
+simpleStore.find("person", {account_id: 789});
 ```
 
 ```js
@@ -58,34 +58,34 @@ var filter = function(person) {
     var salary = person.get("salary");
     return name === "toran" && salary > 100;
 }
-store.find("person", filter);
+simpleStore.find("person", filter);
 ```
 
 ```js
 //remove any find that that used a filter (to prevent memory leaks)
 
-var people = store.find("person", {account_id: 789});
-var orders = store.find("order", {amount: 250});
-var customers = store.find("customer", {name: "toran"});
-store.unsubscribe(people, orders, customers);
+var people = simpleStore.find("person", {account_id: 789});
+var orders = simpleStore.find("order", {amount: 250});
+var customers = simpleStore.find("customer", {name: "toran"});
+simpleStore.unsubscribe(people, orders, customers);
 ```
 
 ```js
 //find the first person model
 
-store.findOne("person");
+simpleStore.findOne("person");
 ```
 
 ```js
 //clear the entire identity map of all person models
 
-store.clear("person");
+simpleStore.clear("person");
 ```
 
 ```js
 //clear the entire identity map of all models
 
-store.clear();
+simpleStore.clear();
 ```
 
 ## Using the store by example
@@ -99,44 +99,45 @@ import Ember from "ember";
 import PromiseMixin from "ember-promise/mixins/promise";
 
 var PersonRepository = Ember.Object.extend({
-    find: function() {
-        var store = this.get("store");
+    simpleStore: Ember.inject.service(),
+    find() {
+        var simpleStore = this.get("simpleStore");
         return PromiseMixin.xhr("/api/people/", "GET").then(function(response) {
             response.forEach(function(person) {
-                store.push("person", person);
+                simpleStore.push("person", person);
             });
-            return store.find("person");
+            return simpleStore.find("person");
         });
     },
-    findById: function(id) {
-        var store = this.get("store");
-        return store.find("person", id);
+    findById(id) {
+        var simpleStore = this.get("simpleStore");
+        return simpleStore.find("person", id);
     },
-    insert: function(person) {
-        var store = this.get("store");
+    insert(person) {
+        var simpleStore = this.get("simpleStore");
         var hash = {data: JSON.stringify(person)};
         return new Ember.RSVP.Promise(function(resolve,reject) {
             return PromiseMixin.xhr("/api/people/", "POST", hash).then(function(persisted) {
-                var inserted = store.push("person", persisted);
+                var inserted = simpleStore.push("person", persisted);
                 resolve(inserted);
             }, function(err) {
                 reject(err);
             });
         });
     },
-    update: function(person) {
+    update(person) {
         var person_id = person.get("id");
         var hash = {data: JSON.stringify(person)};
         var endpoint = "/api/people/%@/".fmt(person_id);
         return PromiseMixin.xhr(endpoint, "PUT", hash);
     },
-    remove: function(person) {
-        var store = this.get("store");
+    remove(person) {
+        var simpleStore = this.get("simpleStore");
         var person_id = person.get("id");
         var endpoint = "/api/people/%@/".fmt(person_id);
         return new Ember.RSVP.Promise(function(resolve,reject) {
             return PromiseMixin.xhr(endpoint, "DELETE").then(function(arg) {
-                store.remove("person", person_id);
+                simpleStore.remove("person", person_id);
                 resolve(arg);
             }, function(err) {
                 reject(err);
@@ -154,13 +155,14 @@ With this simple reference implementation you can side step the relationship com
 
 ```js
 export default Ember.Route.extend({
-    model: function(params) {
-        var store = this.get("store");
-        var model = store.find("todo", params.todo_id);
-        var notes = store.find("note", {todo_id: params.todo_id});
+    simpleStore: Ember.inject.service(),
+    model(params) {
+        var simpleStore = this.get("simpleStore");
+        var model = simpleStore.find("todo", params.todo_id);
+        var notes = simpleStore.find("note", {todo_id: params.todo_id});
         return Ember.RSVP.hash({model: model, notes: notes});
     },
-    setupController: function(controller, hash) {
+    setupController(controller, hash) {
         controller.setProperties({
           "model": hash.model,
           "notes": hash.notes
@@ -171,7 +173,7 @@ export default Ember.Route.extend({
 
 This approach is not without it's tradeoffs
 
-* you need to inject the store instance into each class that does data access (service/repository/route/controller)
+* you need to inject the simpleStore instance into each class that does data access (service/repository/route/controller)
 * you need to write each xhr yourself and pull objects from the store / push objects into the store
 
 I've personally found this is a great approach for apps that want to avoid the complexity of bigger projects like ember-data, but still need a single pointer /reference for each model in your ember application.
@@ -226,38 +228,6 @@ animal.set("omnivore", true);
 animal.get("isDirty"); //true
 animal.set("omnivore", false);
 animal.get("isDirty"); //false
-```
-
-## Support for working in parallel with ember-data
-
-Disabling auto-injection of the store is optional, but useful in the scenario where you need to run `ember-cli-simple-store` and `ember-data` in parallel -- since they both attempt to register a type against `store:main`.  In order to work around this, manually register and inject `ember-cli-simple-store/store` under a new name.
-
-```js
-// config/environment.js
-'use strict';
-
-module.exports = function() {
-  return {
-    'ember-cli-simple-store': {
-      disableAutoInject: true
-    }
-  };
-};
-```
-
-```js
-// app/initializers/ember-cli-simple-store.js
-import SimpleStore from '../services/simple-store';
-
-export default {
-    name: 'override-simple-store',
-    initialize() {
-        var app = arguments[1] || arguments[0];
-        app.register('service:simple-store', SimpleStore);
-        app.inject('controller', 'simpleStore', 'service:simple-store');
-        app.inject('route', 'simpleStore', 'service:simple-store');
-    }
-};
 ```
 
 ## Example applications

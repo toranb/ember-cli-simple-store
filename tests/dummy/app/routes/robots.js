@@ -1,21 +1,24 @@
 import Ember from "ember";
 
+const { get } = Ember;
+
 var RobotsRoute = Ember.Route.extend({
+    simpleStore: Ember.inject.service(),
     model: function() {
-        var store = this.get("store");
-        store.push("robot", {id: 9, name: "nine", size: 229});
-        store.push("robot", {id: 8, name: "eight", size: 9});
-        store.push("robot", {id: 7, name: "seven", size: 11});
+        var simpleStore = this.get("simpleStore");
+        simpleStore.push("robot", {id: 9, name: "nine", size: 229});
+        simpleStore.push("robot", {id: 8, name: "eight", size: 9});
+        simpleStore.push("robot", {id: 7, name: "seven", size: 11});
         //this filter existed previously but was removed (now it will be recreated)
         var one = function(m) {
-            return m.get("size") > 50;
+            return get(m, "size") > 50;
         };
         //this filter is new and different
         var eight = function(m) {
-            return m.get("size") > 10 && m.get("name") === "seven";
+            return get(m, "size") > 10 && get(m, "name") === "seven";
         };
-        var filternine = store.find("robot", one);
-        var filtereight = store.find("robot", eight);
+        var filternine = simpleStore.find("robot", one);
+        var filtereight = simpleStore.find("robot", eight);
         return {filternine, filtereight};
     },
     setupController: function(controller, hash) {
