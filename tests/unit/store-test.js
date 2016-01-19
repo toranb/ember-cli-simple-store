@@ -1,10 +1,11 @@
 import Ember from "ember";
-import { module, test } from "../helpers/qunit";
-import registration from "../helpers/registration";
+import getOwner from 'ember-getowner-polyfill';
+import { moduleFor } from 'ember-qunit';
+import { test } from "dummy/tests/helpers/qunit";
 
 var store, Person, Toran, Cat, run = Ember.run;
 
-module("store unit tests", {
+moduleFor('service:simple-store', "store unit tests", {
   beforeEach: function() {
     Person = Ember.Object.extend({
         firstName: "",
@@ -24,10 +25,11 @@ module("store unit tests", {
     Cat = Ember.Object.extend({
         color: ""
     });
-    store = registration(this.container, this.registry, []);
-    this.registry.register("model:person", Person);
-    this.registry.register("model:toran", Toran);
-    this.registry.register("model:cat", Cat);
+    const owner = getOwner(this);
+    store = this.subject();
+    owner.register("model:person", Person);
+    owner.register("model:toran", Toran);
+    owner.register("model:cat", Cat);
   }
 });
 

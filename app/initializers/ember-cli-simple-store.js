@@ -1,4 +1,4 @@
-import Store from 'ember-cli-simple-store/store';
+import SimpleStoreService from '../services/simple-store';
 import config from '../config/environment';
 
 export default {
@@ -6,11 +6,13 @@ export default {
     initialize() {
         var simpleStoreConfig = config['ember-cli-simple-store'] || {};
 
-        if (!simpleStoreConfig.disableAutoInject) {
-            var application = arguments[1] || arguments[0];
-            application.register('store:main', Store);
-            application.inject('controller', 'store', 'store:main');
-            application.inject('route', 'store', 'store:main');
+        if (simpleStoreConfig.disableAutoInject) {
+            return;
         }
+
+        var application = arguments[1] || arguments[0];
+        application.register('service:simple-store', SimpleStoreService);
+        application.inject('controller', 'store', 'service:simple-store');
+        application.inject('route', 'store', 'service:simple-store');
     }
 };

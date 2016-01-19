@@ -1,27 +1,26 @@
 import Ember from "ember";
-import inject from "dummy/utilities/inject";
 import { attr, Model } from "ember-cli-simple-store/model";
 
 export default Model.extend({
     name: attr(),
-    store: inject("main"),
+    simpleStore: Ember.inject.service(),
     role: Ember.computed.alias("belongs_to.firstObject"),
     belongs_to: Ember.computed(function() {
         var user_id = this.get("id");
-        var store = this.get("store");
+        var store = this.get("simpleStore");
         var filter = function(role) {
             var users = role.get("users");
             return Ember.$.inArray(user_id, users) > -1;
         };
         return store.find("role", filter);
     }),
-    change_role: function(new_role_id) {
+    change_role(new_role_id) {
         var user_name = this.get("name");
         var user_id = this.get("id");
-        var store = this.get("store");
+        var store = this.get("simpleStore");
         var old_role = this.get("role");
         var old_role_users = old_role.get("users") || [];
-        var updated_old_role_users = old_role_users.filter(function(id) {
+        var updated_old_role_users = old_role_users.filter((id) => {
             return id !== user_id;
         });
         var new_role = store.find("role", new_role_id);
