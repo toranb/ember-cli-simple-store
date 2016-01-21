@@ -89,10 +89,11 @@ var Store = ServiceType.extend({
 
         Object.keys(filtersMap).forEach((type) => {
             var filters = filtersMap[type] || [];
-            filters.forEach((func) => {
+
+            filters.forEach((recordArray) => {
                 if (recompute.contains(type)) {
-                    var updatedContent = func.updateContent();
-                    func.set("content", Ember.A(updatedContent));
+                    var updatedContent = recordArray.updateContent();
+                    recordArray.set("content", updatedContent);
                 }
             });
         });

@@ -5,14 +5,23 @@ const { computed } = Ember;
 
 export default RecordArray.extend({
     content: computed(function () {
-        var source = this.get("source");
-        var filter_func = this.get("filter_func");
-        return Ember.A(source.filter(filter_func));
+        return this.updateContent();
     }),
 
     updateContent() {
         var source = this.get("source");
         var filter_func = this.get("filter_func");
-        return source.filter(filter_func);
+
+        return Ember.A(source.filter(filter_func));
+    },
+
+    willDestroy() {
+        this._unregisterRecordArray();
+        this._super(...arguments);
+    },
+
+    _unregisterRecordArray() {
+        var store = this.get("store");
+        store.unsubscribe(this);
     }
 });
