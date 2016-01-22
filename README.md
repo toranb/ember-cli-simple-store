@@ -8,6 +8,10 @@
 
 [ember-cli][] addon that provides a simple identity map for [ember.js][] web applications
 
+## The stable readme is below (for anyone using the v3 series)
+
+https://github.com/toranb/ember-cli-simple-store/blob/b317b00e0d61486cf47a40765991886e416638ba/README.md
+
 ## Installation
 
 ```
