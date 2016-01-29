@@ -22,7 +22,7 @@ https://github.com/toranb/ember-cli-simple-store/blob/b317b00e0d61486cf47a407659
 5) npm install ember-cli-simple-store --save-dev
 ```
 
-## You get 6 methods: push/remove/find/findOne/clear/unsubscribe
+## You get 5 methods: push/remove/find/findOne/clear
 
 ```js
 //create or update person model
@@ -63,15 +63,6 @@ var filter = function(person) {
     return name === "toran" && salary > 100;
 }
 simpleStore.find("person", filter);
-```
-
-```js
-//remove any find that that used a filter (to prevent memory leaks)
-
-var people = simpleStore.find("person", {account_id: 789});
-var orders = simpleStore.find("order", {amount: 250});
-var customers = simpleStore.find("customer", {name: "toran"});
-simpleStore.unsubscribe(people, orders, customers);
 ```
 
 ```js

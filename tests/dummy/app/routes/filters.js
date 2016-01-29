@@ -41,9 +41,11 @@ var FiltersRoute = Ember.Route.extend({
     },
     actions: {
         willTransition() {
-            var simpleStore = this.get("simpleStore");
             var currentModel = this.get("currentModel");
-            simpleStore.unsubscribe(currentModel.filterone, currentModel.filtertwo, currentModel.filterthree, currentModel.filterfour);
+            currentModel.filterone.destroy();
+            currentModel.filtertwo.destroy();
+            currentModel.filterthree.destroy();
+            currentModel.filterfour.destroy();
         }
     }
 });

@@ -100,7 +100,7 @@ var Store = ServiceType.extend({
 
         this.set("recompute", Ember.A());
     },
-    unsubscribe(...args) {
+    _unsubscribe(...args) {
         var updatedFiltersMap;
         var filterIds = Ember.A(args.map((func) => func.id));
         var filtersMap = this.get("filtersMap");

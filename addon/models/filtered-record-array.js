@@ -22,6 +22,6 @@ export default RecordArray.extend({
 
     _unregisterRecordArray() {
         var store = this.get("store");
-        store.unsubscribe(this);
+        store._unsubscribe(this);
     }
 });

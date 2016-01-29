@@ -39,7 +39,7 @@ test("manually calling unsubscribe removes from filtersMap", function(assert) {
         const filters = simpleStore.get('filtersMap');
 
         assert.equal(filters.foo.length, 1);
-        simpleStore.unsubscribe(recordArray);
+        simpleStore._unsubscribe(recordArray);
         assert.equal(filters.foo.length, 0);
     });
 });
