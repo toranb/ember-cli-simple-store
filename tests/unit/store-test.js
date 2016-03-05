@@ -553,21 +553,22 @@ test("find with filter function will return bound array", function(assert) {
   assert.equal(filtered_data.objectAt(1).get("firstName"), "Matt");
 });
 
-// TODO: update this to a deprecation warning
-// test("toran doing a filter by function with computed_keys should log deprecation as its not required", function(assert) {
-//         var message;
-//         var original = Ember.deprecate;
-//         Ember.deprecate = function() {
-//             message = arguments[0];
-//             original.apply(this, arguments);
-//         };
-//         store.push("person", {id: 1, name: "Matt"});
-//         var name_filter = function(person) {
-//             return person.get("name") === "Matt";
-//         };
-//         store.find("person", name_filter, ["name"]);
-//         assert.equal(message, "find with filter no longer requires an array of computed keys");
-// });
+test("doing a filter by function with computed_keys should log deprecation as its not required", function(assert) {
+        var message;
+        var original = Ember.deprecate;
+        Ember.deprecate = function() {
+            if(arguments[0] !== "Get must be called with two arguments; an object and a property key") {
+                message = arguments[0];
+            }
+            original.apply(this, arguments);
+        };
+        store.push("person", {id: 1, name: "Matt"});
+        var name_filter = function(person) {
+            return person.get("name") === "Matt";
+        };
+        store.find("person", name_filter, ["name"]);
+        assert.equal(message, "find with filter no longer requires an array of computed keys");
+});
 
 test("findByIdComputed result will be computed property that updates as records are pushed into the store", function(assert) {
     var done = assert.async();

@@ -116,8 +116,10 @@ var Store = ServiceType.extend({
         }
 
         if (options instanceof Function) {
-            // var computed_keys = arguments[2] || [];
-            // Ember.deprecate("find with filter no longer requires an array of computed keys", computed_keys);
+            var computed_keys = arguments[2] || [];
+            if(computed_keys.length > 0) {
+                Ember.deprecate("find with filter no longer requires an array of computed keys", false, { id: 'ember-cli-simple-store.store', until: '5.0.0' });
+            }
             return this._findWithFilterFunc(type, options);
         }
 
