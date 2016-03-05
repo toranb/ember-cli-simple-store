@@ -8,10 +8,6 @@
 
 [ember-cli][] addon that provides a simple identity map for [ember.js][] web applications
 
-## The stable readme is below (for anyone using the v3 series)
-
-https://github.com/toranb/ember-cli-simple-store/blob/b317b00e0d61486cf47a40765991886e416638ba/README.md
-
 ## Installation
 
 ```
@@ -146,32 +142,38 @@ export default PersonRepository;
 
 ## What about relationship support?
 
-With this simple reference implementation you can side step the relationship complexity by adding what you need in your route
+A one-to-many example might look something like this
 
 ```js
-export default Ember.Route.extend({
+import Ember from 'ember';
+
+export default Ember.Object.extend({
     simpleStore: Ember.inject.service(),
-    model(params) {
-        var simpleStore = this.get("simpleStore");
-        var model = simpleStore.find("todo", params.todo_id);
-        var notes = simpleStore.find("note", {todo_id: params.todo_id});
-        return Ember.RSVP.hash({model: model, notes: notes});
-    },
-    setupController(controller, hash) {
-        controller.setProperties({
-          "model": hash.model,
-          "notes": hash.notes
-        });
-    }
+    role: Ember.computed.alias('belongs_to.firstObject'),
+    belongs_to: Ember.computed(function() {
+        let userId = this.get('id');
+        let simpleStore = this.get('simpleStore');
+        let filter = function(role) {
+            let users = role.get('users');
+            return Ember.$.inArray(userId, users) > -1;
+        };
+        return simpleStore.find('role', filter);
+    })
+});
+
+//a test to show how this api works from the outside
+
+test('role property returns associated model or undefined', function(assert) {
+    let user = store.push('user', {id: 1});
+    store.push('role', {id: 2, name: 'Admin', users: [1]});
+    let role = user.get('role');
+    assert.equal(role.get('id'), 2);
+    assert.equal(role.get('name'), 'Admin');
+    role.set('users', []);
+    role = user.get('role');
+    assert.equal(role, undefined);
 });
 ```
-
-This approach is not without it's tradeoffs
-
-* you need to inject the simpleStore instance into each class that does data access (service/repository/route/controller)
-* you need to write each xhr yourself and pull objects from the store / push objects into the store
-
-I've personally found this is a great approach for apps that want to avoid the complexity of bigger projects like ember-data, but still need a single pointer /reference for each model in your ember application.
 
 ## What about dirty tracking?
 
