@@ -1,6 +1,43 @@
 ember-cli-simple-store Changelog
 ==============================
 
+4.0.0
+-----
+
+* [DOCS]: updated the readme to be v4.0.0 friendly
+  ([commit](https://github.com/toranb/ember-cli-simple-store/commit/1c7bbebf83a0cebca9bc5389f89670a3be6cb4dd))
+
+* [DEPRECATION]: added find with filter api dep warning for 3rd arg
+  ([commit](https://github.com/toranb/ember-cli-simple-store/commit/f0ac6db144f3597876ab3fdb203e2909f47c5ddd))
+
+* [REFACTOR]: removed the unsubscribe api (never released) in favor of destroy
+  ([commit](https://github.com/toranb/ember-cli-simple-store/commit/d1eeeb62f628b70d7a396178df6beb293809087c))
+
+* [REFACTOR]: Unsubscribe on destroy of record array
+  ([commit](https://github.com/toranb/ember-cli-simple-store/commit/22908b22932e99772fc87ce66b5831c4dc48788c))
+
+* [REFACTOR]: Consider better compatability with ember-data
+  ([#45](https://github.com/toranb/ember-cli-simple-store/issues/45))
+
+* [REFACTOR]: Expose Store as an Ember Service
+  ([#44](https://github.com/toranb/ember-cli-simple-store/issues/44))
+
+* [REFACTOR]: Adding record proxy type
+  ([#43](https://github.com/toranb/ember-cli-simple-store/issues/43))
+
+* [REFACTOR]: Fixing run loop scheduling
+  ([#40](https://github.com/toranb/ember-cli-simple-store/issues/40))
+
+* [REFACTOR]: Removing bind and jQuery dep from store
+  ([#39](https://github.com/toranb/ember-cli-simple-store/issues/39))
+
+* [REFACTOR]: Creating types for record array proxy
+  ([#37](https://github.com/toranb/ember-cli-simple-store/issues/37))
+
+* [FEATURE]: v4.0.0 to improve performance
+  ([#38](https://github.com/toranb/ember-cli-simple-store/issues/38))
+
+
 3.6.0
 -----
 
