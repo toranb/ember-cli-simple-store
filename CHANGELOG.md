@@ -1,6 +1,16 @@
 ember-cli-simple-store Changelog
 ==============================
 
+4.0.1
+-----
+
+* [DOCS]: added ember 2.4 example app to the readme
+  ([commit](https://github.com/toranb/ember-cli-simple-store/commit/71f1b02517291b88738deb5d92f6d891d595802e))
+
+* [DOCS]: Removing obsolete installation documentation
+  ([commit](https://github.com/toranb/ember-cli-simple-store/commit/38e4a82c680662d65cbe3e556e065b162adf9919))
+
+
 4.0.0
 -----
 
