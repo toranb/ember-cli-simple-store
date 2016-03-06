@@ -160,8 +160,8 @@ export default Ember.Object.extend({
 //a test to show how this api works from the outside
 
 test('role property returns associated model or undefined', function(assert) {
-    let user = store.push('user', {id: 1});
-    store.push('role', {id: 2, name: 'Admin', users: [1]});
+    let user = simpleStore.push('user', {id: 1});
+    simpleStore.push('role', {id: 2, name: 'Admin', users: [1]});
     let role = user.get('role');
     assert.equal(role.get('id'), 2);
     assert.equal(role.get('name'), 'Admin');
@@ -228,6 +228,10 @@ animal.get("isDirty"); //false
 **Simplest example with the least amount of complexity (tests included)**
 
 https://github.com/toranb/kanban-board-without-ember-data
+
+**Simple example running ember 2.4**
+
+https://github.com/toranb/ember-2-skeleton-app
 
 **Async example that will paint right away (loading section included w/ tests)**
 
