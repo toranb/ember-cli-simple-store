@@ -1,8 +1,10 @@
 # ember-cli-simple-store
 
 [![Build Status][]](https://travis-ci.org/toranb/ember-cli-simple-store)
+[![Code Climate][climate-badge]][climate]
 [![Downloads](https://img.shields.io/npm/dm/ember-cli-simple-store.svg)](https://www.npmjs.com/package/ember-cli-simple-store)
 [![Score](http://emberobserver.com/badges/ember-cli-simple-store.svg)](http://emberobserver.com/addons/ember-cli-simple-store)
+[![npm package][npm-badge]][npm]
 
 ## Description
 
@@ -285,3 +287,9 @@ Licensed under the MIT License
 [ember-cli]: http://www.ember-cli.com/
 [ember.js]: http://emberjs.com/
 [PromiseMixin]: https://github.com/toranb/ember-promise
+
+[npm-badge]: https://img.shields.io/npm/v/ember-cli-simple-store.svg?style=flat-square
+[npm]: https://www.npmjs.org/package/ember-cli-simple-store
+
+[climate-badge]: https://codeclimate.com/github/toranb/ember-cli-simple-store/badges/gpa.svg
+[climate]: https://codeclimate.com/github/toranb/ember-cli-simple-store
