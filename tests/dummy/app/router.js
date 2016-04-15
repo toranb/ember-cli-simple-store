@@ -15,6 +15,7 @@ Router.map(function() {
     this.route("relationships", {path: "/relationships"});
     this.route("filters", {path: "/filters"});
     this.route("robots", {path: "/robots"});
+    this.route("custom-key");
 });
 
 export default Router;

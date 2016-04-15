@@ -1157,3 +1157,57 @@ test("find with filter function returns array proxy that has a remove function t
   assert.equal(store._findById("person", 8).get("firstName"), "");
   assert.equal(store._findById("person", 8).get("lastName"), "new");
 });
+
+var Listing;
+
+moduleFor('service:simple-store', "store unit tests -- custom primary key", {
+  beforeEach: function() {
+    Listing = Ember.Object.extend({
+        listing_id: null,
+        description: null
+    });
+
+    Listing.reopenClass({
+        primaryKey: 'listing_id'
+    });
+    const owner = getOwner(this);
+    store = this.subject();
+    owner.register("model:listing", Listing);
+  }
+});
+
+test("store#push and store#find use the specified primary key", function(assert) {
+  store.push("listing", {
+    listing_id: 5,
+    description: "A lovely vase"
+  });
+
+  var listing = store.find("listing", 5);
+  assert.ok(listing, "The listing record was found");
+
+  assert.equal(listing.get("description"), "A lovely vase", "the description property is correct");
+});
+
+test("remove should destory the item by type", function(assert) {
+  var first = store.push("listing", {
+    listing_id: 1,
+    description: "Ugly vase"
+  });
+
+  var last = store.push("listing", {
+    listing_id: 2,
+    description: "A 'Sorcier des Glaces' CD"
+  });
+
+  assert.equal(store.find("listing").get("length"), 2);
+  store.remove("listing", first.listing_id);
+  assert.equal(store.find("listing").get("length"), 1);
+
+  var first_listing = store.find("listing", first.listing_id);
+  assert.ok(!first_listing.get("content"), "The ugly vase record was not found");
+  assert.equal(first_listing.get("description"), undefined);
+
+  var last_listing = store.find("listing", last.listing_id);
+  assert.ok(last_listing.get("content"), "The 'Sorcier des Glaces' record was still found");
+  assert.equal(last_listing.get("description"), "A 'Sorcier des Glaces' CD");
+});

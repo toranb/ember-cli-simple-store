@@ -7,17 +7,25 @@ import FilteredRecordArray from './models/filtered-record-array';
 const { run, get, setProperties, assert } = Ember;
 
 function buildRecord(type, data, store) {
-    var containerKey = "model:" + type;
-    var factory = getOwner(store)._lookupFactory(containerKey);
+    var factory = factoryForType(type, store);
+    var primaryKey = primaryKeyForType(type, store);
 
     assert("No model was found for type: " + type, factory);
 
     var record = factory.create(data);
-    var { id } = data;
+    var id = data[primaryKey];
     identityMapForType(type, store)[id] = record;
     arrayForType(type, store).pushObject(record);
 
     return record;
+}
+
+function factoryForType(type, store) {
+    return getOwner(store)._lookupFactory("model:" + type);
+}
+
+function primaryKeyForType(type, store) {
+    return (factoryForType(type, store) || {}).primaryKey || 'id';
 }
 
 function arrayForType(type, store) {
@@ -60,13 +68,15 @@ var Store = ServiceType.extend({
     remove(type, id) {
         var record = this._findById(type, id);
         if (record) {
-            delete this.get("identityMap")[type][record.id];
+            var primaryKey = primaryKeyForType(type, this);
+            delete this.get("identityMap")[type][record[primaryKey]];
             arrayForType(type, this).removeObject(record);
             this.scheduleUpdate(type);
         }
     },
     push(type, data) {
-        var record = this._findById(type, data.id);
+        var primaryKey = primaryKeyForType(type, this);
+        var record = this._findById(type, data[primaryKey]);
 
         if (record) {
             setProperties(record, data);
@@ -102,11 +112,15 @@ var Store = ServiceType.extend({
     },
     _unsubscribe(...args) {
         var updatedFiltersMap;
-        var filterIds = Ember.A(args.map((func) => func.id));
+        var filterIds = Ember.A(args.map((func) => {
+            var primaryKey = primaryKeyForType(func.type, this);
+            return func[primaryKey];
+        }));
         var filtersMap = this.get("filtersMap");
         Object.keys(filtersMap).forEach((type) => {
+            var primaryKey = primaryKeyForType(type, this);
             var filters = filtersMap[type] || [];
-            updatedFiltersMap = filters.filter((func) => !filterIds.contains(func.id));
+            updatedFiltersMap = filters.filter((func) => !filterIds.contains(func[primaryKey]));
             filtersMap[type] = updatedFiltersMap;
         });
     },
@@ -185,6 +199,7 @@ var Store = ServiceType.extend({
     },
     _findByIdComputed(type, id) {
         var actualId = this._coerceId(id);
+        var primaryKey = primaryKeyForType(type, this);
 
         return RecordProxy.create({
             store: this,
@@ -193,7 +208,7 @@ var Store = ServiceType.extend({
             source: this._findAll(type),
             compute() {
                 var filter_value = this.get("filter_value");
-                return this.get("source").findBy("id", filter_value);
+                return this.get("source").findBy(primaryKey, filter_value);
             }
         });
     }

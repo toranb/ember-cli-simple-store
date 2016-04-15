@@ -223,6 +223,30 @@ animal.set("omnivore", false);
 animal.get("isDirty"); //false
 ```
 
+## What about custom primary keys?
+
+By default, simple store will use the 'id' property on your records as the primary key. If you wish to override this, reopen your
+model class and add a `primaryKey` attribute.
+
+```js
+var Food = Ember.Object.extend({
+    food_id: null,
+    calories: null
+});
+
+Food.reopenClass({
+    primaryKey: 'food_id'
+});
+
+simpleStore.push('food', {
+    food_id: 5,
+    calories: 500
+});
+
+// Returns the pushed record
+simpleStore.find('food', 5);
+```
+
 ## Example applications
 
 **Simplest example with the least amount of complexity (tests included)**
