@@ -1,0 +1,6 @@
+<select class="one">
+  {{#each model as |record|}}
+    <option value={{record.arbitraryKey}}>{{record.name}}</option>
+  {{/each}}
+</select>
+{{#link-to 'wat' class='link-wat'}}wat{{/link-to}}

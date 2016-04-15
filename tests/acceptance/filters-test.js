@@ -78,6 +78,23 @@ test('filters can be thrown out when you navigate away from a given route', func
   });
 });
 
+test('filters on models with custom primary keys can be thrown out when you leave a route', function(assert) {
+  visit('/custom-key');
+  andThen(function() {
+      assert.equal(currentURL(), '/custom-key');
+      var filtersMap = store.get('filtersMap');
+      var customKeyFilters = filtersMap['custom-key'];
+      assert.equal(customKeyFilters.length, 1);
+  });
+  click('.link-wat');
+  andThen(function() {
+      assert.equal(currentURL(), '/wat');
+      var filtersMap = store.get('filtersMap');
+      var customKeyFilters = filtersMap['custom-key'];
+      assert.equal(customKeyFilters.length, 0);
+  });
+});
+
 test('each filter function will be updated during a push with multiple listeners across multiple routes', function(assert) {
   visit('/filters');
   andThen(function() {
