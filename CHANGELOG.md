@@ -1,6 +1,13 @@
 ember-cli-simple-store Changelog
 ==============================
 
+4.1.0
+-----
+
+* [FEATURE]: Add support for custom id properties
+  ([#53](https://github.com/toranb/ember-cli-simple-store/pull/53))
+
+
 4.0.1
 -----
 
