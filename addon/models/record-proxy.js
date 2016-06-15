@@ -4,18 +4,18 @@ import getOwner from 'ember-getowner-polyfill';
 const { computed } = Ember;
 
 export default Ember.ObjectProxy.extend({
-    source: null,
-    store: null,
-    type: null,
+    _source: null,
+    _store: null,
+    _type: null,
 
-    content: computed("source.[]", function() {
+    content: computed("_source.[]", function() {
         return this.compute();
     }),
 
     init() {
         this._super(...arguments);
-        const store = this.get('store');
-        const type = this.get('type');
+        const store = this.get('_store');
+        const type = this.get('_type');
 
         var model = getOwner(store).lookup(`model:${type}`);
 

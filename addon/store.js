@@ -154,11 +154,11 @@ var Store = ServiceType.extend({
     },
     findOne(type) {
         return RecordProxy.create({
-            store: this,
-            type: type,
-            source: this._findAll(type),
+            _store: this,
+            _type: type,
+            _source: this._findAll(type),
             compute() {
-              return this.get("source").objectAt(0);
+              return this.get("_source").objectAt(0);
             }
         });
     },
@@ -202,13 +202,13 @@ var Store = ServiceType.extend({
         var primaryKey = primaryKeyForType(type, this);
 
         return RecordProxy.create({
-            store: this,
-            type: type,
-            filter_value: actualId,
-            source: this._findAll(type),
+            _store: this,
+            _type: type,
+            _filter_value: actualId,
+            _source: this._findAll(type),
             compute() {
-                var filter_value = this.get("filter_value");
-                return this.get("source").findBy(primaryKey, filter_value);
+                var filter_value = this.get("_filter_value");
+                return this.get("_source").findBy(primaryKey, filter_value);
             }
         });
     }
