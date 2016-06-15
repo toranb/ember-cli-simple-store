@@ -3,20 +3,20 @@ import Ember from 'ember';
 const { ArrayProxy, computed } = Ember;
 
 export default ArrayProxy.extend({
-    store: null,
-    type: null,
+    _store: null,
+    _type: null,
 
     content: computed(function () {
-        return Ember.A(this.get("source"));
+        return Ember.A(this.get("_source"));
     }),
 
     push(data) {
-        var type = this.get('type');
-        return this.get('store').push(type, data);
+        var type = this.get('_type');
+        return this.get('_store').push(type, data);
     },
 
     remove(id) {
-        var type = this.get('type');
-        this.get('store').remove(type, id);
+        var type = this.get('_type');
+        this.get('_store').remove(type, id);
     }
 });

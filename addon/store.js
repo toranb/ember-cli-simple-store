@@ -171,18 +171,18 @@ var Store = ServiceType.extend({
     },
     _findAllProxy(type) {
         return RecordArray.create({
-            type: type,
-            store: this,
-            source: this._findAll(type)
+            _type: type,
+            _store: this,
+            _source: this._findAll(type)
         });
     },
     _findWithFilterFunc(type, filter_func) {
         var func = FilteredRecordArray.create({
-            type: type,
-            store: this,
-            id: Ember.uuid(),
-            filter_func: filter_func,
-            source: this._findAll(type)
+            _type: type,
+            _store: this,
+            _id: Ember.uuid(),
+            _filter_func: filter_func,
+            _source: this._findAll(type)
         });
         var filtersMap = this.get("filtersMap");
         var filters = filtersMap[type] || [];
