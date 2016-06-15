@@ -1,6 +1,13 @@
 ember-cli-simple-store Changelog
 ==============================
 
+4.2.0
+-----
+
+* [BUG]: Switch the names of the properties on a record proxy to avoid collisions with defined values
+  ([#57](https://github.com/toranb/ember-cli-simple-store/pull/57))
+
+
 4.1.0
 -----
 
