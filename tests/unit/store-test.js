@@ -237,6 +237,23 @@ test("find with filter should return array of models filtered by value", functio
   assert.equal(store.find("person").get("length"), 5);
 });
 
+test("find with filter does not trump type property of object", function(assert) {
+  store.push("person", {
+    id: 9,
+    firstName: "Jarrod",
+    lastName: "Taylor",
+    source: "Jarrod's Mom",
+    store: "Walmart",
+    type: "developer"
+  });
+
+
+  var found = store.find("person", 9);
+    assert.equal(found.get("type"), "developer");
+    assert.equal(found.get("store"), "Walmart");
+    assert.equal(found.get("source"), "Jarrod's Mom");
+});
+
 test("find with filter should return array of models that tracks changes without asking for an update", function(assert) {
   store.push("person", {
     id: 9,

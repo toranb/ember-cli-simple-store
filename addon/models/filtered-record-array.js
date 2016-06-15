@@ -9,8 +9,8 @@ export default RecordArray.extend({
     }),
 
     updateContent() {
-        var source = this.get("source");
-        var filter_func = this.get("filter_func");
+        var source = this.get("_source");
+        var filter_func = this.get("_filter_func");
 
         return Ember.A(source.filter(filter_func));
     },
@@ -21,7 +21,7 @@ export default RecordArray.extend({
     },
 
     _unregisterRecordArray() {
-        var store = this.get("store");
+        var store = this.get("_store");
         store._unsubscribe(this);
     }
 });

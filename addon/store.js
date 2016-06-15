@@ -154,11 +154,11 @@ var Store = ServiceType.extend({
     },
     findOne(type) {
         return RecordProxy.create({
-            store: this,
-            type: type,
-            source: this._findAll(type),
+            _store: this,
+            _type: type,
+            _source: this._findAll(type),
             compute() {
-              return this.get("source").objectAt(0);
+              return this.get("_source").objectAt(0);
             }
         });
     },
@@ -171,18 +171,18 @@ var Store = ServiceType.extend({
     },
     _findAllProxy(type) {
         return RecordArray.create({
-            type: type,
-            store: this,
-            source: this._findAll(type)
+            _type: type,
+            _store: this,
+            _source: this._findAll(type)
         });
     },
     _findWithFilterFunc(type, filter_func) {
         var func = FilteredRecordArray.create({
-            type: type,
-            store: this,
-            id: Ember.uuid(),
-            filter_func: filter_func,
-            source: this._findAll(type)
+            _type: type,
+            _store: this,
+            _id: Ember.uuid(),
+            _filter_func: filter_func,
+            _source: this._findAll(type)
         });
         var filtersMap = this.get("filtersMap");
         var filters = filtersMap[type] || [];
@@ -202,13 +202,13 @@ var Store = ServiceType.extend({
         var primaryKey = primaryKeyForType(type, this);
 
         return RecordProxy.create({
-            store: this,
-            type: type,
-            filter_value: actualId,
-            source: this._findAll(type),
+            _store: this,
+            _type: type,
+            _filter_value: actualId,
+            _source: this._findAll(type),
             compute() {
-                var filter_value = this.get("filter_value");
-                return this.get("source").findBy(primaryKey, filter_value);
+                var filter_value = this.get("_filter_value");
+                return this.get("_source").findBy(primaryKey, filter_value);
             }
         });
     }
