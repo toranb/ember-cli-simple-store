@@ -192,7 +192,7 @@ var Store = ServiceType.extend({
         return func;
     },
     _coerceId(id) {
-        var numberId = parseInt(id, 10);
+        var numberId = Number(id);
         if (!isNaN(numberId) && numberId.toString().length === id.toString().length) {
             return numberId;
         }

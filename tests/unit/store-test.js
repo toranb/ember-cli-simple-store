@@ -156,6 +156,18 @@ test("models with int !0 id in string must be lookedup by string value", functio
   assert.ok(guillaumeByNum.get("content") instanceof Person);
 });
 
+test("models with int !0 id in string must be lookedup by int value", function(assert) {
+  store.push("person", {
+    id: "1234",
+    firstName: "Guillaume",
+    lastName: "Gérard"
+  });
+
+  var guillaumeByNum = store.find("person", 1234);
+  assert.strictEqual(guillaumeByNum.get("id"), 1234);
+  assert.ok(guillaumeByNum.get("content") instanceof Person);
+});
+
 test("models with int 0 id in string must be lookedup by string value", function(assert) {
   store.push("person", {
     id: "0",
@@ -165,6 +177,42 @@ test("models with int 0 id in string must be lookedup by string value", function
 
   var guillaumeByNum = store.find("person", "0");
   assert.strictEqual(guillaumeByNum.get("id"), 0);
+  assert.ok(guillaumeByNum.get("content") instanceof Person);
+});
+
+test("models with int 0 id in string must be lookedup by int value", function(assert) {
+  store.push("person", {
+    id: "0",
+    firstName: "Guillaume",
+    lastName: "Gérard"
+  });
+
+  var guillaumeByNum = store.find("person", 0);
+  assert.strictEqual(guillaumeByNum.get("id"), 0);
+  assert.ok(guillaumeByNum.get("content") instanceof Person);
+});
+
+test("models with float id in string must be lookedup by string value", function(assert) {
+  store.push("person", {
+    id: "3.14159265359",
+    firstName: "Guillaume",
+    lastName: "Gérard"
+  });
+
+  var guillaumeByNum = store.find("person", "3.14159265359");
+  assert.strictEqual(guillaumeByNum.get("id"), 3.14159265359);
+  assert.ok(guillaumeByNum.get("content") instanceof Person);
+});
+
+test("models with int float id in string must be lookedup by int float value", function(assert) {
+  store.push("person", {
+    id: "3.14159265359",
+    firstName: "Guillaume",
+    lastName: "Gérard"
+  });
+
+  var guillaumeByNum = store.find("person", 3.14159265359);
+  assert.strictEqual(guillaumeByNum.get("id"), 3.14159265359);
   assert.ok(guillaumeByNum.get("content") instanceof Person);
 });
 
