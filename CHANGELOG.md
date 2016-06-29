@@ -1,6 +1,13 @@
 ember-cli-simple-store Changelog
 ==============================
 
+4.3.0
+-----
+
+* [BUG]: Fix coerceId function and push record with coerced ids
+  ([#59](https://github.com/toranb/ember-cli-simple-store/pull/59))
+
+
 4.2.0
 -----
 
