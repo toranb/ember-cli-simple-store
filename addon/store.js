@@ -76,6 +76,7 @@ var Store = ServiceType.extend({
     },
     push(type, data) {
         var primaryKey = primaryKeyForType(type, this);
+        data[primaryKey] = this._coerceId(data[primaryKey]);
         var record = this._findById(type, data[primaryKey]);
 
         if (record) {
@@ -191,8 +192,8 @@ var Store = ServiceType.extend({
         return func;
     },
     _coerceId(id) {
-        var numberId = parseInt(id, 10);
-        if (numberId && numberId.toString().length === id.toString().length) {
+        var numberId = Number(id);
+        if (!isNaN(numberId) && numberId.toString().length === id.toString().length) {
             return numberId;
         }
         return id;

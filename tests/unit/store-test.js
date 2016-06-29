@@ -96,7 +96,7 @@ test("pushing doesn't mangle string ids", function(assert) {
   assert.strictEqual(toranb.get("id"), "toranb");
 });
 
-test("models with int based ids must be lookedup by int value", function(assert) {
+test("models with int based ids must be lookedup by int and string value", function(assert) {
   store.push("person", {
     id: 123,
     firstName: "Toran",
@@ -104,6 +104,10 @@ test("models with int based ids must be lookedup by int value", function(assert)
   });
 
   var toranbByNum = store.find("person", 123);
+  assert.strictEqual(toranbByNum.get("id"), 123);
+  assert.ok(toranbByNum.get("content") instanceof Person);
+
+  toranbByNum = store.find("person", "123");
   assert.strictEqual(toranbByNum.get("id"), 123);
   assert.ok(toranbByNum.get("content") instanceof Person);
 });
@@ -118,6 +122,70 @@ test("models with str based ids must be lookedup by str value", function(assert)
   var toranbByStr = store.find("person", "abc");
   assert.strictEqual(toranbByStr.get("id"), "abc");
   assert.ok(toranbByStr.get("content") instanceof Person);
+});
+
+test("models with int !0 id in string must be lookedup by int and string value", function(assert) {
+  store.push("person", {
+    id: "1234",
+    firstName: "Guillaume",
+    lastName: "Gérard"
+  });
+
+  var guillaumeByNum = store.find("person", "1234");
+  assert.strictEqual(guillaumeByNum.get("id"), 1234);
+  assert.ok(guillaumeByNum.get("content") instanceof Person);
+
+  guillaumeByNum = store.find("person", 1234);
+  assert.strictEqual(guillaumeByNum.get("id"), 1234);
+  assert.ok(guillaumeByNum.get("content") instanceof Person);
+});
+
+test("models with int 0 id must be lookedup by int and string value", function(assert) {
+  store.push("person", {
+    id: 0,
+    firstName: "Guillaume",
+    lastName: "Gérard"
+  });
+
+  var guillaumeByNum = store.find("person", "0");
+  assert.strictEqual(guillaumeByNum.get("id"), 0);
+  assert.ok(guillaumeByNum.get("content") instanceof Person);
+
+  guillaumeByNum = store.find("person", 0);
+  assert.strictEqual(guillaumeByNum.get("id"), 0);
+  assert.ok(guillaumeByNum.get("content") instanceof Person);
+});
+
+test("models with int 0 id in string must be lookedup by int and string value", function(assert) {
+  store.push("person", {
+    id: "0",
+    firstName: "Guillaume",
+    lastName: "Gérard"
+  });
+
+  var guillaumeByNum = store.find("person", "0");
+  assert.strictEqual(guillaumeByNum.get("id"), 0);
+  assert.ok(guillaumeByNum.get("content") instanceof Person);
+
+  guillaumeByNum = store.find("person", 0);
+  assert.strictEqual(guillaumeByNum.get("id"), 0);
+  assert.ok(guillaumeByNum.get("content") instanceof Person);
+});
+
+test("models with float id in string must be lookedup by int float and string value", function(assert) {
+  store.push("person", {
+    id: "3.14159265359",
+    firstName: "Guillaume",
+    lastName: "Gérard"
+  });
+
+  var guillaumeByNum = store.find("person", "3.14159265359");
+  assert.strictEqual(guillaumeByNum.get("id"), 3.14159265359);
+  assert.ok(guillaumeByNum.get("content") instanceof Person);
+
+  guillaumeByNum = store.find("person", 3.14159265359);
+  assert.strictEqual(guillaumeByNum.get("id"), 3.14159265359);
+  assert.ok(guillaumeByNum.get("content") instanceof Person);
 });
 
 test("find should return array of bound models", function(assert) {
