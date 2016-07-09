@@ -1,11 +1,11 @@
 import Ember from "ember";
-import getOwner from 'ember-getowner-polyfill';
-import { moduleFor } from 'ember-qunit';
+import getOwner from "ember-getowner-polyfill";
+import { moduleFor } from "ember-qunit";
 import { test } from "dummy/tests/helpers/qunit";
 
 var store, Person, Toran, Cat, run = Ember.run;
 
-moduleFor('service:simple-store', "store unit tests", {
+moduleFor("service:simple-store", "store unit tests", {
   beforeEach: function() {
     Person = Ember.Object.extend({
         firstName: "",
@@ -219,6 +219,8 @@ test("find should return array of bound models", function(assert) {
 });
 
 test("remove should destory the item by type", function(assert) {
+  assert.expect(7);
+
   var first = store.push("person", {
     id: 1,
     firstName: "Toran",
@@ -242,6 +244,14 @@ test("remove should destory the item by type", function(assert) {
   var last_person = store.find("person", last.id);
   assert.ok(last_person.get("content"), "The brandon record was not found");
   assert.equal(last_person.get("firstName"), "Brandon");
+
+  run.next(() => {
+    try {
+        first.set("firstName", "X");
+    } catch (e) {
+        assert.equal(e.message, "Assertion Failed: calling set on destroyed object");
+    }
+  });
 });
 
 test("find with filter should return array of models filtered by value", function(assert) {
@@ -390,21 +400,23 @@ test("find with filter works with string based values", function(assert) {
 });
 
 test("clear will destroy everything for a given type", function(assert) {
-  store.push("person", {
+  assert.expect(16);
+
+  var firstPerson = store.push("person", {
     id: 9,
     firstName: "Brandon",
     lastName: "Williams",
     cat_id: 1
   });
 
-  store.push("person", {
+  var lastPerson = store.push("person", {
     id: 8,
     firstName: "Toran",
     lastName: "Billups",
     cat_id: 1
   });
 
-  store.push("cat", {
+  var firstCat = store.push("cat", {
     id: 1,
     color: "red"
   });
@@ -446,27 +458,54 @@ test("clear will destroy everything for a given type", function(assert) {
 
   var catsAfter = store.find("cat");
   assert.equal(catsAfter.get("length"), 1);
+
+  run.next(() => {
+    try {
+        firstPerson.set("firstName", "X");
+    } catch (e) {
+        assert.equal(e.message, "Assertion Failed: calling set on destroyed object");
+    }
+
+    try {
+        lastPerson.set("firstName", "X");
+    } catch (e) {
+        assert.equal(e.message, "Assertion Failed: calling set on destroyed object");
+    }
+
+    firstCat.set("color", "purple");
+    assert.equal(firstCat.get("color"), "purple");
+  });
 });
 
 test("clear without type will destroy everything", function(assert) {
-  store.push("person", {
+  assert.expect(10);
+
+  var firstPerson = store.push("person", {
     id: 9,
     firstName: "Brandon",
     lastName: "Williams",
     cat_id: 1
   });
 
-  store.push("person", {
+  var lastPerson = store.push("person", {
     id: 8,
     firstName: "Toran",
     lastName: "Billups",
     cat_id: 1
   });
 
-  store.push("cat", {
+  var firstCat = store.push("cat", {
     id: 1,
     color: "red"
   });
+
+  firstPerson.set("firstName", "R");
+  lastPerson.set("firstName", "M");
+  firstCat.set("color", "purple");
+
+  assert.equal(firstPerson.get("firstName"), "R");
+  assert.equal(lastPerson.get("firstName"), "M");
+  assert.equal(firstCat.get("color"), "purple");
 
   assert.equal(store.find("person").get("length"), 2);
   assert.equal(store.find("cat").get("length"), 1);
@@ -477,6 +516,26 @@ test("clear without type will destroy everything", function(assert) {
 
   assert.equal(store.find("person").get("length"), 0);
   assert.equal(store.find("cat").get("length"), 0);
+
+  run.next(() => {
+    try {
+        firstPerson.set("firstName", "X");
+    } catch (e) {
+        assert.equal(e.message, "Assertion Failed: calling set on destroyed object");
+    }
+
+    try {
+        lastPerson.set("firstName", "X");
+    } catch (e) {
+        assert.equal(e.message, "Assertion Failed: calling set on destroyed object");
+    }
+
+    try {
+        firstCat.set("color", "rain");
+    } catch (e) {
+        assert.equal(e.message, "Assertion Failed: calling set on destroyed object");
+    }
+  });
 });
 
 test("invoking clear multiple times will only schedule a recompute once per type", function(assert) {
@@ -485,7 +544,7 @@ test("invoking clear multiple times will only schedule a recompute once per type
     store.clear("foo");
     store.clear("bar");
     store.clear("foo");
-    assert.equal(store.get('recompute.length'), 2);
+    assert.equal(store.get("recompute.length"), 2);
   });
 });
 
@@ -1245,7 +1304,7 @@ test("find with filter function returns array proxy that has a remove function t
 
 var Listing;
 
-moduleFor('service:simple-store', "store unit tests -- custom primary key", {
+moduleFor("service:simple-store", "store unit tests -- custom primary key", {
   beforeEach: function() {
     Listing = Ember.Object.extend({
         listing_id: null,
@@ -1253,7 +1312,7 @@ moduleFor('service:simple-store', "store unit tests -- custom primary key", {
     });
 
     Listing.reopenClass({
-        primaryKey: 'listing_id'
+        primaryKey: "listing_id"
     });
     const owner = getOwner(this);
     store = this.subject();
