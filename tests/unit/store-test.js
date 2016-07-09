@@ -249,7 +249,7 @@ test("remove should destory the item by type", function(assert) {
     try {
         first.set("firstName", "X");
     } catch (e) {
-        assert.equal(e.message, "Assertion Failed: calling set on destroyed object");
+        assert.ok(e.message.indexOf("Assertion Failed: calling set on destroyed object") !== -1);
     }
   });
 });
@@ -463,13 +463,13 @@ test("clear will destroy everything for a given type", function(assert) {
     try {
         firstPerson.set("firstName", "X");
     } catch (e) {
-        assert.equal(e.message, "Assertion Failed: calling set on destroyed object");
+        assert.ok(e.message.indexOf("Assertion Failed: calling set on destroyed object") !== -1);
     }
 
     try {
         lastPerson.set("firstName", "X");
     } catch (e) {
-        assert.equal(e.message, "Assertion Failed: calling set on destroyed object");
+        assert.ok(e.message.indexOf("Assertion Failed: calling set on destroyed object") !== -1);
     }
 
     firstCat.set("color", "purple");
@@ -521,19 +521,19 @@ test("clear without type will destroy everything", function(assert) {
     try {
         firstPerson.set("firstName", "X");
     } catch (e) {
-        assert.equal(e.message, "Assertion Failed: calling set on destroyed object");
+        assert.ok(e.message.indexOf("Assertion Failed: calling set on destroyed object") !== -1);
     }
 
     try {
         lastPerson.set("firstName", "X");
     } catch (e) {
-        assert.equal(e.message, "Assertion Failed: calling set on destroyed object");
+        assert.ok(e.message.indexOf("Assertion Failed: calling set on destroyed object") !== -1);
     }
 
     try {
         firstCat.set("color", "rain");
     } catch (e) {
-        assert.equal(e.message, "Assertion Failed: calling set on destroyed object");
+        assert.ok(e.message.indexOf("Assertion Failed: calling set on destroyed object") !== -1);
     }
   });
 });
