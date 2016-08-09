@@ -54,6 +54,11 @@ var Store = ServiceType.extend({
       this.set("recompute", Ember.A());
       this.set("filtersMap", {});
       this.set("identityMap", {});
+
+      var array = this.get("array") || {};
+      Object.keys(array).forEach((type) => {
+          arrayForType(type, this).forEach(record => record.destroy());
+      });
       this.set("array", {});
     },
     clear(type) {
@@ -62,7 +67,9 @@ var Store = ServiceType.extend({
         }
 
         delete this.get("identityMap")[type];
-        arrayForType(type, this).clear();
+        var records = arrayForType(type, this);
+        records.forEach(record => record.destroy());
+        records.clear();
         this.scheduleUpdate(type);
     },
     remove(type, id) {
@@ -71,6 +78,7 @@ var Store = ServiceType.extend({
             var primaryKey = primaryKeyForType(type, this);
             delete this.get("identityMap")[type][record[primaryKey]];
             arrayForType(type, this).removeObject(record);
+            record.destroy();
             this.scheduleUpdate(type);
         }
     },

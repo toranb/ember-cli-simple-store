@@ -16,6 +16,7 @@ Router.map(function() {
     this.route("filters", {path: "/filters"});
     this.route("robots", {path: "/robots"});
     this.route("custom-key");
+    this.route("delete-object");
 });
 
 export default Router;
