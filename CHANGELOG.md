@@ -1,6 +1,16 @@
 ember-cli-simple-store Changelog
 ==============================
 
+5.0.0
+-----
+
+* [CLEANUP]: removed find with filter dep warning
+  ([#62](https://github.com/toranb/ember-cli-simple-store/pull/62))
+
+* [FEATURE]: remove and clear invoke destroy on the record
+  ([#61](https://github.com/toranb/ember-cli-simple-store/pull/61))
+
+
 4.3.0
 -----
 
