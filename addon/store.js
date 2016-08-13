@@ -12,7 +12,7 @@ function buildRecord(type, data, store) {
 
     assert("No model was found for type: " + type, factory);
 
-    var record = factory.create();
+    var record = factory.create(data);
     record.setProperties(data);
     var id = data[primaryKey];
     identityMapForType(type, store)[id] = record;
