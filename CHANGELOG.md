@@ -1,6 +1,13 @@
 ember-cli-simple-store Changelog
 ==============================
 
+5.1.0
+-----
+
+* [DEP WARNINGS]: fix w/ enumerable contains polyfill
+  ([#64](https://github.com/toranb/ember-cli-simple-store/pull/64))
+
+
 5.0.0
 -----
 
