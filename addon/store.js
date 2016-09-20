@@ -110,7 +110,7 @@ var Store = ServiceType.extend({
             var filters = filtersMap[type] || [];
 
             filters.forEach((recordArray) => {
-                if (recompute.contains(type)) {
+                if (recompute.includes(type)) {
                     var updatedContent = recordArray.updateContent();
                     recordArray.set("content", updatedContent);
                 }
@@ -129,7 +129,7 @@ var Store = ServiceType.extend({
         Object.keys(filtersMap).forEach((type) => {
             var primaryKey = primaryKeyForType(type, this);
             var filters = filtersMap[type] || [];
-            updatedFiltersMap = filters.filter((func) => !filterIds.contains(func[primaryKey]));
+            updatedFiltersMap = filters.filter((func) => !filterIds.includes(func[primaryKey]));
             filtersMap[type] = updatedFiltersMap;
         });
     },
