@@ -60,6 +60,22 @@ test("push returns the created record", function(assert) {
   assert.strictEqual(pushedToranb, gottenToranb.get("content"), "both records are identical");
 });
 
+test("willDestroy sets refs to complex objects to null", function(assert) {
+  store.push("person", {
+    id: "gambler",
+    firstName: "Wyatt",
+    lastName: "Earp"
+  });
+  assert.equal(store.get('array')['person'][0].id, 'gambler', 'gambler in store');
+  run(function() {
+    store.destroy();
+  });
+  assert.equal(store.get('array'), null, 'store#array set to null');
+  assert.equal(store.get('identityMap'), null, 'store#identityMap set to null');
+  assert.equal(store.get('filtersMap'), null, 'store#filtersMap set to null');
+  assert.equal(store.get('recompute'), null, 'store#recompute set to null');
+});
+
 test("pushing a record into the store twice updates the original record", function(assert) {
   store.push("person", {
     id: "toranb",
@@ -218,7 +234,7 @@ test("find should return array of bound models", function(assert) {
   assert.equal(found_data.objectAt(2).get("firstName"), "Scott");
 });
 
-test("remove should destory the item by type", function(assert) {
+test("remove should destroy the item by type", function(assert) {
   assert.expect(7);
 
   var first = store.push("person", {
