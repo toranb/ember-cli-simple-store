@@ -61,6 +61,14 @@ var Store = ServiceType.extend({
       });
       this.set("array", {});
     },
+    willDestroy() {
+        this.setProperties({
+            "array": null,
+            "identityMap": null,
+            "filtersMap": null,
+            "recompute": null
+        });
+    },
     clear(type) {
         if (type === undefined) {
             this.reset();
@@ -103,6 +111,9 @@ var Store = ServiceType.extend({
         run.scheduleOnce('actions', this, 'updateFilters');
     },
     updateFilters() {
+        if (this.get('isDestroyed') || this.get('isDestroying')) {
+            return;
+        }
         var recompute = this.get("recompute");
         var filtersMap = this.get("filtersMap");
 
