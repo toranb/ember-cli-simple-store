@@ -1,6 +1,12 @@
 ember-cli-simple-store Changelog
 ==============================
 
+5.2.0
+-----
+
+* [BUG]: On willDestroy event set object/array refs are null
+  ([#65](https://github.com/toranb/ember-cli-simple-store/pull/65))
+
 5.1.0
 -----
 
