@@ -4,7 +4,7 @@ const { computed, defineProperty, get } = Ember;
 
 function equal(first, second) {
     if (first instanceof Array && second instanceof Array) {
-        return Ember.$(first).not(second).get().length === 0 && Ember.$(second).not(first).get().length === 0;
+        return first.length === second.length && first.every((v, i) => v === second[i]);
     }
 
     return first === second;
