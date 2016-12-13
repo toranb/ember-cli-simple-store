@@ -90,12 +90,12 @@ var Store = ServiceType.extend({
             this.scheduleUpdate(type);
         }
     },
-    push(type, data) {
+    push(type, data, replace=false) {
         var primaryKey = primaryKeyForType(type, this);
         data[primaryKey] = this._coerceId(data[primaryKey]);
         var record = this._findById(type, data[primaryKey]);
 
-        if (record) {
+        if (record && !replace) {
             setProperties(record, data);
         } else {
             record = buildRecord(type, data, this);

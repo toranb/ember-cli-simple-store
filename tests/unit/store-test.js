@@ -60,6 +60,34 @@ test("push returns the created record", function(assert) {
   assert.strictEqual(pushedToranb, gottenToranb.get("content"), "both records are identical");
 });
 
+test("push with replace=true replaces the constant in the store with a new record", function(assert) {
+  var pushedToranb = store.push("person", {
+    id: "toranb",
+    firstName: "Toran",
+    lastName: "Billups"
+  });
+  var otherToranb = store.push("person", {
+    id: "toranb",
+    firstName: "Toran",
+    lastName: "Billups"
+  });
+
+  assert.strictEqual(pushedToranb, otherToranb, "both records are identical");
+  var gottenToranb = store.find("person", "toranb");
+  assert.notStrictEqual(pushedToranb, gottenToranb, "both records are NOT identical");
+
+  var newToranb = store.push("person", {
+    id: "toranb",
+    firstName: "Toran",
+    lastName: "Billups"
+  }, true);
+
+  assert.notStrictEqual(pushedToranb, newToranb, "both records are NOT identical");
+  assert.notStrictEqual(otherToranb, newToranb, "both records are NOT identical");
+  gottenToranb = store.find("person", "toranb");
+  assert.notStrictEqual(pushedToranb, gottenToranb, "both records are NOT identical");
+});
+
 test("willDestroy sets refs to complex objects to null", function(assert) {
   store.push("person", {
     id: "gambler",
