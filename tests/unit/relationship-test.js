@@ -1,10 +1,11 @@
 import Ember from "ember";
-import getOwner from 'ember-getowner-polyfill';
 import { test } from "dummy/tests/helpers/qunit";
 import { moduleFor } from 'ember-qunit';
 import registration from "dummy/tests/helpers/registration";
 
-var store, user, role, run = Ember.run;
+const { run, getOwner } = Ember;
+
+var store, user, role;
 
 moduleFor('service:simple-store', "unit: user model test", {
     beforeEach() {

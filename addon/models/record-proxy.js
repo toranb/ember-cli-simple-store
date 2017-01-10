@@ -1,7 +1,6 @@
 import Ember from 'ember';
-import getOwner from 'ember-getowner-polyfill';
 
-const { computed } = Ember;
+const { computed, getOwner } = Ember;
 
 export default Ember.ObjectProxy.extend({
     _source: null,
