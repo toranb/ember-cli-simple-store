@@ -1,10 +1,9 @@
 import Ember from "ember";
-import getOwner from "ember-getowner-polyfill";
 import RecordProxy from './models/record-proxy';
 import RecordArray from './models/record-array';
 import FilteredRecordArray from './models/filtered-record-array';
 
-const { run, get, setProperties, assert } = Ember;
+const { run, get, setProperties, assert, getOwner } = Ember;
 
 function buildRecord(type, data, store) {
     var factory = factoryForType(type, store);
