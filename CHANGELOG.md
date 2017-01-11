@@ -1,6 +1,15 @@
 ember-cli-simple-store Changelog
 ==============================
 
+5.3.0
+-----
+
+* [DEPENDENCY]: updated ember-getowner-polyfill
+  ([#70](https://github.com/toranb/ember-cli-simple-store/pull/70))
+
+* [UPDATE]: equal function to work with jquery && jquery 3.0 and above
+  ([#68](https://github.com/toranb/ember-cli-simple-store/pull/68))
+
 5.2.0
 -----
 
