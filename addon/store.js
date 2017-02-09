@@ -26,8 +26,7 @@ function createRecord(type, data, store) {
 }
 
 function factoryForType(type, store) {
-    var factory = getOwner(store).factoryFor("model:" + type);
-    return factory ? factory.class : undefined;
+    return getOwner(store)._lookupFactory("model:" + type);
 }
 
 function primaryKeyForType(type, store) {
