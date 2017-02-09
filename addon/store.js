@@ -1,26 +1,33 @@
 import Ember from "ember";
-import RecordProxy from './models/record-proxy';
-import RecordArray from './models/record-array';
-import FilteredRecordArray from './models/filtered-record-array';
+import RecordProxy from "./models/record-proxy";
+import RecordArray from "./models/record-array";
+import FilteredRecordArray from "./models/filtered-record-array";
 
 const { run, get, setProperties, assert, getOwner } = Ember;
 
 function buildRecord(type, data, store) {
-    var factory = factoryForType(type, store);
-    var primaryKey = primaryKeyForType(type, store);
-
-    assert("No model was found for type: " + type, factory);
-
-    var record = factory.create(data);
-    var id = data[primaryKey];
-    identityMapForType(type, store)[id] = record;
+    var record = createRecord(type, data, store);
     arrayForType(type, store).pushObject(record);
 
     return record;
 }
 
+function createRecord(type, data, store) {
+  var factory = factoryForType(type, store);
+  var primaryKey = primaryKeyForType(type, store);
+
+  assert("No model was found for type: " + type, factory);
+
+  var record = factory.create(data);
+  var id = data[primaryKey];
+  identityMapForType(type, store)[id] = record;
+
+  return record;
+}
+
 function factoryForType(type, store) {
-    return getOwner(store)._lookupFactory("model:" + type);
+    var factory = getOwner(store).factoryFor("model:" + type);
+    return factory ? factory.class : undefined;
 }
 
 function primaryKeyForType(type, store) {
@@ -103,6 +110,28 @@ var Store = ServiceType.extend({
         this.scheduleUpdate(type);
 
         return record;
+    },
+    pushArray(type, dataArray) {
+        var primaryKey = primaryKeyForType(type, this);
+        var records = [];
+
+        dataArray.forEach((data) => {
+            data[primaryKey] = this._coerceId(data[primaryKey]);
+            var record = this._findById(type, data[primaryKey]);
+
+            if (record) {
+                setProperties(record, data);
+            } else {
+                record = createRecord(type, data, this);
+                records.push(record);
+            }
+        });
+
+        arrayForType(type, this).pushObjects(records);
+
+        this.scheduleUpdate(type);
+
+        return records;
     },
     scheduleUpdate(type) {
         var recompute = this.get("recompute");
