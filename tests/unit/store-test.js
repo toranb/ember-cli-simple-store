@@ -49,6 +49,28 @@ test("records can be pushed into the store", function(assert) {
   assert.equal(toranb.get("id"), "toranb", "the id property is correct");
 });
 
+test("multiple records can be pushed into the store", function(assert) {
+  var person1 = {
+    id: "johndoe",
+    firstName: "john",
+    lastName: "doe"
+  };
+
+  var person2 = {
+    id: "janedoe",
+    firstName: "jane",
+    lastName: "doe"
+  };
+
+  store.pushArray("person", [person1, person2]);
+
+  var foundPerson1 = store.find("person", "johndoe");
+  var foundPerson2 = store.find("person", "janedoe");
+
+  assert.equal(foundPerson1.get("id"), person1.id, "person 1 id not found");
+  assert.equal(foundPerson2.get("id"), person2.id, "person 2 id not found");
+});
+
 test("push returns the created record", function(assert) {
   var pushedToranb = store.push("person", {
     id: "toranb",
@@ -59,6 +81,28 @@ test("push returns the created record", function(assert) {
   var gottenToranb = store.find("person", "toranb");
 
   assert.strictEqual(pushedToranb, gottenToranb.get("content"), "both records are identical");
+});
+
+test("push array returns the created records", function(assert) {
+  var person1 = {
+    id: "johndoe",
+    firstName: "john",
+    lastName: "doe"
+  };
+
+  var person2 = {
+    id: "janedoe",
+    firstName: "jane",
+    lastName: "doe"
+  };
+
+  var data = [person1, person2];
+
+  var pushedRecords = store.pushArray("person", data);
+
+  assert.equal(pushedRecords.length, data.length);
+  assert.equal(pushedRecords[0].get("id"), data[0].id);
+  assert.equal(pushedRecords[1].get("id"), data[1].id);
 });
 
 test("willDestroy sets refs to complex objects to null", function(assert) {
@@ -147,6 +191,22 @@ test("models with int !0 id in string must be lookedup by int and string value",
     firstName: "Guillaume",
     lastName: "Gérard"
   });
+
+  var guillaumeByNum = store.find("person", "1234");
+  assert.strictEqual(guillaumeByNum.get("id"), 1234);
+  assert.ok(guillaumeByNum.get("content") instanceof Person);
+
+  guillaumeByNum = store.find("person", 1234);
+  assert.strictEqual(guillaumeByNum.get("id"), 1234);
+  assert.ok(guillaumeByNum.get("content") instanceof Person);
+});
+
+test("pushArray - models with int !0 id in string must be lookedup by int and string value", function(assert) {
+  store.pushArray("person", [{
+    id: "1234",
+    firstName: "Guillaume",
+    lastName: "Gérard"
+  }]);
 
   var guillaumeByNum = store.find("person", "1234");
   assert.strictEqual(guillaumeByNum.get("id"), 1234);

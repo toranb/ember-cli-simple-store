@@ -78,7 +78,7 @@ test('filters can be thrown out when you navigate away from a given route', func
   });
 });
 
-test('xxx filters on models with custom primary keys can be thrown out when you leave a route', function(assert) {
+test('filters on models with custom primary keys can be thrown out when you leave a route', function(assert) {
   visit('/custom-key');
   andThen(function() {
       assert.equal(currentURL(), '/custom-key');
