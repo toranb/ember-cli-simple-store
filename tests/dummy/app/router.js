@@ -13,6 +13,7 @@ Router.map(function() {
     this.route("edit", {path: "/edit"});
     this.route("isnone", {path: "/isnone"});
     this.route("relationships", {path: "/relationships"});
+    this.route("arrays", {path: "/arrays"});
     this.route("filters", {path: "/filters"});
     this.route("robots", {path: "/robots"});
     this.route("custom-key");
