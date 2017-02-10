@@ -27,7 +27,7 @@ simpleStore.push("person", {id: 1, name: "toran"});
 ```js
 //create or update multiple person models - observers are notified only once all models have been created or updated
 
-simpleStore.push("person", [{id: 1, name: "john"}, {id: 2, name: "jane"}]);
+simpleStore.pushArray("person", [{id: 1, name: "john"}, {id: 2, name: "jane"}]);
 ```
 
 ```js
