@@ -1,6 +1,15 @@
 ember-cli-simple-store Changelog
 ==============================
 
+5.4.0
+-----
+
+* [DOCS]: updated README to reflect pushArray api
+  ([commit](https://github.com/toranb/ember-cli-simple-store/commit/b560d78f34751c7a483a435827549275dca152d5))
+
+* [FEATURE]: added pushArray api
+  ([#71](https://github.com/toranb/ember-cli-simple-store/pull/71))
+
 5.3.0
 -----
 
