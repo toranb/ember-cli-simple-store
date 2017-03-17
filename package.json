@@ -20,7 +20,7 @@
       "url": "https://github.com/toranb/ember-cli-simple-store"
   },
   "engines": {
-    "node": ">= 0.10.0"
+    "node": ">= 4.0.0"
   },
   "author": "Toran Billups toranb@gmail.com",
   "license": "MIT",
@@ -47,7 +47,7 @@
   },
   "dependencies": {
     "ember-cli-babel": "^5.1.5",
-    "ember-getowner-polyfill": "^1.1.1",
+    "ember-getowner-polyfill": "^1.2.2",
     "ember-runtime-enumerable-includes-polyfill": "^1.0.1"
   },
   "keywords": [

@@ -26,11 +26,13 @@ function createRecord(type, data, store) {
 }
 
 function factoryForType(type, store) {
-    return getOwner(store)._lookupFactory("model:" + type);
+    return getOwner(store).factoryFor("model:" + type);
 }
 
 function primaryKeyForType(type, store) {
-    return (factoryForType(type, store) || {}).primaryKey || 'id';
+    const factory = factoryForType(type, store) || {};
+    // http://emberjs.com/deprecations/v2.x/#toc_migrating-from-_lookupfactory-to-factoryfor
+    return factory.class && (factory.class.primaryKey || 'id');
 }
 
 function arrayForType(type, store) {
