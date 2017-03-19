@@ -5,11 +5,11 @@ import { module, test } from 'qunit';
 var application, store;
 
 module('Acceptance: Filters Test', {
-  setup: function() {
+  beforeEach: function() {
     application = startApp();
     store = application.__container__.lookup('service:simple-store');
   },
-  teardown: function() {
+  afterEach: function() {
     Ember.run(application, 'destroy');
   }
 });

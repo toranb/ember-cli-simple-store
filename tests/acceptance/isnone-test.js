@@ -5,10 +5,10 @@ import { module, test } from 'qunit';
 var application;
 
 module('Acceptance: isNone Test', {
-  setup: function() {
+  beforeEach: function() {
     application = startApp();
   },
-  teardown: function() {
+  afterEach: function() {
     Ember.run(application, 'destroy');
   }
 });
