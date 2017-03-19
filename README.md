@@ -1,4 +1,4 @@
-# ember-cli-simple-store
+# ember-cli-simple-store___
 
 [![Build Status][]](https://travis-ci.org/toranb/ember-cli-simple-store)
 [![Code Climate][climate-badge]][climate]
