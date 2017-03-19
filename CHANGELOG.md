@@ -1,6 +1,21 @@
 ember-cli-simple-store Changelog
 ==============================
 
+5.5.0
+-----
+
+* [BUILD]: update to ember-cli v2.10.1
+  ([#76](https://github.com/toranb/ember-cli-simple-store/pull/76))
+
+* [BUG]: Change how dependent keys are registered on isDirty computed property
+  ([#75](https://github.com/toranb/ember-cli-simple-store/pull/75))
+
+* [EMBER]: upgraded to ember 1.13.13
+  ([commit](https://github.com/toranb/ember-cli-simple-store/commit/365c30a2cbc731e33d9ea9dcfd3f28892f0ab2ff))
+
+* [DEPRECATION]: use factoryFor
+  ([#73](https://github.com/toranb/ember-cli-simple-store/pull/73))
+
 5.4.0
 -----
 
