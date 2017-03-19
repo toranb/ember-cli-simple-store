@@ -130,7 +130,7 @@ var Model = Ember.Object.extend({
         defineProperty(model, "isNotDirty", computed.not('isDirty'));
 
         defineProperty(model, "isDirty", computed(...modelIsDirtyAttrs, function() {
-          return modelIsDirtyAttrs.some((attr) => get(model, attr) === true);
+            return modelIsDirtyAttrs.some((attr) => get(model, attr) === true);
         }));
     }
 });
