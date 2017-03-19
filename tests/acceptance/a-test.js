@@ -6,11 +6,11 @@ import { module, test } from 'qunit';
 var application;
 
 module('Acceptance: A Test', {
-  setup: function() {
+  beforeEach: function() {
     application = startApp();
     Foo.create({name: "wat"});
   },
-  teardown: function() {
+  afterEach: function() {
     Ember.run(application, 'destroy');
   }
 });
