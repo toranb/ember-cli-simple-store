@@ -1,21 +1,11 @@
-import Ember from 'ember';
-import startApp from '../helpers/start-app';
-import { module, test } from 'qunit';
+import { test } from 'qunit';
+import moduleForAcceptance from '../helpers/module-for-acceptance';
 
-var application;
-
-module('Acceptance: B Test', {
-  beforeEach: function() {
-    application = startApp();
-  },
-  afterEach: function() {
-    Ember.run(application, 'destroy');
-  }
-});
+moduleForAcceptance('Acceptance: B Test');
 
 test('the attr in test b should not hold global state across objects', function(assert) {
   visit('/wat');
-  andThen(function() {
+  andThen(() => {
       assert.equal(find("input.name").val(), "");
   });
 });
