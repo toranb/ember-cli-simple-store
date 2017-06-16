@@ -1,39 +1,29 @@
-import Ember from 'ember';
-import startApp from '../helpers/start-app';
-import { module, test } from 'qunit';
+import { test } from 'qunit';
+import moduleForAcceptance from '../helpers/module-for-acceptance';
 
-var application;
-
-module('Acceptance: Edit Test', {
-  beforeEach: function() {
-    application = startApp();
-  },
-  afterEach: function() {
-    Ember.run(application, 'destroy');
-  }
-});
+moduleForAcceptance('Acceptance: Edit Test');
 
 test('attribute change from value to empty string should result in isPrimed', function(assert) {
   visit('/edit');
-  andThen(function() {
+  andThen(() => {
       assert.equal(find("input.name").val(), "toran");
       assert.equal(find(".nameDirty").text(), "");
       assert.equal(find(".namePrimed").text(), "");
   });
   fillIn("input.name", "");
-  andThen(function() {
+  andThen(() => {
       assert.equal(find("input.name").val(), "");
       assert.equal(find(".nameDirty").text(), "true");
       assert.equal(find(".namePrimed").text(), "true");
   });
   fillIn("input.name", "x");
-  andThen(function() {
+  andThen(() => {
       assert.equal(find("input.name").val(), "x");
       assert.equal(find(".nameDirty").text(), "true");
       assert.equal(find(".namePrimed").text(), "true");
   });
   fillIn("input.name", "toran");
-  andThen(function() {
+  andThen(() => {
       assert.equal(find("input.name").val(), "toran");
       assert.equal(find(".nameDirty").text(), "");
       assert.equal(find(".namePrimed").text(), "true");

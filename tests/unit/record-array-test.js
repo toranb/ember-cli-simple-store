@@ -8,7 +8,7 @@ function createFilter(simpleStore) {
     simpleStore.push("foo", { id: 1, name: "toran" });
 
     return simpleStore.find('foo', (foo) => {
-      	return foo.name === 'toran';
+        return foo.name === 'toran';
     });
 }
 
