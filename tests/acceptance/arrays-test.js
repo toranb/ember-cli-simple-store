@@ -6,7 +6,7 @@ moduleForAcceptance('Acceptance: Arrays Test', {
     this.store = this.application.__container__.lookup('service:simple-store');
   },
   afterEach() {
-    delete this.store;
+    this.store = null;
   }
 });
 
