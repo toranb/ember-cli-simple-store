@@ -1,6 +1,12 @@
 ember-cli-simple-store Changelog
 ==============================
 
+5.6.0
+-----
+
+* [DEPENDENCY]: upgrade to ember-cli v2.13.2
+  ([#78](https://github.com/toranb/ember-cli-simple-store/pull/78))
+
 5.5.0
 -----
 
