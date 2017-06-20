@@ -1,17 +1,7 @@
-import Ember from 'ember';
-import startApp from '../helpers/start-app';
-import { module, test } from 'qunit';
+import { test } from 'qunit';
+import moduleForAcceptance from '../helpers/module-for-acceptance';
 
-var application;
-
-module('Acceptance: isNone Test', {
-  beforeEach: function() {
-    application = startApp();
-  },
-  afterEach: function() {
-    Ember.run(application, 'destroy');
-  }
-});
+moduleForAcceptance('Acceptance: isNone Test');
 
 test('attribute change from value to empty string should result in isPrimed for null and undefined', function(assert) {
   visit('/isnone');

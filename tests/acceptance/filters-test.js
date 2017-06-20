@@ -1,34 +1,30 @@
-import Ember from 'ember';
-import startApp from '../helpers/start-app';
-import { module, test } from 'qunit';
+import { test } from 'qunit';
+import moduleForAcceptance from '../helpers/module-for-acceptance';
 
-var application, store;
-
-module('Acceptance: Filters Test', {
-  beforeEach: function() {
-    application = startApp();
-    store = application.__container__.lookup('service:simple-store');
+moduleForAcceptance('Acceptance: Filters Test', {
+  beforeEach() {
+    this.store = this.application.__container__.lookup('service:simple-store');
   },
-  afterEach: function() {
-    Ember.run(application, 'destroy');
+  afterEach() {
+    this.store = null;
   }
 });
 
 test('push will trigger filter for each subscription', function(assert) {
   visit('/filters');
-  andThen(function() {
+  andThen(() => {
       assert.equal(find('.one').find('option').length, 3);
       assert.equal(find('.two').find('option').length, 3);
       assert.equal(find('.three').find('option').length, 3);
       assert.equal(find('.four').find('option').length, 3);
-      store.push('robot', {id: 2, size: 20});
-      store.push('robot', {id: 1, size: 10});
-      store.push('robot', {id: 3, size: 30});
-      store.push('zing', {id: 2, number: 80});
-      store.push('zing', {id: 1, number: 90});
-      store.push('zing', {id: 3, number: 70});
+      this.store.push('robot', {id: 2, size: 20});
+      this.store.push('robot', {id: 1, size: 10});
+      this.store.push('robot', {id: 3, size: 30});
+      this.store.push('zing', {id: 2, number: 80});
+      this.store.push('zing', {id: 1, number: 90});
+      this.store.push('zing', {id: 3, number: 70});
   });
-  andThen(function() {
+  andThen(() => {
       assert.equal(find('.one').find('option').length, 0);
       assert.equal(find('.two').find('option').length, 2);
       assert.equal(find('.three').find('option').length, 0);
@@ -38,18 +34,18 @@ test('push will trigger filter for each subscription', function(assert) {
 
 test('filters can be thrown out when you navigate away from a given route', function(assert) {
   visit('/filters');
-  andThen(function() {
+  andThen(() => {
       assert.equal(currentURL(), '/filters');
-      var filtersMap = store.get('filtersMap');
+      var filtersMap = this.store.get('filtersMap');
       var robotFilters = filtersMap['robot'];
       var zingFilters = filtersMap['zing'];
       assert.equal(robotFilters.length, 2);
       assert.equal(zingFilters.length, 2);
   });
   click('.link-robots');
-  andThen(function() {
+  andThen(() => {
       assert.equal(currentURL(), '/robots');
-      var filtersMap = store.get('filtersMap');
+      var filtersMap = this.store.get('filtersMap');
       var robotFilters = filtersMap['robot'];
       var zingFilters = filtersMap['zing'];
       //the filters route did cleanup so removed the filters used :)
@@ -57,9 +53,9 @@ test('filters can be thrown out when you navigate away from a given route', func
       assert.equal(zingFilters.length, 0);
   });
   click('.link-wat');
-  andThen(function() {
+  andThen(() => {
       assert.equal(currentURL(), '/wat');
-      var filtersMap = store.get('filtersMap');
+      var filtersMap = this.store.get('filtersMap');
       var robotFilters = filtersMap['robot'];
       var zingFilters = filtersMap['zing'];
       //the robots route did not cleanup so we now have a memory leak :(
@@ -67,9 +63,9 @@ test('filters can be thrown out when you navigate away from a given route', func
       assert.equal(zingFilters.length, 0);
   });
   click('.link-filters');
-  andThen(function() {
+  andThen(() => {
       assert.equal(currentURL(), '/filters');
-      var filtersMap = store.get('filtersMap');
+      var filtersMap = this.store.get('filtersMap');
       var robotFilters = filtersMap['robot'];
       var zingFilters = filtersMap['zing'];
       //the wat route did not cleanup so we now have a memory leak :(
@@ -80,16 +76,16 @@ test('filters can be thrown out when you navigate away from a given route', func
 
 test('filters on models with custom primary keys can be thrown out when you leave a route', function(assert) {
   visit('/custom-key');
-  andThen(function() {
+  andThen(() => {
       assert.equal(currentURL(), '/custom-key');
-      var filtersMap = store.get('filtersMap');
+      var filtersMap = this.store.get('filtersMap');
       var customKeyFilters = filtersMap['custom-key'];
       assert.equal(customKeyFilters.length, 1);
   });
   click('.link-wat');
-  andThen(function() {
+  andThen(() => {
       assert.equal(currentURL(), '/wat');
-      var filtersMap = store.get('filtersMap');
+      var filtersMap = this.store.get('filtersMap');
       var customKeyFilters = filtersMap['custom-key'];
       assert.equal(customKeyFilters.length, 0);
   });
@@ -97,38 +93,38 @@ test('filters on models with custom primary keys can be thrown out when you leav
 
 test('each filter function will be updated during a push with multiple listeners across multiple routes', function(assert) {
   visit('/filters');
-  andThen(function() {
+  andThen(() => {
       assert.equal(currentURL(), '/filters');
       assert.equal(find('.one').find('option').length, 3);
       assert.equal(find('.two').find('option').length, 3);
       assert.equal(find('.three').find('option').length, 3);
       assert.equal(find('.four').find('option').length, 3);
-      store.push('robot', {id: 2, size: 20});
-      store.push('robot', {id: 1, size: 10});
-      store.push('robot', {id: 3, size: 30});
-      store.push('zing', {id: 2, number: 80});
-      store.push('zing', {id: 1, number: 90});
-      store.push('zing', {id: 3, number: 70});
+      this.store.push('robot', {id: 2, size: 20});
+      this.store.push('robot', {id: 1, size: 10});
+      this.store.push('robot', {id: 3, size: 30});
+      this.store.push('zing', {id: 2, number: 80});
+      this.store.push('zing', {id: 1, number: 90});
+      this.store.push('zing', {id: 3, number: 70});
   });
-  andThen(function() {
+  andThen(() => {
       assert.equal(find('.one').find('option').length, 0);
       assert.equal(find('.two').find('option').length, 2);
       assert.equal(find('.three').find('option').length, 0);
       assert.equal(find('.four').find('option').length, 2);
   });
   click('.link-robots');
-  andThen(function() {
+  andThen(() => {
       assert.equal(currentURL(), '/robots');
       assert.equal(find('.nine').find('option').length, 1);
       assert.equal(find('.eight').find('option').length, 1);
-      store.push('robot', {id: 15, name: 'seven', size: 15});
+      this.store.push('robot', {id: 15, name: 'seven', size: 15});
   });
-  andThen(function() {
+  andThen(() => {
       assert.equal(find('.nine').find('option').length, 1);
       assert.equal(find('.eight').find('option').length, 2);
   });
   click('.link-filters');
-  andThen(function() {
+  andThen(() => {
       assert.equal(currentURL(), '/filters');
       assert.equal(find('.one').find('option').length, 1);
       assert.equal(find('.two').find('option').length, 5);
