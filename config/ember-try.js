@@ -10,11 +10,6 @@ module.exports = {
         resolutions: {
           'ember': 'lts-2-4'
         }
-      },
-      npm: {
-        devDependencies: {
-          'ember-native-dom-event-dispatcher': null
-        },
       }
     },
     {
@@ -26,18 +21,12 @@ module.exports = {
         resolutions: {
           'ember': 'lts-2-8'
         }
-      },
-      npm: {
-        devDependencies: {
-          'ember-native-dom-event-dispatcher': null
-        },
       }
     },
     {
       name: 'ember-lts-2.12',
       npm: {
         devDependencies: {
-          'ember-native-dom-event-dispatcher': null,
           'ember-source': '~2.12.0'
         }
       }
@@ -55,7 +44,6 @@ module.exports = {
       npm: {
         devDependencies: {
           'ember-source': null,
-          'ember-native-dom-event-dispatcher': null
         }
       }
     },
@@ -72,7 +60,22 @@ module.exports = {
       npm: {
         devDependencies: {
           'ember-source': null,
-          'ember-native-dom-event-dispatcher': null
+        }
+      }
+    }, 
+    {
+      name: 'ember-canary',
+      bower: {
+        dependencies: {
+          'ember': 'components/ember#canary'
+        },
+        resolutions: {
+          'ember': 'canary'
+        }
+      },
+      npm: {
+        devDependencies: {
+          'ember-source': null
         }
       }
     }
