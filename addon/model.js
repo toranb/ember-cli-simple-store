@@ -19,7 +19,7 @@ function factory(obj) {
 }
 
 function attrs(obj) {
-    var all = [];
+    let all = [];
     factory(obj).eachComputedProperty(function (key, meta) {
         if (meta.isAttribute) {
             all.push(key);
@@ -30,7 +30,7 @@ function attrs(obj) {
 }
 
 function clone(obj) {
-    var copy = {};
+    let copy = {};
     factory(obj).eachComputedProperty(function (key, meta) {
         if (meta.isAttribute) {
             copy[key] = obj.get(key);
@@ -40,23 +40,23 @@ function clone(obj) {
     return copy;
 }
 
-var attr = function() {
-    var meta = {
+let attr = function() {
+    let meta = {
       isAttribute: true,
       defaults: arguments[0]
     };
 
     return computed({
         get(key) {
-            var data = this.get("_data") || {};
+            let data = this.get("_data") || {};
 
             return data[key];
         },
         set(key, value) {
-            var data = this.get("_data") || {};
-            var dirty = this.get("_dirty") || {};
-            var primed = this.get("_primed") || {};
-            var defaults = this.get("_defaults") || {};
+            let data = this.get("_data") || {};
+            let dirty = this.get("_dirty") || {};
+            let primed = this.get("_primed") || {};
+            let defaults = this.get("_defaults") || {};
 
             defaults[key] = meta.defaults;
 
@@ -64,7 +64,7 @@ var attr = function() {
                 this.set("_oldState", clone(this));
             }
 
-            var ready = value === "" && (isNone(data[key]));
+            let ready = value === "" && (isNone(data[key]));
 
             dirty[key + ":isDirty"] = true;
             data[key] = value;
@@ -78,7 +78,7 @@ var attr = function() {
     }).property("_data").meta(meta);
 };
 
-var Model = EmberObject.extend({
+let Model = EmberObject.extend({
     init() {
         this._super(...arguments);
         this._reset();
@@ -88,14 +88,14 @@ var Model = EmberObject.extend({
         this.set("_oldState", clone(this));
     },
     rollback() {
-        var oldState = this.get("_oldState");
-        for(var key in oldState){
+        let oldState = this.get("_oldState");
+        for(let key in oldState){
             this.set(key, oldState[key]);
         }
         this._reset();
     },
     save() {
-        var oldState = clone(this);
+        let oldState = clone(this);
         this.set("_oldState", oldState);
         this._reset();
     },
@@ -105,32 +105,32 @@ var Model = EmberObject.extend({
         this.set("_primed", {});
     },
     _setup() {
-        var model = this;
-        var attributes = attrs(this);
+        let model = this;
+        let attributes = attrs(this);
 
         attributes.forEach((attrName) => {
             defineProperty(model, attrName + "IsDirty", computed(function() {
-                var current = this.get(attrName);
-                var defaults = this.get("_defaults")[attrName];
-                var original = this.get("_oldState." + attrName);
-                var dirty = this.get("_dirty");
-                var dirtyKey = attrName + ":isDirty";
-                var legit = (equal(current, defaults) && isNone(original)) || (equal(original, current));
+                let current = this.get(attrName);
+                let defaults = this.get("_defaults")[attrName];
+                let original = this.get("_oldState." + attrName);
+                let dirty = this.get("_dirty");
+                let dirtyKey = attrName + ":isDirty";
+                let legit = (equal(current, defaults) && isNone(original)) || (equal(original, current));
 
                 return legit ? undefined : dirty[dirtyKey];
             }).property("_dirty", "_defaults", "" + attrName));
 
-            var dynamicPrimedKey = attrName + "IsPrimed";
+            let dynamicPrimedKey = attrName + "IsPrimed";
 
             defineProperty(model, dynamicPrimedKey, computed(function() {
-                var primed = this.get("_primed");
-                var primedKey = attrName + ":isPrimed";
+                let primed = this.get("_primed");
+                let primedKey = attrName + ":isPrimed";
 
                 return primed[primedKey];
             }).property("_primed", "" + attrName));
         });
 
-        var modelIsDirtyAttrs = attributes.map((attr) => attr + "IsDirty");
+        let modelIsDirtyAttrs = attributes.map((attr) => attr + "IsDirty");
         defineProperty(model, "isNotDirty", not('isDirty'));
 
         defineProperty(model, "isDirty", computed(...modelIsDirtyAttrs, function() {

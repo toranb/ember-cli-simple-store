@@ -4,7 +4,7 @@ import { getOwner } from '@ember/application';
 import { moduleFor } from "ember-qunit";
 import { test } from "dummy/tests/helpers/qunit";
 
-var store, Person, Toran, Cat;
+let store, Person, Toran, Cat;
 
 moduleFor("service:simple-store", "store unit tests", {
   beforeEach: function() {
@@ -13,13 +13,13 @@ moduleFor("service:simple-store", "store unit tests", {
         lastName: "",
         cat_id: null,
         demo: function() {
-            var firstName = this.get("firstName");
+            let firstName = this.get("firstName");
             return firstName + " 777";
         }
     });
     Toran = Person.extend({
         fake: function() {
-            var firstName = this.get("firstName");
+            let firstName = this.get("firstName");
             return firstName + " 999";
         }
     });
@@ -41,7 +41,7 @@ test("records can be pushed into the store", function(assert) {
     lastName: "Billups"
   });
 
-  var toranb = store.find("person", "toranb");
+  let toranb = store.find("person", "toranb");
   assert.ok(toranb, "The toranb record was found");
 
   assert.equal(toranb.get("firstName"), "Toran", "the firstName property is correct");
@@ -50,13 +50,13 @@ test("records can be pushed into the store", function(assert) {
 });
 
 test("multiple records can be pushed into the store", function(assert) {
-  var person1 = {
+  let person1 = {
     id: "johndoe",
     firstName: "john",
     lastName: "doe"
   };
 
-  var person2 = {
+  let person2 = {
     id: "janedoe",
     firstName: "jane",
     lastName: "doe"
@@ -64,41 +64,41 @@ test("multiple records can be pushed into the store", function(assert) {
 
   store.pushArray("person", [person1, person2]);
 
-  var foundPerson1 = store.find("person", "johndoe");
-  var foundPerson2 = store.find("person", "janedoe");
+  let foundPerson1 = store.find("person", "johndoe");
+  let foundPerson2 = store.find("person", "janedoe");
 
   assert.equal(foundPerson1.get("id"), person1.id, "person 1 id not found");
   assert.equal(foundPerson2.get("id"), person2.id, "person 2 id not found");
 });
 
 test("push returns the created record", function(assert) {
-  var pushedToranb = store.push("person", {
+  let pushedToranb = store.push("person", {
     id: "toranb",
     firstName: "Toran",
     lastName: "Billups"
   });
 
-  var gottenToranb = store.find("person", "toranb");
+  let gottenToranb = store.find("person", "toranb");
 
   assert.strictEqual(pushedToranb, gottenToranb.get("content"), "both records are identical");
 });
 
 test("push array returns the created records", function(assert) {
-  var person1 = {
+  let person1 = {
     id: "johndoe",
     firstName: "john",
     lastName: "doe"
   };
 
-  var person2 = {
+  let person2 = {
     id: "janedoe",
     firstName: "jane",
     lastName: "doe"
   };
 
-  var data = [person1, person2];
+  let data = [person1, person2];
 
-  var pushedRecords = store.pushArray("person", data);
+  let pushedRecords = store.pushArray("person", data);
 
   assert.equal(pushedRecords.length, data.length);
   assert.equal(pushedRecords[0].get("id"), data[0].id);
@@ -128,7 +128,7 @@ test("pushing a record into the store twice updates the original record", functi
     lastName: "Billups"
   });
 
-  var toranb = store.find("person", "toranb");
+  let toranb = store.find("person", "toranb");
   assert.ok(toranb, "The toranb record was found");
 
   assert.equal(toranb.get("firstName"), "Toran", "the firstName property is correct");
@@ -153,7 +153,7 @@ test("pushing doesn't mangle string ids", function(assert) {
     lastName: "Billups"
   });
 
-  var toranb = store.find("person", "toranb");
+  let toranb = store.find("person", "toranb");
   assert.strictEqual(toranb.get("id"), "toranb");
 });
 
@@ -164,7 +164,7 @@ test("models with int based ids must be lookedup by int and string value", funct
     lastName: "Billups"
   });
 
-  var toranbByNum = store.find("person", 123);
+  let toranbByNum = store.find("person", 123);
   assert.strictEqual(toranbByNum.get("id"), 123);
   assert.ok(toranbByNum.get("content") instanceof Person);
 
@@ -180,7 +180,7 @@ test("models with str based ids must be lookedup by str value", function(assert)
     lastName: "Billups"
   });
 
-  var toranbByStr = store.find("person", "abc");
+  let toranbByStr = store.find("person", "abc");
   assert.strictEqual(toranbByStr.get("id"), "abc");
   assert.ok(toranbByStr.get("content") instanceof Person);
 });
@@ -192,7 +192,7 @@ test("models with int !0 id in string must be lookedup by int and string value",
     lastName: "Gérard"
   });
 
-  var guillaumeByNum = store.find("person", "1234");
+  let guillaumeByNum = store.find("person", "1234");
   assert.strictEqual(guillaumeByNum.get("id"), 1234);
   assert.ok(guillaumeByNum.get("content") instanceof Person);
 
@@ -208,7 +208,7 @@ test("pushArray - models with int !0 id in string must be lookedup by int and st
     lastName: "Gérard"
   }]);
 
-  var guillaumeByNum = store.find("person", "1234");
+  let guillaumeByNum = store.find("person", "1234");
   assert.strictEqual(guillaumeByNum.get("id"), 1234);
   assert.ok(guillaumeByNum.get("content") instanceof Person);
 
@@ -224,7 +224,7 @@ test("models with int 0 id must be lookedup by int and string value", function(a
     lastName: "Gérard"
   });
 
-  var guillaumeByNum = store.find("person", "0");
+  let guillaumeByNum = store.find("person", "0");
   assert.strictEqual(guillaumeByNum.get("id"), 0);
   assert.ok(guillaumeByNum.get("content") instanceof Person);
 
@@ -240,7 +240,7 @@ test("models with int 0 id in string must be lookedup by int and string value", 
     lastName: "Gérard"
   });
 
-  var guillaumeByNum = store.find("person", "0");
+  let guillaumeByNum = store.find("person", "0");
   assert.strictEqual(guillaumeByNum.get("id"), 0);
   assert.ok(guillaumeByNum.get("content") instanceof Person);
 
@@ -256,7 +256,7 @@ test("models with float id in string must be lookedup by int float and string va
     lastName: "Gérard"
   });
 
-  var guillaumeByNum = store.find("person", "3.14159265359");
+  let guillaumeByNum = store.find("person", "3.14159265359");
   assert.strictEqual(guillaumeByNum.get("id"), 3.14159265359);
   assert.ok(guillaumeByNum.get("content") instanceof Person);
 
@@ -278,7 +278,7 @@ test("find should return array of bound models", function(assert) {
     lastName: "Williams"
   });
 
-  var found_data = store.find("person");
+  let found_data = store.find("person");
   assert.equal(found_data.get("length"), 2);
   assert.equal(found_data.objectAt(0).get("firstName"), "Toran");
   assert.equal(found_data.objectAt(1).get("firstName"), "Brandon");
@@ -298,13 +298,13 @@ test("find should return array of bound models", function(assert) {
 test("remove should destroy the item by type", function(assert) {
   assert.expect(7);
 
-  var first = store.push("person", {
+  let first = store.push("person", {
     id: 1,
     firstName: "Toran",
     lastName: "Billups"
   });
 
-  var last = store.push("person", {
+  let last = store.push("person", {
     id: 2,
     firstName: "Brandon",
     lastName: "Williams"
@@ -314,11 +314,11 @@ test("remove should destroy the item by type", function(assert) {
   store.remove("person", first.get("id"));
   assert.equal(store.find("person").get("length"), 1);
 
-  var first_person = store.find("person", first.id);
+  let first_person = store.find("person", first.id);
   assert.ok(!first_person.get("content"), "The toran record was still found");
   assert.equal(first_person.get("firstName"), undefined);
 
-  var last_person = store.find("person", last.id);
+  let last_person = store.find("person", last.id);
   assert.ok(last_person.get("content"), "The brandon record was not found");
   assert.equal(last_person.get("firstName"), "Brandon");
 
@@ -403,7 +403,7 @@ test("find with filter does not trump type property of object", function(assert)
   });
 
 
-  var found = store.find("person", 9);
+  let found = store.find("person", 9);
     assert.equal(found.get("type"), "developer");
     assert.equal(found.get("store"), "Walmart");
     assert.equal(found.get("source"), "Jarrod's Mom");
@@ -429,7 +429,7 @@ test("find with filter should return array of models that tracks changes without
     color: "red"
   });
 
-  var firstBoundProperty = store.find("person", {cat_id: 1});
+  let firstBoundProperty = store.find("person", {cat_id: 1});
   assert.equal(firstBoundProperty.get("length"), 2);
 
   run(() => {
@@ -466,8 +466,8 @@ test("find with filter works with string based values", function(assert) {
     nickname: "foo"
   });
 
-  var foo_data = store.find("person", {nickname: "foo"});
-  var bar_data = store.find("person", {nickname: "bar"});
+  let foo_data = store.find("person", {nickname: "foo"});
+  let bar_data = store.find("person", {nickname: "bar"});
 
   assert.equal(foo_data.get("length"), 2);
   assert.equal(bar_data.get("length"), 1);
@@ -479,38 +479,38 @@ test("find with filter works with string based values", function(assert) {
 test("clear will destroy everything for a given type", function(assert) {
   assert.expect(16);
 
-  var firstPerson = store.push("person", {
+  let firstPerson = store.push("person", {
     id: 9,
     firstName: "Brandon",
     lastName: "Williams",
     cat_id: 1
   });
 
-  var lastPerson = store.push("person", {
+  let lastPerson = store.push("person", {
     id: 8,
     firstName: "Toran",
     lastName: "Billups",
     cat_id: 1
   });
 
-  var firstCat = store.push("cat", {
+  let firstCat = store.push("cat", {
     id: 1,
     color: "red"
   });
 
-  var catBefore = store.find("cat", 1);
+  let catBefore = store.find("cat", 1);
   assert.equal(catBefore.get("color"), "red");
 
-  var catsBefore = store.find("cat");
+  let catsBefore = store.find("cat");
   assert.equal(catsBefore.get("length"), 1);
 
-  var firstBoundProperty = store.find("person", {cat_id: 1});
+  let firstBoundProperty = store.find("person", {cat_id: 1});
   assert.equal(firstBoundProperty.get("length"), 2);
 
-  var individualFirstBefore = store.find("person", 9);
+  let individualFirstBefore = store.find("person", 9);
   assert.equal(individualFirstBefore.get("firstName"), "Brandon");
 
-  var individualLastBefore = store.find("person", 8);
+  let individualLastBefore = store.find("person", 8);
   assert.equal(individualLastBefore.get("firstName"), "Toran");
 
   run(() => {
@@ -519,21 +519,21 @@ test("clear will destroy everything for a given type", function(assert) {
 
   assert.equal(firstBoundProperty.get("length"), 0);
 
-  var all = store.find("person");
+  let all = store.find("person");
   assert.equal(all.get("length"), 0);
 
-  var individualFirstAfter = store.find("person", 9);
+  let individualFirstAfter = store.find("person", 9);
   assert.equal(individualFirstAfter.get("content"), null);
   assert.equal(individualFirstAfter.get("firstName"), undefined);
 
-  var individualLastAfter = store.find("person", 8);
+  let individualLastAfter = store.find("person", 8);
   assert.equal(individualLastAfter.get("content"), null);
   assert.equal(individualLastAfter.get("firstName"), undefined);
 
-  var catAfter = store.find("cat", 1);
+  let catAfter = store.find("cat", 1);
   assert.equal(catAfter.get("color"), "red");
 
-  var catsAfter = store.find("cat");
+  let catsAfter = store.find("cat");
   assert.equal(catsAfter.get("length"), 1);
 
   run.next(() => {
@@ -557,21 +557,21 @@ test("clear will destroy everything for a given type", function(assert) {
 test("clear without type will destroy everything", function(assert) {
   assert.expect(10);
 
-  var firstPerson = store.push("person", {
+  let firstPerson = store.push("person", {
     id: 9,
     firstName: "Brandon",
     lastName: "Williams",
     cat_id: 1
   });
 
-  var lastPerson = store.push("person", {
+  let lastPerson = store.push("person", {
     id: 8,
     firstName: "Toran",
     lastName: "Billups",
     cat_id: 1
   });
 
-  var firstCat = store.push("cat", {
+  let firstCat = store.push("cat", {
     id: 1,
     color: "red"
   });
@@ -658,7 +658,7 @@ test("findOne will return the first record", function(assert) {
 
   assert.equal(store.find("toran").get("length"), 2);
 
-  var toranb = store.findOne("toran");
+  let toranb = store.findOne("toran");
   assert.equal(toranb.get("firstName"), "Jake", "the firstName property is correct");
   assert.equal(toranb.get("lastName"), "Good", "the lastName property is correct");
   assert.equal(toranb.get("id"), "1", "the id property is correct");
@@ -670,7 +670,7 @@ test("findOne will return the first record", function(assert) {
 
 test("findOne should return null when no objects exist in the cache for given type", function(assert) {
     assert.equal(store.find("person").get("length"), 0);
-    var person = store.findOne("person");
+    let person = store.findOne("person");
     assert.equal(person.get("content"), null);
 });
 
@@ -699,11 +699,11 @@ test("find with filter function will return bound array", function(assert) {
     group: 8
   });
 
-  var filter = function(person) {
+  let filter = function(person) {
       return person.get("group") > 2 || person.get("nickname") === "bar";
   };
 
-  var filtered_data = store.find("person", filter);
+  let filtered_data = store.find("person", filter);
 
   assert.equal(filtered_data.get("length"), 2);
   assert.equal(filtered_data.objectAt(0).get("firstName"), "Brandon");
@@ -740,7 +740,7 @@ test("find with filter function will return bound array", function(assert) {
   assert.equal(filtered_data.objectAt(2).get("firstName"), "Taylor");
   assert.equal(filtered_data.objectAt(3).get("firstName"), "Matt");
 
-  var taylor = store.find("person", 6);
+  let taylor = store.find("person", 6);
   assert.equal(taylor.get("firstName"), "Taylor");
   // taylor.set("group", 1); in v3 this worked but v4 requires a push
   run(() => {
@@ -752,7 +752,7 @@ test("find with filter function will return bound array", function(assert) {
   assert.equal(filtered_data.objectAt(1).get("firstName"), "Toran");
   assert.equal(filtered_data.objectAt(2).get("firstName"), "Matt");
 
-  var brandon = store.find("person", 8);
+  let brandon = store.find("person", 8);
   assert.equal(brandon.get("firstName"), "Brandon");
   // brandon.set("group", 1); in v3 this worked but v4 requires a push
   run(() => {
@@ -775,8 +775,8 @@ test("find with filter function will return bound array", function(assert) {
 });
 
 test("findByIdComputed result will be computed property that updates as records are pushed into the store", function(assert) {
-    var done = assert.async();
-    var toranb = store.find("person", 123);
+    let done = assert.async();
+    let toranb = store.find("person", 123);
     assert.equal(toranb.get("id"), undefined);
     assert.equal(toranb.get("firstName"), undefined);
     assert.equal(toranb.get("lastName"), undefined);
@@ -799,8 +799,8 @@ test("findByIdComputed result will be computed property that updates as records 
 });
 
 test("findByIdComputed also works with string based ids", function(assert) {
-    var done = assert.async();
-    var toranb = store.find("person", "abc123");
+    let done = assert.async();
+    let toranb = store.find("person", "abc123");
     assert.equal(toranb.get("id"), undefined);
     assert.equal(toranb.get("firstName"), undefined);
     assert.equal(toranb.get("lastName"), undefined);
@@ -823,8 +823,8 @@ test("findByIdComputed also works with string based ids", function(assert) {
 });
 
 test("findByIdComputed truly works with guid based ids", function(assert) {
-    var done = assert.async();
-    var toranb = store.find("person", "55555555-ca0d-4126-8929-afdsaf789883");
+    let done = assert.async();
+    let toranb = store.find("person", "55555555-ca0d-4126-8929-afdsaf789883");
     assert.equal(toranb.get("id"), undefined);
     assert.equal(toranb.get("firstName"), undefined);
     assert.equal(toranb.get("lastName"), undefined);
@@ -847,8 +847,8 @@ test("findByIdComputed truly works with guid based ids", function(assert) {
 });
 
 test("findByIdComputed will return result with int based id using string", function(assert) {
-    var done = assert.async();
-    var toranb = store.find("person", "4");
+    let done = assert.async();
+    let toranb = store.find("person", "4");
     assert.equal(toranb.get("id"), undefined);
     assert.equal(toranb.get("firstName"), undefined);
     assert.equal(toranb.get("lastName"), undefined);
@@ -871,8 +871,8 @@ test("findByIdComputed will return result with int based id using string", funct
 });
 
 test("findById will proxy each method for the given type when updated", function(assert) {
-    var done = assert.async();
-    var toranb = store.find("toran", 6);
+    let done = assert.async();
+    let toranb = store.find("toran", 6);
     assert.equal(toranb.get("id"), undefined);
 
     setTimeout(function() {
@@ -908,7 +908,7 @@ test("findById will proxy each method for the given type when already in the sto
     lastName: "Person"
   });
 
-  var toranb = store.find("toran", 5);
+  let toranb = store.find("toran", 5);
   assert.ok(toranb, "The toranb record was found");
 
   assert.equal(toranb.get("firstName"), "Toran");
@@ -917,7 +917,7 @@ test("findById will proxy each method for the given type when already in the sto
   assert.equal(toranb.fake(), "Toran 999");
   assert.equal(toranb.demo(), "Toran 777");
 
-  var other = store.find("toran", 3);
+  let other = store.find("toran", 3);
   assert.ok(other, "The other record was found");
 
   assert.equal(other.get("firstName"), "Other");
@@ -937,8 +937,8 @@ test("findById will proxy each method for the given type when already in the sto
 });
 
 test("findOne result will be computed property that updates as records are pushed into the store", function(assert) {
-  var done = assert.async();
-  var toran = store.findOne("toran");
+  let done = assert.async();
+  let toran = store.findOne("toran");
   assert.equal(toran.get("id"), undefined);
   assert.equal(toran.get("firstName"), undefined);
   assert.equal(toran.get("lastName"), undefined);
@@ -970,17 +970,17 @@ test("store will not update object with id of undefined", function(assert) {
     assert.equal(store.find("person").get("length"), 1);
     store.push("person", {id: 1, name: "foo"});
     assert.equal(store.find("person").get("length"), 2);
-    var people = store.find("person");
+    let people = store.find("person");
     assert.equal(people.objectAt(0).id, undefined);
     assert.equal(people.objectAt(1).id, 1);
 });
 
 test("store will update object with id of undefined when setting properties", function(assert) {
-    var person = store.push("person", {});
+    let person = store.push("person", {});
     assert.equal(store.find("person").get("length"), 1);
     person.setProperties({id: 1, name: "foo"});
     assert.equal(store.find("person").get("length"), 1);
-    var people = store.find("person");
+    let people = store.find("person");
     assert.equal(people.objectAt(0).id, 1);
 });
 
@@ -1001,12 +1001,12 @@ test("find with filter returns array proxy with push function that adds record",
     group: 3
   });
 
-  var filtered_data = store.find("person", {group: 2});
+  let filtered_data = store.find("person", {group: 2});
 
   assert.equal(filtered_data.get("length"), 1);
   assert.equal(filtered_data.objectAt(0).get("firstName"), "Jarrod");
 
-  var created;
+  let created;
   run(() => {
       created = filtered_data.push({
         id: 6,
@@ -1053,11 +1053,11 @@ test("find with filter function returns array proxy with push function that adds
     group: 8
   });
 
-  var filter = function(person) {
+  let filter = function(person) {
       return person.get("group") > 2 || person.get("nickname") === "bar";
   };
 
-  var filtered_data = store.find("person", filter);
+  let filtered_data = store.find("person", filter);
 
   assert.equal(filtered_data.get("length"), 2);
   assert.equal(filtered_data.objectAt(0).get("firstName"), "Brandon");
@@ -1078,7 +1078,7 @@ test("find with filter function returns array proxy with push function that adds
   assert.equal(filtered_data.objectAt(1).get("firstName"), "Toran");
   assert.equal(filtered_data.objectAt(2).get("firstName"), "Taylor");
 
-  var created;
+  let created;
   run(() => {
       created = filtered_data.push({
         id: 5,
@@ -1117,12 +1117,12 @@ test("find returns array proxy with push function that adds record", function(as
     lastName: "Williams"
   });
 
-  var found_data = store.find("person");
+  let found_data = store.find("person");
   assert.equal(found_data.get("length"), 2);
   assert.equal(found_data.objectAt(0).get("firstName"), "Toran");
   assert.equal(found_data.objectAt(1).get("firstName"), "Brandon");
 
-  var created;
+  let created;
   run(() => {
       created = found_data.push({
         id: 3,
@@ -1167,7 +1167,7 @@ test("bound array proxy from find will correctly respect the push of different t
     color: "green"
   });
 
-  var found_data = store.find("person");
+  let found_data = store.find("person");
   assert.equal(found_data.get("length"), 2);
   assert.equal(found_data.objectAt(0).get("firstName"), "Toran");
   assert.equal(found_data.objectAt(1).get("firstName"), "Brandon");
@@ -1189,7 +1189,7 @@ test("bound array proxy from find will correctly respect the push of different t
   assert.equal(store.find("person", 2).get("firstName"), "Brandon");
   assert.equal(store.find("person", 3).get("firstName"), "Scott");
 
-  var found_cats = store.find("cat");
+  let found_cats = store.find("cat");
   assert.equal(found_cats.get("length"), 2);
   assert.equal(found_cats.objectAt(0).get("color"), "red");
   assert.equal(found_cats.objectAt(1).get("color"), "green");
@@ -1235,7 +1235,7 @@ test("find returns array proxy that has a remove function that removes the recor
     lastName: "Williams"
   });
 
-  var found_data = store.find("person");
+  let found_data = store.find("person");
   assert.equal(found_data.get("length"), 2);
   assert.equal(found_data.objectAt(0).get("firstName"), "Toran");
   assert.equal(found_data.objectAt(1).get("firstName"), "Brandon");
@@ -1284,7 +1284,7 @@ test("find with filter returns array proxy that has a remove function that remov
     group: 2
   });
 
-  var filtered_data = store.find("person", {group: 2});
+  let filtered_data = store.find("person", {group: 2});
 
   assert.equal(filtered_data.get("length"), 2);
   assert.equal(filtered_data.objectAt(0).get("firstName"), "Jarrod");
@@ -1334,11 +1334,11 @@ test("find with filter function returns array proxy that has a remove function t
     group: 8
   });
 
-  var filter = function(person) {
+  let filter = function(person) {
       return person.get("group") > 2 || person.get("nickname") === "bar";
   };
 
-  var filtered_data = store.find("person", filter);
+  let filtered_data = store.find("person", filter);
 
   assert.equal(filtered_data.get("length"), 2);
   assert.equal(filtered_data.objectAt(0).get("firstName"), "Brandon");
@@ -1362,7 +1362,7 @@ test("find with filter function returns array proxy that has a remove function t
   assert.equal(store._findById("person", 8).get("lastName"), "new");
 });
 
-var Listing;
+let Listing;
 
 moduleFor("service:simple-store", "store unit tests -- custom primary key", {
   beforeEach: function() {
@@ -1386,19 +1386,19 @@ test("store#push and store#find use the specified primary key", function(assert)
     description: "A lovely vase"
   });
 
-  var listing = store.find("listing", 5);
+  let listing = store.find("listing", 5);
   assert.ok(listing, "The listing record was found");
 
   assert.equal(listing.get("description"), "A lovely vase", "the description property is correct");
 });
 
 test("remove should destory the item by type", function(assert) {
-  var first = store.push("listing", {
+  let first = store.push("listing", {
     listing_id: 1,
     description: "Ugly vase"
   });
 
-  var last = store.push("listing", {
+  let last = store.push("listing", {
     listing_id: 2,
     description: "A 'Sorcier des Glaces' CD"
   });
@@ -1407,11 +1407,11 @@ test("remove should destory the item by type", function(assert) {
   store.remove("listing", first.listing_id);
   assert.equal(store.find("listing").get("length"), 1);
 
-  var first_listing = store.find("listing", first.listing_id);
+  let first_listing = store.find("listing", first.listing_id);
   assert.ok(!first_listing.get("content"), "The ugly vase record was not found");
   assert.equal(first_listing.get("description"), undefined);
 
-  var last_listing = store.find("listing", last.listing_id);
+  let last_listing = store.find("listing", last.listing_id);
   assert.ok(last_listing.get("content"), "The 'Sorcier des Glaces' record was still found");
   assert.equal(last_listing.get("description"), "A 'Sorcier des Glaces' CD");
 });

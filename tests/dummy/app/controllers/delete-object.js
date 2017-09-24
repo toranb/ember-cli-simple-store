@@ -5,7 +5,7 @@ export default Controller.extend({
     simpleStore: service(),
     actions: {
         stop: function() {
-            var simpleStore = this.get("simpleStore");
+            let simpleStore = this.get("simpleStore");
             simpleStore.remove("wat", 1);
         }
     }

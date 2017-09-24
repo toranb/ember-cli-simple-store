@@ -18,6 +18,6 @@ test("it is injectable", function(assert) {
         simpleStore: service()
     }));
 
-    var subject = this.container.lookup('controller:injection-subject');
+    let subject = this.container.lookup('controller:injection-subject');
     assert.ok(subject.get('simpleStore') instanceof SimpleStore);
 });

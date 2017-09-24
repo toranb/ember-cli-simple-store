@@ -8,8 +8,8 @@ export default RecordArray.extend({
     }),
 
     updateContent() {
-        var source = this.get("_source");
-        var filter_func = this.get("_filter_func");
+        let source = this.get("_source");
+        let filter_func = this.get("_filter_func");
 
         return A(source.filter(filter_func));
     },
@@ -20,7 +20,7 @@ export default RecordArray.extend({
     },
 
     _unregisterRecordArray() {
-        var store = this.get("_store");
+        let store = this.get("_store");
         store._unsubscribe(this);
     }
 });

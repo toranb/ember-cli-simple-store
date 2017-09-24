@@ -3,7 +3,7 @@ import { getOwner } from '@ember/application';
 import { moduleFor } from "ember-qunit";
 import { test } from "dummy/tests/helpers/qunit";
 
-var store, Thing, Stuff;
+let store, Thing, Stuff;
 
 moduleFor("service:simple-store", "arrays unit tests", {
     beforeEach: function () {
@@ -16,7 +16,7 @@ moduleFor("service:simple-store", "arrays unit tests", {
             name: "",
             stuff: store.find("stuff"),
             observeStuff: observer("stuff.[]", function () {
-                var currentObservations = this.get("observationCount");
+                let currentObservations = this.get("observationCount");
                 this.set("observationCount", currentObservations + 1);
             })
         });
@@ -25,7 +25,7 @@ moduleFor("service:simple-store", "arrays unit tests", {
 });
 
 test("observers are only notified once regardless of the number of models added to the store", function (assert) {
-    var thing1 = Thing.create({name: "thing1"});
+    let thing1 = Thing.create({name: "thing1"});
 
     store.pushArray("stuff", [{ id: "1", name: "stuff1"}, { id: "2", name: "stuff2"}]);
 

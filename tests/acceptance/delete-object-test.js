@@ -5,8 +5,8 @@ import moduleForAcceptance from '../helpers/module-for-acceptance';
 moduleForAcceptance('Acceptance: Delete Object Test');
 
 test('when object is removed from store all timers and observers are killed', function(assert) {
-  var lastNumber;
-  var done = assert.async();
+  let lastNumber;
+  let done = assert.async();
   visit('/delete-object');
   andThen(() => {
     assert.ok(parseInt(find(".number-is").text(), 10) > 0);

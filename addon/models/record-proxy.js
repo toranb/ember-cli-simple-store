@@ -16,9 +16,9 @@ export default ObjectProxy.extend({
         const store = this.get('_store');
         const type = this.get('_type');
 
-        var model = getOwner(store).lookup(`model:${type}`);
+        let model = getOwner(store).lookup(`model:${type}`);
 
-        for(var method in model) {
+        for(let method in model) {
             if(typeof model[method] === "function") {
                 if(!this[method]) {
                     this.proxyMethod(method);
@@ -31,7 +31,7 @@ export default ObjectProxy.extend({
 
     proxyMethod(method) {
         this[method] = function() {
-            var content = this.get("content");
+            let content = this.get("content");
             return content[method].apply(content, arguments);
         };
     }
