@@ -1,6 +1,10 @@
-import Ember from "ember";
-
-const { computed, defineProperty, get } = Ember;
+import { not } from '@ember/object/computed';
+import { isNone } from '@ember/utils';
+import EmberObject, {
+  get,
+  defineProperty,
+  computed
+} from '@ember/object';
 
 function equal(first, second) {
     if (first instanceof Array && second instanceof Array) {
@@ -60,7 +64,7 @@ var attr = function() {
                 this.set("_oldState", clone(this));
             }
 
-            var ready = value === "" && (Ember.isNone(data[key]));
+            var ready = value === "" && (isNone(data[key]));
 
             dirty[key + ":isDirty"] = true;
             data[key] = value;
@@ -74,7 +78,7 @@ var attr = function() {
     }).property("_data").meta(meta);
 };
 
-var Model = Ember.Object.extend({
+var Model = EmberObject.extend({
     init() {
         this._super(...arguments);
         this._reset();
@@ -111,7 +115,7 @@ var Model = Ember.Object.extend({
                 var original = this.get("_oldState." + attrName);
                 var dirty = this.get("_dirty");
                 var dirtyKey = attrName + ":isDirty";
-                var legit = (equal(current, defaults) && Ember.isNone(original)) || (equal(original, current));
+                var legit = (equal(current, defaults) && isNone(original)) || (equal(original, current));
 
                 return legit ? undefined : dirty[dirtyKey];
             }).property("_dirty", "_defaults", "" + attrName));
@@ -127,7 +131,7 @@ var Model = Ember.Object.extend({
         });
 
         var modelIsDirtyAttrs = attributes.map((attr) => attr + "IsDirty");
-        defineProperty(model, "isNotDirty", computed.not('isDirty'));
+        defineProperty(model, "isNotDirty", not('isDirty'));
 
         defineProperty(model, "isDirty", computed(...modelIsDirtyAttrs, function() {
             return modelIsDirtyAttrs.some((attr) => get(model, attr) === true);

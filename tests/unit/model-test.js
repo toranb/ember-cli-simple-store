@@ -1,4 +1,4 @@
-import Ember from "ember";
+import { computed } from '@ember/object';
 import { module, test } from 'qunit';
 import { attr, Model } from "ember-cli-simple-store/model";
 
@@ -11,7 +11,7 @@ module("model unit tests", {
             wat: "",
             firstName: attr(),
             lastName: attr(),
-            fullName: Ember.computed(function() {
+            fullName: computed(function() {
                 var first = this.get("firstName");
                 var last = this.get("lastName");
                 return first + " " + last;

@@ -1,8 +1,7 @@
-import Ember from "ember";
-import {moduleFor} from "ember-qunit";
-import {test} from "dummy/tests/helpers/qunit";
-
-const {getOwner} = Ember;
+import EmberObject, { observer } from '@ember/object';
+import { getOwner } from '@ember/application';
+import { moduleFor } from "ember-qunit";
+import { test } from "dummy/tests/helpers/qunit";
 
 var store, Thing, Stuff;
 
@@ -10,13 +9,13 @@ moduleFor("service:simple-store", "arrays unit tests", {
     beforeEach: function () {
         const owner = getOwner(this);
         store = this.subject();
-        Stuff = Ember.Object.extend();
+        Stuff = EmberObject.extend();
 
-        Thing = Ember.Object.extend({
+        Thing = EmberObject.extend({
             observationCount: 0,
             name: "",
             stuff: store.find("stuff"),
-            observeStuff: Ember.observer("stuff.[]", function () {
+            observeStuff: observer("stuff.[]", function () {
                 var currentObservations = this.get("observationCount");
                 this.set("observationCount", currentObservations + 1);
             })

@@ -1,9 +1,13 @@
+import Service from '@ember/service';
+import { A } from '@ember/array';
+import { run } from '@ember/runloop';
+import EmberObject, { setProperties, get } from '@ember/object';
+import { assert } from '@ember/debug';
+import { getOwner } from '@ember/application';
 import Ember from "ember";
 import RecordProxy from "./models/record-proxy";
 import RecordArray from "./models/record-array";
 import FilteredRecordArray from "./models/filtered-record-array";
-
-const { run, get, setProperties, assert, getOwner } = Ember;
 
 function buildRecord(type, data, store) {
     var record = createRecord(type, data, store);
@@ -39,7 +43,7 @@ function arrayForType(type, store) {
     var all = store.get("array");
     var models = all[type] || [];
     all[type] = models;
-    return Ember.A(models);
+    return A(models);
 }
 
 function identityMapForType(type, store) {
@@ -50,7 +54,7 @@ function identityMapForType(type, store) {
     return idIdentityMap;
 }
 
-const ServiceType = Ember.Service || Ember.Object;
+const ServiceType = Service || EmberObject;
 
 var Store = ServiceType.extend({
     init() {
@@ -58,7 +62,7 @@ var Store = ServiceType.extend({
         this.reset();
     },
     reset() {
-      this.set("recompute", Ember.A());
+      this.set("recompute", A());
       this.set("filtersMap", {});
       this.set("identityMap", {});
 
@@ -157,11 +161,11 @@ var Store = ServiceType.extend({
             });
         });
 
-        this.set("recompute", Ember.A());
+        this.set("recompute", A());
     },
     _unsubscribe(...args) {
         var updatedFiltersMap;
-        var filterIds = Ember.A(args.map((func) => {
+        var filterIds = A(args.map((func) => {
             var primaryKey = primaryKeyForType(func.type, this);
             return func[primaryKey];
         }));

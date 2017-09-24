@@ -1,16 +1,19 @@
-import Ember from "ember";
+import $ from 'jquery';
+import { computed } from '@ember/object';
+import { alias } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
 import { attr, Model } from "ember-cli-simple-store/model";
 
 export default Model.extend({
     name: attr(),
-    simpleStore: Ember.inject.service(),
-    role: Ember.computed.alias("belongs_to.firstObject"),
-    belongs_to: Ember.computed(function() {
+    simpleStore: service(),
+    role: alias("belongs_to.firstObject"),
+    belongs_to: computed(function() {
         var user_id = this.get("id");
         var store = this.get("simpleStore");
         var filter = function(role) {
             var users = role.get("users");
-            return Ember.$.inArray(user_id, users) > -1;
+            return $.inArray(user_id, users) > -1;
         };
         return store.find("role", filter);
     }),

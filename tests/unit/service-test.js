@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Controller from '@ember/controller';
 import SimpleStore from 'ember-cli-simple-store/store';
 import { moduleFor, test } from 'ember-qunit';
 
@@ -13,8 +14,8 @@ test("it is an instance of ember-cli-simple-store/store", function(assert) {
 });
 
 test("it is injectable", function(assert) {
-    this.register('controller:injection-subject', Ember.Controller.extend({
-        simpleStore: Ember.inject.service()
+    this.register('controller:injection-subject', Controller.extend({
+        simpleStore: service()
     }));
 
     var subject = this.container.lookup('controller:injection-subject');

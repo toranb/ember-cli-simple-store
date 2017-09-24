@@ -1,14 +1,14 @@
-import Ember from "ember";
+import EmberObject from '@ember/object';
+import { run } from '@ember/runloop';
+import { getOwner } from '@ember/application';
 import { moduleFor } from "ember-qunit";
 import { test } from "dummy/tests/helpers/qunit";
-
-const { run, getOwner } = Ember;
 
 var store, Person, Toran, Cat;
 
 moduleFor("service:simple-store", "store unit tests", {
   beforeEach: function() {
-    Person = Ember.Object.extend({
+    Person = EmberObject.extend({
         firstName: "",
         lastName: "",
         cat_id: null,
@@ -23,7 +23,7 @@ moduleFor("service:simple-store", "store unit tests", {
             return firstName + " 999";
         }
     });
-    Cat = Ember.Object.extend({
+    Cat = EmberObject.extend({
         color: ""
     });
     const owner = getOwner(this);
@@ -1366,7 +1366,7 @@ var Listing;
 
 moduleFor("service:simple-store", "store unit tests -- custom primary key", {
   beforeEach: function() {
-    Listing = Ember.Object.extend({
+    Listing = EmberObject.extend({
         listing_id: null,
         description: null
     });

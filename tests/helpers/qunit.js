@@ -1,5 +1,5 @@
-import Ember from "ember";
-import {test as qunitTest} from "qunit";
+import { run } from '@ember/runloop';
+import { test as qunitTest } from "qunit";
 
 var test = function() {
   for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; ++_key) {
@@ -8,7 +8,7 @@ var test = function() {
   var callback;
   function wrapper() {
       let argz = arguments;
-      Ember.run(function() {
+      run(function() {
           callback.apply(null, argz);
       });
   }

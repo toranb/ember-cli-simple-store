@@ -1,9 +1,9 @@
-import Ember from "ember";
+import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
+import { get } from '@ember/object';
 
-const { get } = Ember;
-
-var RobotsRoute = Ember.Route.extend({
-    simpleStore: Ember.inject.service(),
+var RobotsRoute = Route.extend({
+    simpleStore: service(),
     model: function() {
         var simpleStore = this.get("simpleStore");
         simpleStore.push("robot", {id: 9, name: "nine", size: 229});

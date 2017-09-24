@@ -1,7 +1,8 @@
-import Ember from "ember";
+import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
 
-var RelationshipsRoute = Ember.Route.extend({
-    simpleStore: Ember.inject.service(),
+var RelationshipsRoute = Route.extend({
+    simpleStore: service(),
     model() {
         var user_id = 2;
         var simpleStore = this.get("simpleStore");

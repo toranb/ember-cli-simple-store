@@ -1,5 +1,4 @@
-import Ember from 'ember';
-const { run } = Ember;
+import { run } from '@ember/runloop';
 import { test } from 'qunit';
 import moduleForAcceptance from '../helpers/module-for-acceptance';
 

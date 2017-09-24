@@ -1,9 +1,8 @@
-import Ember from "ember";
+import { run } from '@ember/runloop';
+import { getOwner } from '@ember/application';
 import { test } from "dummy/tests/helpers/qunit";
 import { moduleFor } from 'ember-qunit';
 import registration from "dummy/tests/helpers/registration";
-
-const { run, getOwner } = Ember;
 
 var store, user, role;
 

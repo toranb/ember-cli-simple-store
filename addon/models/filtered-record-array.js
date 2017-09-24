@@ -1,7 +1,6 @@
-import Ember from 'ember';
+import { A } from '@ember/array';
+import { computed } from '@ember/object';
 import RecordArray from './record-array';
-
-const { computed } = Ember;
 
 export default RecordArray.extend({
     content: computed(function () {
@@ -12,7 +11,7 @@ export default RecordArray.extend({
         var source = this.get("_source");
         var filter_func = this.get("_filter_func");
 
-        return Ember.A(source.filter(filter_func));
+        return A(source.filter(filter_func));
     },
 
     willDestroy() {

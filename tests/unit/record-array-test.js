@@ -1,8 +1,7 @@
-import Ember from 'ember';
+import EmberObject from '@ember/object';
+import { run } from '@ember/runloop';
 import { moduleFor, test } from 'ember-qunit';
 import FilteredRecordArray from 'ember-cli-simple-store/models/filtered-record-array';
-
-const { run } = Ember;
 
 function createFilter(simpleStore) {
     simpleStore.push("foo", { id: 1, name: "toran" });
@@ -14,7 +13,7 @@ function createFilter(simpleStore) {
 
 moduleFor('service:simple-store', "unit: user model test", {
     beforeEach() {
-        this.register('model:foo', Ember.Object.extend({}));
+        this.register('model:foo', EmberObject.extend({}));
     }
 });
 

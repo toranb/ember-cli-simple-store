@@ -1,9 +1,9 @@
-import Ember from "ember";
+import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
+import { get } from '@ember/object';
 
-const { get } = Ember;
-
-var ArraysRoute = Ember.Route.extend({
-    simpleStore: Ember.inject.service(),
+var ArraysRoute = Route.extend({
+    simpleStore: service(),
     model() {
         var simpleStore = this.get("simpleStore");
         if(simpleStore.find("robot").get("length") === 0) {

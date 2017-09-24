@@ -1,8 +1,8 @@
-import Ember from 'ember';
+import ObjectProxy from '@ember/object/proxy';
+import { computed } from '@ember/object';
+import { getOwner } from '@ember/application';
 
-const { computed, getOwner } = Ember;
-
-export default Ember.ObjectProxy.extend({
+export default ObjectProxy.extend({
     _source: null,
     _store: null,
     _type: null,

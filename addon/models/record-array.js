@@ -1,13 +1,13 @@
-import Ember from 'ember';
-
-const { ArrayProxy, computed } = Ember;
+import { A } from '@ember/array';
+import ArrayProxy from '@ember/array/proxy';
+import { computed } from '@ember/object';
 
 export default ArrayProxy.extend({
     _store: null,
     _type: null,
 
     content: computed(function () {
-        return Ember.A(this.get("_source"));
+        return A(this.get("_source"));
     }),
 
     push(data) {

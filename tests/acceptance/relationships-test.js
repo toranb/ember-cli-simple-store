@@ -10,7 +10,7 @@ moduleForAcceptance('Acceptance: Relationships Test', {
 test('changing the users role will alter the underlying relationship', function(assert) {
   visit('/relationships');
   andThen(() => {
-      var options = find('.all-roles');
+      let options = find('.all-roles');
       assert.equal(options.find('option').length, 2);
       assert.equal(options.find('option:eq(0)').val(), 8);
       assert.equal(options.find('option:eq(1)').val(), 9);
@@ -21,7 +21,7 @@ test('changing the users role will alter the underlying relationship', function(
   });
   fillIn('.all-roles', 8);
   andThen(() => {
-      var options = find('.all-roles');
+      let options = find('.all-roles');
       assert.equal(options.find('option').length, 2);
       assert.equal(options.find('option:selected').val(), 8);
       assert.equal(this.store.find('user', 2).get('role.id'), 8);
@@ -29,18 +29,18 @@ test('changing the users role will alter the underlying relationship', function(
 });
 
 test('updateContent only fires for models with subscribers and only once per run', function(assert) {
-  var roleUpdated = 0;
+  let roleUpdated = 0;
   visit('/relationships');
   andThen(() => {
       assert.equal(this.store.find('user', 2).get('role.id'), 9);
-      var filtersMap = this.store.get("filtersMap");
-      var roleFunc = filtersMap["role"];
-      var origRoleFunc = roleFunc[0].updateContent;
+      let filtersMap = this.store.get("filtersMap");
+      let roleFunc = filtersMap["role"];
+      let origRoleFunc = roleFunc[0].updateContent;
       roleFunc[0].updateContent = function() {
           roleUpdated = roleUpdated + 1;
           return origRoleFunc.apply(this, arguments);
       };
-      var userFunc = filtersMap["user"];
+      let userFunc = filtersMap["user"];
       assert.equal(userFunc, undefined);
   });
   fillIn('.all-roles', 8);
