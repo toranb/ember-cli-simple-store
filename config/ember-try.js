@@ -75,12 +75,6 @@ module.exports = {
           'ember-native-dom-event-dispatcher': null
         }
       }
-    },
-    {
-      name: 'ember-default',
-      npm: {
-        devDependencies: {}
-      }
     }
   ]
 };
