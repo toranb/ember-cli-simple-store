@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import { computed } from '@ember/object';
 import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
@@ -13,7 +12,7 @@ export default Model.extend({
         let store = this.get("simpleStore");
         let filter = function(role) {
             let users = role.get("users");
-            return $.inArray(user_id, users) > -1;
+            return users.indexOf(user_id) > -1;
         };
         return store.find("role", filter);
     }),
