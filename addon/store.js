@@ -108,9 +108,7 @@ var Store = ServiceType.extend({
             record = buildRecord(type, data, this);
         }
 
-        Ember.run(() => {
-          this.scheduleUpdate(type);
-        })
+        this.scheduleUpdate(type);
 
         return record;
     },
