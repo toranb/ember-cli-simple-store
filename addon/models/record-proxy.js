@@ -1,8 +1,8 @@
-import Ember from 'ember';
+import ObjectProxy from '@ember/object/proxy';
+import { computed } from '@ember/object';
+import { getOwner } from '@ember/application';
 
-const { computed, getOwner } = Ember;
-
-export default Ember.ObjectProxy.extend({
+export default ObjectProxy.extend({
     _source: null,
     _store: null,
     _type: null,
@@ -16,9 +16,9 @@ export default Ember.ObjectProxy.extend({
         const store = this.get('_store');
         const type = this.get('_type');
 
-        var model = getOwner(store).lookup(`model:${type}`);
+        let model = getOwner(store).lookup(`model:${type}`);
 
-        for(var method in model) {
+        for(let method in model) {
             if(typeof model[method] === "function") {
                 if(!this[method]) {
                     this.proxyMethod(method);
@@ -31,7 +31,7 @@ export default Ember.ObjectProxy.extend({
 
     proxyMethod(method) {
         this[method] = function() {
-            var content = this.get("content");
+            let content = this.get("content");
             return content[method].apply(content, arguments);
         };
     }

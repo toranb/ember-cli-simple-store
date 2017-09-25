@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { attr, Model } from "ember-cli-simple-store/model";
 
-var Animal, leopard;
+let Animal, leopard;
 
 module("default attr unit tests", {
     beforeEach: function() {
@@ -152,8 +152,8 @@ test("isDirty on the model is not reset when value is null and set to default bo
 });
 
 test("isDirty on the model is reset when value starts as empty array and set back to empty array value", function(assert){
-    var Batman = Model.extend({batarangs: attr()});
-    var watman = Batman.create({batarangs: []});
+    let Batman = Model.extend({batarangs: attr()});
+    let watman = Batman.create({batarangs: []});
     assert.deepEqual([], watman.get("batarangs"));
     assert.equal(false, watman.get("isDirty"));
     watman.set("batarangs", [1, 2]);
@@ -167,8 +167,8 @@ test("isDirty on the model is reset when value starts as empty array and set bac
 });
 
 test("isDirty on the model is reset when value starts as empty array and set back to empty array value and default value is empty array", function(assert){
-    var Batman = Model.extend({batarangs: attr([])});
-    var watman = Batman.create({batarangs: []});
+    let Batman = Model.extend({batarangs: attr([])});
+    let watman = Batman.create({batarangs: []});
     assert.deepEqual([], watman.get("batarangs"));
     assert.equal(false, watman.get("isDirty"));
     watman.set("batarangs", [1, 2]);
@@ -182,8 +182,8 @@ test("isDirty on the model is reset when value starts as empty array and set bac
 });
 
 test("isDirty on the model is reset when value starts as undefined and set to default array value", function(assert){
-    var Batman = Model.extend({batarangs: attr([])});
-    var watman = Batman.create({batarangs: undefined});
+    let Batman = Model.extend({batarangs: attr([])});
+    let watman = Batman.create({batarangs: undefined});
     assert.equal(undefined, watman.get("batarangs"));
     assert.equal(false, watman.get("isDirty"));
     watman.set("batarangs", [1, 2]);
