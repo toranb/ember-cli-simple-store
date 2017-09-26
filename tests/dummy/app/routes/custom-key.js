@@ -1,9 +1,10 @@
-import Ember from "ember";
+import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
 
-export default Ember.Route.extend({
-    simpleStore: Ember.inject.service(),
+export default Route.extend({
+    simpleStore: service(),
     model() {
-        var simpleStore = this.get("simpleStore");
+        let simpleStore = this.get("simpleStore");
         if(simpleStore.find("custom-key").get("length") === 0) {
             //hack to prevent another push of the same data
             simpleStore.push("custom-key", {arbitraryKey: 1, name: "k one"});

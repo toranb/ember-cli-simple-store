@@ -1,6 +1,6 @@
 import { attr, Model } from "ember-cli-simple-store/model";
 
-var CustomKeyModel = Model.extend({
+let CustomKeyModel = Model.extend({
     name: attr()
 });
 

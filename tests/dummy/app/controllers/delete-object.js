@@ -1,10 +1,11 @@
-import Ember from "ember";
+import { inject as service } from '@ember/service';
+import Controller from '@ember/controller';
 
-export default Ember.Controller.extend({
-    simpleStore: Ember.inject.service(),
+export default Controller.extend({
+    simpleStore: service(),
     actions: {
         stop: function() {
-            var simpleStore = this.get("simpleStore");
+            let simpleStore = this.get("simpleStore");
             simpleStore.remove("wat", 1);
         }
     }

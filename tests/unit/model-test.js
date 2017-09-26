@@ -1,9 +1,9 @@
-import Ember from "ember";
+import { computed } from '@ember/object';
 import { module, test } from 'qunit';
 import { attr, Model } from "ember-cli-simple-store/model";
 
-var Person, brandon;
-var data = {id: 1, firstName: "Brandon", lastName: "Williams"};
+let Person, brandon;
+let data = {id: 1, firstName: "Brandon", lastName: "Williams"};
 
 module("model unit tests", {
     beforeEach: function() {
@@ -11,9 +11,9 @@ module("model unit tests", {
             wat: "",
             firstName: attr(),
             lastName: attr(),
-            fullName: Ember.computed(function() {
-                var first = this.get("firstName");
-                var last = this.get("lastName");
+            fullName: computed(function() {
+                let first = this.get("firstName");
+                let last = this.get("lastName");
                 return first + " " + last;
             }).property("firstName", "lastName")
         });
@@ -70,19 +70,19 @@ test("save will reset isDirty", function(assert){
 
 test("save will update internal state", function(assert){
     brandon = Person.create(data);
-    var preState = brandon.get("_oldState");
+    let preState = brandon.get("_oldState");
     assert.equal(2, Object.keys(preState).length);
     assert.equal("Brandon", preState["firstName"]);
     assert.equal("Williams", preState["lastName"]);
 
     brandon.set("firstName", "baz");
-    var initState = brandon.get("_oldState");
+    let initState = brandon.get("_oldState");
     assert.equal(2, Object.keys(initState).length);
     assert.equal("Brandon", initState["firstName"]);
     assert.equal("Williams", initState["lastName"]);
 
     brandon.save();
-    var postState = brandon.get("_oldState");
+    let postState = brandon.get("_oldState");
     assert.equal(2, Object.keys(postState).length);
     assert.equal("baz", postState["firstName"]);
     assert.equal("Williams", postState["lastName"]);
@@ -100,19 +100,19 @@ test("rollback will reset isDirty", function(assert){
 
 test("rollback will not alter the internal state", function(assert){
     brandon = Person.create(data);
-    var preState = brandon.get("_oldState");
+    let preState = brandon.get("_oldState");
     assert.equal(2, Object.keys(preState).length);
     assert.equal("Brandon", preState["firstName"]);
     assert.equal("Williams", preState["lastName"]);
 
     brandon.set("firstName", "baz");
-    var initState = brandon.get("_oldState");
+    let initState = brandon.get("_oldState");
     assert.equal(2, Object.keys(initState).length);
     assert.equal("Brandon", initState["firstName"]);
     assert.equal("Williams", initState["lastName"]);
 
     brandon.rollback();
-    var postState = brandon.get("_oldState");
+    let postState = brandon.get("_oldState");
     assert.equal(2, Object.keys(postState).length);
     assert.equal("Brandon", postState["firstName"]);
     assert.equal("Williams", postState["lastName"]);
@@ -135,13 +135,13 @@ test("rollback after it has been saved will be a no-op", function(assert){
 
 test("internal state will be only set the first time a property is set", function(assert){
     brandon = Person.create(data);
-    var preState = brandon.get("_oldState");
+    let preState = brandon.get("_oldState");
     assert.equal(2, Object.keys(preState).length);
     assert.equal("Brandon", preState["firstName"]);
     assert.equal("Williams", preState["lastName"]);
 
     brandon.set("firstName", "baz");
-    var initState = brandon.get("_oldState");
+    let initState = brandon.get("_oldState");
     assert.equal(2, Object.keys(initState).length);
     assert.equal("Brandon", initState["firstName"]);
     assert.equal("Williams", initState["lastName"]);
@@ -149,7 +149,7 @@ test("internal state will be only set the first time a property is set", functio
     brandon.set("_oldState.lastName", "nope");
 
     brandon.set("firstName", "baz");
-    var postState = brandon.get("_oldState");
+    let postState = brandon.get("_oldState");
     assert.equal(2, Object.keys(postState).length);
     assert.equal("nogo", postState["firstName"]);
     assert.equal("nope", postState["lastName"]);
@@ -425,8 +425,8 @@ test("rolling back a model after initial state is modified should revert to orig
 });
 
 test("rolling back a model after initial state is modified should revert to original value when array", function(assert){
-    var Beast = Model.extend({things: attr()});
-    var beast = Beast.create({id: 1, things: [1, 2]});
+    let Beast = Model.extend({things: attr()});
+    let beast = Beast.create({id: 1, things: [1, 2]});
     assert.deepEqual([1, 2], beast.get("things"));
     beast.set("things", [1]);
     assert.equal(true, beast.get("isDirty"));

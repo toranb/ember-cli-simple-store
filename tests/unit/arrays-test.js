@@ -1,23 +1,22 @@
-import Ember from "ember";
-import {moduleFor} from "ember-qunit";
-import {test} from "dummy/tests/helpers/qunit";
+import EmberObject, { observer } from '@ember/object';
+import { getOwner } from '@ember/application';
+import { moduleFor } from "ember-qunit";
+import { test } from "dummy/tests/helpers/qunit";
 
-const {getOwner} = Ember;
-
-var store, Thing, Stuff;
+let store, Thing, Stuff;
 
 moduleFor("service:simple-store", "arrays unit tests", {
     beforeEach: function () {
         const owner = getOwner(this);
         store = this.subject();
-        Stuff = Ember.Object.extend();
+        Stuff = EmberObject.extend();
 
-        Thing = Ember.Object.extend({
+        Thing = EmberObject.extend({
             observationCount: 0,
             name: "",
             stuff: store.find("stuff"),
-            observeStuff: Ember.observer("stuff.[]", function () {
-                var currentObservations = this.get("observationCount");
+            observeStuff: observer("stuff.[]", function () {
+                let currentObservations = this.get("observationCount");
                 this.set("observationCount", currentObservations + 1);
             })
         });
@@ -26,7 +25,7 @@ moduleFor("service:simple-store", "arrays unit tests", {
 });
 
 test("observers are only notified once regardless of the number of models added to the store", function (assert) {
-    var thing1 = Thing.create({name: "thing1"});
+    let thing1 = Thing.create({name: "thing1"});
 
     store.pushArray("stuff", [{ id: "1", name: "stuff1"}, { id: "2", name: "stuff2"}]);
 

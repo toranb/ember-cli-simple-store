@@ -1,11 +1,11 @@
-import Ember from "ember";
+import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
+import { get } from '@ember/object';
 
-const { get } = Ember;
-
-var FiltersRoute = Ember.Route.extend({
-    simpleStore: Ember.inject.service(),
+let FiltersRoute = Route.extend({
+    simpleStore: service(),
     model() {
-        var simpleStore = this.get("simpleStore");
+        let simpleStore = this.get("simpleStore");
         if(simpleStore.find("robot").get("length") === 0) {
             //hack to prevent another push of the same data
             simpleStore.push("robot", {id: 1, name: "r one", size: 51});
@@ -15,22 +15,22 @@ var FiltersRoute = Ember.Route.extend({
             simpleStore.push("zing", {id: 2, name: "z two", number: 48});
             simpleStore.push("zing", {id: 3, name: "z three", number: 47});
         }
-        var one = function(m) {
+        let one = function(m) {
             return get(m, "size") > 50;
         };
-        var two = function(m) {
+        let two = function(m) {
             return get(m, "size") > 10;
         };
-        var three = function(m) {
+        let three = function(m) {
             return get(m, "number") < 50;
         };
-        var four = function(m) {
+        let four = function(m) {
             return get(m, "number") < 90;
         };
-        var filterone = simpleStore.find("robot", one);
-        var filtertwo = simpleStore.find("robot", two);
-        var filterthree = simpleStore.find("zing", three);
-        var filterfour = simpleStore.find("zing", four);
+        let filterone = simpleStore.find("robot", one);
+        let filtertwo = simpleStore.find("robot", two);
+        let filterthree = simpleStore.find("zing", three);
+        let filterfour = simpleStore.find("zing", four);
         return {filterone, filtertwo, filterthree, filterfour};
     },
     setupController(controller, hash) {
@@ -41,7 +41,7 @@ var FiltersRoute = Ember.Route.extend({
     },
     actions: {
         willTransition() {
-            var currentModel = this.get("currentModel");
+            let currentModel = this.get("currentModel");
             currentModel.filterone.destroy();
             currentModel.filtertwo.destroy();
             currentModel.filterthree.destroy();

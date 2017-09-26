@@ -36,18 +36,18 @@ test('filters can be thrown out when you navigate away from a given route', func
   visit('/filters');
   andThen(() => {
       assert.equal(currentURL(), '/filters');
-      var filtersMap = this.store.get('filtersMap');
-      var robotFilters = filtersMap['robot'];
-      var zingFilters = filtersMap['zing'];
+      let filtersMap = this.store.get('filtersMap');
+      let robotFilters = filtersMap['robot'];
+      let zingFilters = filtersMap['zing'];
       assert.equal(robotFilters.length, 2);
       assert.equal(zingFilters.length, 2);
   });
   click('.link-robots');
   andThen(() => {
       assert.equal(currentURL(), '/robots');
-      var filtersMap = this.store.get('filtersMap');
-      var robotFilters = filtersMap['robot'];
-      var zingFilters = filtersMap['zing'];
+      let filtersMap = this.store.get('filtersMap');
+      let robotFilters = filtersMap['robot'];
+      let zingFilters = filtersMap['zing'];
       //the filters route did cleanup so removed the filters used :)
       assert.equal(robotFilters.length, 2);
       assert.equal(zingFilters.length, 0);
@@ -55,9 +55,9 @@ test('filters can be thrown out when you navigate away from a given route', func
   click('.link-wat');
   andThen(() => {
       assert.equal(currentURL(), '/wat');
-      var filtersMap = this.store.get('filtersMap');
-      var robotFilters = filtersMap['robot'];
-      var zingFilters = filtersMap['zing'];
+      let filtersMap = this.store.get('filtersMap');
+      let robotFilters = filtersMap['robot'];
+      let zingFilters = filtersMap['zing'];
       //the robots route did not cleanup so we now have a memory leak :(
       assert.equal(robotFilters.length, 2);
       assert.equal(zingFilters.length, 0);
@@ -65,9 +65,9 @@ test('filters can be thrown out when you navigate away from a given route', func
   click('.link-filters');
   andThen(() => {
       assert.equal(currentURL(), '/filters');
-      var filtersMap = this.store.get('filtersMap');
-      var robotFilters = filtersMap['robot'];
-      var zingFilters = filtersMap['zing'];
+      let filtersMap = this.store.get('filtersMap');
+      let robotFilters = filtersMap['robot'];
+      let zingFilters = filtersMap['zing'];
       //the wat route did not cleanup so we now have a memory leak :(
       assert.equal(robotFilters.length, 4);
       assert.equal(zingFilters.length, 2);
@@ -78,15 +78,15 @@ test('filters on models with custom primary keys can be thrown out when you leav
   visit('/custom-key');
   andThen(() => {
       assert.equal(currentURL(), '/custom-key');
-      var filtersMap = this.store.get('filtersMap');
-      var customKeyFilters = filtersMap['custom-key'];
+      let filtersMap = this.store.get('filtersMap');
+      let customKeyFilters = filtersMap['custom-key'];
       assert.equal(customKeyFilters.length, 1);
   });
   click('.link-wat');
   andThen(() => {
       assert.equal(currentURL(), '/wat');
-      var filtersMap = this.store.get('filtersMap');
-      var customKeyFilters = filtersMap['custom-key'];
+      let filtersMap = this.store.get('filtersMap');
+      let customKeyFilters = filtersMap['custom-key'];
       assert.equal(customKeyFilters.length, 0);
   });
 });

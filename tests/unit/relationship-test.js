@@ -1,11 +1,10 @@
-import Ember from "ember";
+import { run } from '@ember/runloop';
+import { getOwner } from '@ember/application';
 import { test } from "dummy/tests/helpers/qunit";
 import { moduleFor } from 'ember-qunit';
 import registration from "dummy/tests/helpers/registration";
 
-const { run, getOwner } = Ember;
-
-var store, user, role;
+let store, user, role;
 
 moduleFor('service:simple-store', "unit: user model test", {
     beforeEach() {
@@ -43,7 +42,7 @@ test("change_role will append user id to the (new) role users array", function(a
 });
 
 test("change_role will remove user id from the (old) role users array", function(assert) {
-    var guest;
+    let guest;
     user = store.push("user", {id: 1, name: "toran"});
     guest = store.push("role", {id: 9, name: "Guest", users: [9, 1, 8]});
     store.push("role", {id: 8, name: "Admin", users: []});
