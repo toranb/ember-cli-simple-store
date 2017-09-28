@@ -5,7 +5,6 @@ let test = function(...args) {
 
   function wrapper(assert) {
     // this is needed for maintaining scope in a test
-    // see `tests/unit/array-test.js`
     let env = assert.test.testEnvironment;
     run(() => {
       callback.apply(env, arguments);

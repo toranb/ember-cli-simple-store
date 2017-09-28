@@ -1,6 +1,6 @@
 import { run } from '@ember/runloop';
 import { getOwner } from '@ember/application';
-import { test } from "dummy/tests/helpers/simple-store/qunit";
+import { test } from "ember-cli-simple-store/test-support/qunit";
 import { moduleFor } from 'ember-qunit';
 import registration from "dummy/tests/helpers/registration";
 
