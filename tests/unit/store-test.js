@@ -2,7 +2,7 @@ import EmberObject from '@ember/object';
 import { run } from '@ember/runloop';
 import { getOwner } from '@ember/application';
 import { moduleFor } from "ember-qunit";
-import { test } from "dummy/tests/helpers/qunit";
+import { test } from "dummy/tests/helpers/simple-store/qunit";
 
 let store, Person, Toran, Cat;
 

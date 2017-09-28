@@ -1,7 +1,7 @@
 import EmberObject, { observer } from '@ember/object';
 import { getOwner } from '@ember/application';
 import { moduleFor } from "ember-qunit";
-import { test } from "dummy/tests/helpers/qunit";
+import { test } from "dummy/tests/helpers/simple-store/qunit";
 
 let Thing, Stuff;
 
