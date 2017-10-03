@@ -1,19 +1,11 @@
-import { run } from '@ember/runloop';
-import { test as qunitTest } from "qunit";
+import Ember from 'ember';
 
-let test = function() {
-  for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; ++_key) {
-    args[_key] = arguments[_key];
-  }
-  let callback;
-  function wrapper() {
-      let argz = arguments;
-      run(function() {
-          callback.apply(null, argz);
-      });
-  }
-  callback = args.splice(1, 1, wrapper)[0];
-  qunitTest.apply(null, args);
-};
+let qunit = function deprecatedQunitHelper() {
+    Ember.warn(
+      "The ember-cli-simple-store `qunit` test helper has been moved. Please update your imports to `import { test } from 'ember-cli-simple-store/test-support/qunit';`",
+      false,
+      { id: 'ember-cli-simple-store.qunit-import' }
+    );
+}
 
-export { test };
+export { qunit };
