@@ -1,10 +1,10 @@
 import Service from '@ember/service';
+import { v4 as uuid } from 'ember-uuid';
 import { A } from '@ember/array';
 import { run } from '@ember/runloop';
 import EmberObject, { setProperties, get } from '@ember/object';
 import { assert } from '@ember/debug';
 import { getOwner } from '@ember/application';
-import Ember from "ember";
 import RecordProxy from "./models/record-proxy";
 import RecordArray from "./models/record-array";
 import FilteredRecordArray from "./models/filtered-record-array";
@@ -229,7 +229,7 @@ let Store = ServiceType.extend({
         let func = FilteredRecordArray.create({
             _type: type,
             _store: this,
-            _id: Ember.uuid(),
+            _id: uuid(),
             _filter_func: filter_func,
             _source: this._findAll(type)
         });
