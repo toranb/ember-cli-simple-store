@@ -1,5 +1,5 @@
 import Service from '@ember/service';
-import { v4 as uuid } from 'ember-uuid';
+import { uuid } from './uuid';
 import { A } from '@ember/array';
 import { run } from '@ember/runloop';
 import EmberObject, { setProperties, get } from '@ember/object';
