@@ -1,6 +1,25 @@
 ember-cli-simple-store Changelog
 ==============================
 
+5.9.0
+-----
+
+* [DEPENDENCY]: upgrade to 3.0 ([#83](https://github.com/toranb/ember-cli-simple-store/pull/83))
+
+* [UPDATE]: removed ember-uuid dependency ([commit](https://github.com/toranb/ember-cli-simple-store/commit/5c0fff4411b0641953882d11cb815bd8a0f6a58f))
+
+5.8.0
+-----
+
+* [UPDATE]: testing updates ([#82](https://github.com/toranb/ember-cli-simple-store/pull/82))
+
+5.7.0
+-----
+
+* [DEPENDENCY]: upgrade to ember 2.15.0 ([#80](https://github.com/toranb/ember-cli-simple-store/pull/80))
+
+* [CLEANUP]: ember-codemod based on #176 RFC ([#80](https://github.com/toranb/ember-cli-simple-store/pull/80))
+
 5.6.0
 -----
 
