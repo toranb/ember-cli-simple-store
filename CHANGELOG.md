@@ -1,6 +1,11 @@
 ember-cli-simple-store Changelog
 ==============================
 
+5.9.1
+-----
+
+* [DEPENDENCY]: update ember-runtime-enumerable-includes-polyfill to 2.1.0
+
 5.9.0
 -----
 
