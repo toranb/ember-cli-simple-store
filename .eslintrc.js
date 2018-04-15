@@ -7,27 +7,29 @@ module.exports = {
   plugins: [
     'ember'
   ],
-  extends: 'eslint:recommended',
+  extends: [
+    'eslint:recommended',
+    'plugin:ember/recommended'
+  ],
   env: {
     browser: true
   },
   rules: {
-    'ember/no-old-shims': 'error',
-    'ember/new-module-imports': 'error'
   },
   overrides: [
     // node files
     {
       files: [
+        'ember-cli-build.js',
         'index.js',
         'testem.js',
-        'ember-cli-build.js',
         'config/**/*.js',
         'tests/dummy/config/**/*.js'
       ],
       excludedFiles: [
-        'app/**',
         'addon/**',
+        'addon-test-support/**',
+        'app/**',
         'tests/dummy/app/**'
       ],
       parserOptions: {
