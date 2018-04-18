@@ -1,6 +1,11 @@
 ember-cli-simple-store Changelog
 ==============================
 
+5.9.2
+-----
+
+* [WORKAROUND]: ember v3.1 compatability with proxy
+
 5.9.1
 -----
 
