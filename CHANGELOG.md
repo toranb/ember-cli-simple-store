@@ -1,6 +1,11 @@
 ember-cli-simple-store Changelog
 ==============================
 
+5.9.3
+-----
+
+* [DEPENDENCY]: upgrade to ember v3.1.1
+
 5.9.2
 -----
 
