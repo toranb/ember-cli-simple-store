@@ -18,7 +18,6 @@ export default ObjectProxy.extend({
 
         let model = getOwner(store).lookup(`model:${type}`);
 
-        this.isCopyingMethods = true;
         for(let method in model) {
             if(typeof model[method] === "function") {
                 if(!this[method]) {
@@ -26,17 +25,9 @@ export default ObjectProxy.extend({
                 }
             }
         }
-        this.isCopyingMethods = false;
     },
 
     compute() { },
-
-    unknownProperty() {
-        if (this.isCopyingMethods) {
-            return;
-        }
-        return this._super(...arguments);
-    },
 
     proxyMethod(method) {
         this[method] = function() {
