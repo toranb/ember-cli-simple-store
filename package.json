@@ -2,12 +2,8 @@
   "name": "ember-cli-simple-store",
   "version": "5.9.3",
   "description": "ember-cli addon that provides a simple identity map for ember.js web applications",
-  "directories": {
-    "doc": "doc",
-    "test": "tests"
-  },
   "scripts": {
-    "lint:js": "eslint ./*.js addon addon-test-support app config lib server test-support tests",
+    "lint:js": "eslint .",
     "start": "ember serve",
     "test": "ember try:each",
     "build": "ember build"
@@ -16,34 +12,28 @@
   "bugs": {
     "url": "https://github.com/toranb/ember-cli-simple-store/issues"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/toranb/ember-cli-simple-store"
-  },
   "engines": {
-    "node": "^4.5 || 6.* || >=7.*"
+    "node": "6.* || 8.* || >= 10.*"
   },
-  "author": "Toran Billups toranb@gmail.com",
-  "license": "MIT",
   "devDependencies": {
-    "broccoli-asset-rev": "^2.4.5",
-    "ember-cli": "3.1.2",
+    "broccoli-asset-rev": "^2.7.0",
+    "ember-cli": "~3.3.0",
     "ember-cli-app-version": "^2.0.0",
     "ember-cli-dependency-checker": "^2.0.0",
     "ember-cli-eslint": "^4.2.1",
     "ember-cli-htmlbars": "^2.0.1",
     "ember-cli-htmlbars-inline-precompile": "^1.0.0",
     "ember-cli-inject-live-reload": "^1.4.1",
-    "ember-cli-qunit": "^4.1.1",
+    "ember-cli-qunit": "^4.3.2",
     "ember-cli-shims": "^1.2.0",
     "ember-cli-sri": "^2.1.0",
     "ember-cli-uglify": "^2.0.0",
     "ember-disable-prototype-extensions": "^1.1.2",
     "ember-export-application-global": "^2.0.0",
-    "ember-load-initializers": "^1.0.0",
+    "ember-load-initializers": "^1.1.0",
     "ember-maybe-import-regenerator": "^0.1.6",
     "ember-resolver": "^4.0.0",
-    "ember-source": "3.1.1",
+    "ember-source": "~3.3.0",
     "ember-try": "^0.2.23",
     "eslint-plugin-ember": "^5.0.0",
     "eslint-plugin-node": "^6.0.1",
@@ -61,6 +51,16 @@
     "simple",
     "store"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/toranb/ember-cli-simple-store"
+  },
+  "license": "MIT",
+  "author": "Toran Billups toranb@gmail.com",
+  "directories": {
+    "doc": "doc",
+    "test": "tests"
+  },
   "ember-addon": {
     "configPath": "tests/dummy/config"
   }
