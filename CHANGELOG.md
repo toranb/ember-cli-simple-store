@@ -1,6 +1,11 @@
 ember-cli-simple-store Changelog
 ==============================
 
+5.9.4
+-----
+
+* [DEPENDENCY]: fix for ember v3.4+ ([#91](https://github.com/toranb/ember-cli-simple-store/pull/91))
+
 5.9.3
 -----
 
