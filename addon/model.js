@@ -15,7 +15,7 @@ function equal(first, second) {
 }
 
 function factory(obj) {
-    return obj.get("constructor.ClassMixin.ownerConstructor");
+    return obj.get("constructor.ClassMixin.ownerConstructor") || obj.constructor;
 }
 
 function attrs(obj) {

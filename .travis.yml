@@ -17,6 +17,8 @@ env:
   - EMBER_TRY_SCENARIO=ember-2.18.X
   - EMBER_TRY_SCENARIO=ember-3.1.X
   - EMBER_TRY_SCENARIO=ember-3.3.X
+  - EMBER_TRY_SCENARIO=ember-3.4.X
+  - EMBER_TRY_SCENARIO=ember-3.7.X
 
 before_install:
   - curl -o- -L https://yarnpkg.com/install.sh | bash
